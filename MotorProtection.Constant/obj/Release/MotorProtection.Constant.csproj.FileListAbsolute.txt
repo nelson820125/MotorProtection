@@ -1,0 +1,4 @@
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\bin\Release\MotorProtection.Constant.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\bin\Release\MotorProtection.Constant.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.pdb

@@ -1,0 +1,5 @@
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Core\bin\Release\MotorProtection.Core.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Core\bin\Release\MotorProtection.Core.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Core\obj\Release\MotorProtection.Core.csprojResolveAssemblyReference.cache
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Core\obj\Release\MotorProtection.Core.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Core\obj\Release\MotorProtection.Core.pdb

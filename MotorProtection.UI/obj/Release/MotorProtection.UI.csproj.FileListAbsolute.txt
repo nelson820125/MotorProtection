@@ -1,0 +1,8 @@
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\bin\Release\MotorProtection.UI.exe
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\bin\Release\MotorProtection.UI.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.csprojResolveAssemblyReference.cache
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.frmMain.resources
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.Properties.Resources.resources
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.csproj.GenerateResource.Cache
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.exe
+D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.pdb

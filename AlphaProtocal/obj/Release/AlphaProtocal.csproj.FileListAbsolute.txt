@@ -1,0 +1,4 @@
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\bin\Release\AlphaProtocal.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\bin\Release\AlphaProtocal.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\obj\Release\AlphaProtocal.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\obj\Release\AlphaProtocal.pdb

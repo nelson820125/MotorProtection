@@ -1,0 +1,5 @@
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\obj\Debug\AlphaProtocal.csprojResolveAssemblyReference.cache
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\bin\Debug\AlphaProtocal.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\bin\Debug\AlphaProtocal.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\obj\Debug\AlphaProtocal.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\AlphaProtocal\obj\Debug\AlphaProtocal.pdb

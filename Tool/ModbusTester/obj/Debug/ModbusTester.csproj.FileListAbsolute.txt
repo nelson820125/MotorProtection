@@ -1,0 +1,22 @@
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\bin\Debug\ModbusTester.exe
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\bin\Debug\ModbusTester.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.csprojResolveAssemblyReference.cache
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.Properties.Resources.resources
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.SerialPortTester.resources
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.csproj.GenerateResource.Cache
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.exe
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.exe
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\ModbusTester.exe
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\ModbusTester.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.csprojResolveAssemblyReference.cache
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.Properties.Resources.resources
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.SerialPortTester.resources
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\obj\Debug\ModbusTester.csproj.GenerateResource.Cache
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\AlphaProtocal.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\MotorProtection.Constant.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\MotorProtection.Core.dll
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\AlphaProtocal.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\MotorProtection.Constant.pdb
+D:\Personal\NeedToDo\Liu\MotorProtection\Tool\ModbusTester\bin\Debug\MotorProtection.Core.pdb
