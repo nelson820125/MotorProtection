@@ -8,6 +8,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaProtocal", "AlphaProtocal\AlphaProtocal.csproj", "{0A523D81-64A0-4D62-85AE-639B89D8344A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorProtection.Core", "MotorProtection.Core\MotorProtection.Core.csproj", "{0A7E5D38-3F67-4AAA-9C8D-86641CD8FD7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7156D120-8942-467B-B024-A45205A3FFF4} = {7156D120-8942-467B-B024-A45205A3FFF4}
+		{0A523D81-64A0-4D62-85AE-639B89D8344A} = {0A523D81-64A0-4D62-85AE-639B89D8344A}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tool", "Tool", "{616EE547-EA20-4167-8A5B-A337B1C96990}"
 EndProject

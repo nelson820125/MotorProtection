@@ -30,9 +30,9 @@
         {
             this.menuSystem = new System.Windows.Forms.MenuStrip();
             this.系统ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.电机保护系统v10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,6 +55,13 @@
             this.系统ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.系统ToolStripMenuItem.Text = "系统";
             // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
             // 关于ToolStripMenuItem
             // 
             this.关于ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -69,13 +76,6 @@
             this.电机保护系统v10ToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.电机保护系统v10ToolStripMenuItem.Text = "电机保护器控制软件V1.0...";
             this.电机保护系统v10ToolStripMenuItem.Click += new System.EventHandler(this.电机保护系统v10ToolStripMenuItem_Click);
-            // 
-            // 退出ToolStripMenuItem
-            // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
             // frmMain
             // 
