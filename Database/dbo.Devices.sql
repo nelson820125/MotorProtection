@@ -1,0 +1,28 @@
+﻿CREATE TABLE [dbo].[Devices] (
+    [DeviceID]       INT            IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR (50)  NOT NULL,
+    [Address]        INT            NULL,
+    [ParentID]       INT            NULL,
+    [CreateTime]     DATETIME       NOT NULL,
+    [IsActive]       BIT            NOT NULL,
+    [RestartAt]      DATETIME       NULL,
+    [CurrentA]       DECIMAL (5, 2) NULL,
+    [CurrentB]       DECIMAL (5, 2) NULL,
+    [CurrentC]       DECIMAL (5, 2) NULL,
+    [VoltageA]       DECIMAL (5, 2) NULL,
+    [VoltageB]       DECIMAL (5, 2) NULL,
+    [VoltageC]       DECIMAL (5, 2) NULL,
+    [Power]          DECIMAL (8, 2) NULL,
+    [AlarmAt]        DATETIME       NULL,
+    [StopAt]         DATETIME       NULL,
+    [TemperatureA]   DECIMAL (5, 2) NULL,
+    [TemperatureB]   DECIMAL (5, 2) NULL,
+    [TemperatureC]   DECIMAL (5, 2) NULL,
+    [Temperature]    DECIMAL (5, 2) NULL,
+    [FirstRMStatus]  BIT            NULL,
+    [SecondRMStatus] BIT            NULL,
+    [Status] INT NULL, 
+    PRIMARY KEY CLUSTERED ([DeviceID] ASC),
+    CONSTRAINT [FK_Devices_Devices] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Devices] ([DeviceID])
+);
+

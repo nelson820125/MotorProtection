@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MotorProtection.Core.Data.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Auditing">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Attributs" Type="xml" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceConfigs">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="int" Nullable="false" />
+          <Property Name="ResetAt" Type="datetime" />
+          <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="ProtectMode" Type="int" />
+          <Property Name="MIRatio" Type="int" />
+          <Property Name="AlarmThreshold" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="StopThreshold" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="FirstRMMode" Type="int" />
+          <Property Name="SecondRMMode" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Devices">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="int" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="RestartAt" Type="datetime" />
+          <Property Name="CurrentA" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="CurrentB" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="CurrentC" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageA" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageB" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageC" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Power" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="AlarmAt" Type="datetime" />
+          <Property Name="StopAt" Type="datetime" />
+          <Property Name="TemperatureA" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TemperatureB" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TemperatureC" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Temperature" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="FirstRMStatus" Type="bit" />
+          <Property Name="SecondRMStatus" Type="bit" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Attributs" Type="xml" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“E:\NING\PERSONAL\FREINDS' PROJECTS\LIUQIJUN\MOTORPROTECTION\MOTORPROTECTION.CORE\DATA\MOTORPROTECTOR.MDF.dbo.SystemConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="SystemConfig">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="300" />
+          <Property Name="LastLoginAt" Type="datetime" />
+          <Property Name="IsLocked" Type="bit" Nullable="false" />
+          <Property Name="LockedAt" Type="datetime" />
+          <Property Name="FailedPasswordAttempts" Type="varchar" MaxLength="300" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_DeviceConfigs_Devices">
+          <End Role="Devices" Type="Self.Devices" Multiplicity="1" />
+          <End Role="DeviceConfigs" Type="Self.DeviceConfigs" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Devices">
+              <PropertyRef Name="DeviceID" />
+            </Principal>
+            <Dependent Role="DeviceConfigs">
+              <PropertyRef Name="DeviceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Devices_Devices">
+          <End Role="Devices" Type="Self.Devices" Multiplicity="0..1" />
+          <End Role="Devices1" Type="Self.Devices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Devices">
+              <PropertyRef Name="DeviceID" />
+            </Principal>
+            <Dependent Role="Devices1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MotorProtectionCoreDataEntitiesStoreContainer">
+          <EntitySet Name="Auditing" EntityType="Self.Auditing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceConfigs" EntityType="Self.DeviceConfigs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logging" EntityType="Self.Logging" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemConfig" EntityType="Self.SystemConfig" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SystemConfig].[Key] AS [Key], 
+    [SystemConfig].[Value] AS [Value]
+    FROM [dbo].[SystemConfig] AS [SystemConfig]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_DeviceConfigs_Devices" Association="Self.FK_DeviceConfigs_Devices">
+            <End Role="Devices" EntitySet="Devices" />
+            <End Role="DeviceConfigs" EntitySet="DeviceConfigs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Devices_Devices" Association="Self.FK_Devices_Devices">
+            <End Role="Devices" EntitySet="Devices" />
+            <End Role="Devices1" EntitySet="Devices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MotorProtection.Core.Data.Entities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Auditing">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Attributs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DeviceConfigs">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="Int32" Nullable="false" />
+          <Property Name="ResetAt" Type="DateTime" Precision="3" />
+          <Property Name="ProtectPower" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="ProtectMode" Type="Int32" />
+          <Property Name="MIRatio" Type="Int32" />
+          <Property Name="AlarmThreshold" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="StopThreshold" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="FirstRMMode" Type="Int32" />
+          <Property Name="SecondRMMode" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Devices" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="DeviceConfigs" ToRole="Devices" />
+        </EntityType>
+        <EntityType Name="Devices">
+          <Key>
+            <PropertyRef Name="DeviceID" />
+          </Key>
+          <Property Name="DeviceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="Int32" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="RestartAt" Type="DateTime" Precision="3" />
+          <Property Name="CurrentA" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="CurrentB" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="CurrentC" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageA" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageB" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="VoltageC" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Power" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="AlarmAt" Type="DateTime" Precision="3" />
+          <Property Name="StopAt" Type="DateTime" Precision="3" />
+          <Property Name="TemperatureA" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TemperatureB" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TemperatureC" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Temperature" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="FirstRMStatus" Type="Boolean" />
+          <Property Name="SecondRMStatus" Type="Boolean" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="DeviceConfigs" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="Devices" ToRole="DeviceConfigs" />
+          <NavigationProperty Name="Devices1" Relationship="Self.FK_Devices_Devices" FromRole="Devices" ToRole="Devices1" />
+          <NavigationProperty Name="Devices2" Relationship="Self.FK_Devices_Devices" FromRole="Devices1" ToRole="Devices" />
+        </EntityType>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Attributs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="LastLoginAt" Type="DateTime" Precision="3" />
+          <Property Name="IsLocked" Type="Boolean" Nullable="false" />
+          <Property Name="LockedAt" Type="DateTime" Precision="3" />
+          <Property Name="FailedPasswordAttempts" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SystemConfig">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_DeviceConfigs_Devices">
+          <End Role="Devices" Type="Self.Devices" Multiplicity="1" />
+          <End Role="DeviceConfigs" Type="Self.DeviceConfigs" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Devices">
+              <PropertyRef Name="DeviceID" />
+            </Principal>
+            <Dependent Role="DeviceConfigs">
+              <PropertyRef Name="DeviceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Devices_Devices">
+          <End Role="Devices" Type="Self.Devices" Multiplicity="0..1" />
+          <End Role="Devices1" Type="Self.Devices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Devices">
+              <PropertyRef Name="DeviceID" />
+            </Principal>
+            <Dependent Role="Devices1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MotorProtectorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Auditing" EntityType="Self.Auditing" />
+          <EntitySet Name="DeviceConfigs" EntityType="Self.DeviceConfigs" />
+          <EntitySet Name="Devices" EntityType="Self.Devices" />
+          <EntitySet Name="Logging" EntityType="Self.Logging" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="SystemConfig" EntityType="Self.SystemConfig" />
+          <AssociationSet Name="FK_DeviceConfigs_Devices" Association="Self.FK_DeviceConfigs_Devices">
+            <End Role="Devices" EntitySet="Devices" />
+            <End Role="DeviceConfigs" EntitySet="DeviceConfigs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Devices_Devices" Association="Self.FK_Devices_Devices">
+            <End Role="Devices" EntitySet="Devices" />
+            <End Role="Devices1" EntitySet="Devices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MotorProtectionCoreDataEntitiesStoreContainer" CdmEntityContainer="MotorProtectorEntities">
+          <EntitySetMapping Name="Auditing">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Auditing">
+              <MappingFragment StoreEntitySet="Auditing">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Attributs" ColumnName="Attributs" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceConfigs">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigs">
+              <MappingFragment StoreEntitySet="DeviceConfigs">
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="ResetAt" ColumnName="ResetAt" />
+                <ScalarProperty Name="ProtectPower" ColumnName="ProtectPower" />
+                <ScalarProperty Name="ProtectMode" ColumnName="ProtectMode" />
+                <ScalarProperty Name="MIRatio" ColumnName="MIRatio" />
+                <ScalarProperty Name="AlarmThreshold" ColumnName="AlarmThreshold" />
+                <ScalarProperty Name="StopThreshold" ColumnName="StopThreshold" />
+                <ScalarProperty Name="FirstRMMode" ColumnName="FirstRMMode" />
+                <ScalarProperty Name="SecondRMMode" ColumnName="SecondRMMode" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Devices">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Devices">
+              <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RestartAt" ColumnName="RestartAt" />
+                <ScalarProperty Name="CurrentA" ColumnName="CurrentA" />
+                <ScalarProperty Name="CurrentB" ColumnName="CurrentB" />
+                <ScalarProperty Name="CurrentC" ColumnName="CurrentC" />
+                <ScalarProperty Name="VoltageA" ColumnName="VoltageA" />
+                <ScalarProperty Name="VoltageB" ColumnName="VoltageB" />
+                <ScalarProperty Name="VoltageC" ColumnName="VoltageC" />
+                <ScalarProperty Name="Power" ColumnName="Power" />
+                <ScalarProperty Name="AlarmAt" ColumnName="AlarmAt" />
+                <ScalarProperty Name="StopAt" ColumnName="StopAt" />
+                <ScalarProperty Name="TemperatureA" ColumnName="TemperatureA" />
+                <ScalarProperty Name="TemperatureB" ColumnName="TemperatureB" />
+                <ScalarProperty Name="TemperatureC" ColumnName="TemperatureC" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="FirstRMStatus" ColumnName="FirstRMStatus" />
+                <ScalarProperty Name="SecondRMStatus" ColumnName="SecondRMStatus" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logging">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Logging">
+              <MappingFragment StoreEntitySet="Logging">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Attributs" ColumnName="Attributs" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LastLoginAt" ColumnName="LastLoginAt" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="LockedAt" ColumnName="LockedAt" />
+                <ScalarProperty Name="FailedPasswordAttempts" ColumnName="FailedPasswordAttempts" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemConfig">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.SystemConfig">
+              <MappingFragment StoreEntitySet="SystemConfig">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram DiagramId="94b3b0d71df649bebcbdf5ce8345a113" Name="Diagram1" ZoomLevel="89">
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Auditing" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigs" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Devices" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Logging" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Users" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.SystemConfig" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="MotorProtection.Core.Data.Entities.FK_DeviceConfigs_Devices" ManuallyRouted="false" />
+        <AssociationConnector Association="MotorProtection.Core.Data.Entities.FK_Devices_Devices" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
