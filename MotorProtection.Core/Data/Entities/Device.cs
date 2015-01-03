@@ -62,6 +62,10 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual ICollection<DeviceConfig> DeviceConfigs { get; set; }
 
+        public virtual ICollection<Device> Devices1 { get; set; }
+
+        public virtual Device Device1 { get; set; }
+
         #endregion
     }
 

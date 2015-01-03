@@ -118,9 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Data\MotorProtector.edmx">
-      <LastGenOutput>MotorProtector.Designer.cs</LastGenOutput>
-    </EntityDeploy>
+    <EntityDeploy Include="Data\MotorProtector.edmx" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
