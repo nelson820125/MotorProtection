@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MotorProtectionCoreDataEntitiesStoreContainer" CdmEntityContainer="MotorProtectorEntities">
+    <EntitySetMapping Name="Auditing">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Auditing">
+        <MappingFragment StoreEntitySet="Auditing">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Attributs" ColumnName="Attributs" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeviceConfigs">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigs">
+        <MappingFragment StoreEntitySet="DeviceConfigs">
+          <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+          <ScalarProperty Name="ResetAt" ColumnName="ResetAt" />
+          <ScalarProperty Name="ProtectPower" ColumnName="ProtectPower" />
+          <ScalarProperty Name="ProtectMode" ColumnName="ProtectMode" />
+          <ScalarProperty Name="MIRatio" ColumnName="MIRatio" />
+          <ScalarProperty Name="AlarmThreshold" ColumnName="AlarmThreshold" />
+          <ScalarProperty Name="StopThreshold" ColumnName="StopThreshold" />
+          <ScalarProperty Name="FirstRMMode" ColumnName="FirstRMMode" />
+          <ScalarProperty Name="SecondRMMode" ColumnName="SecondRMMode" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Devices">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Devices">
+        <MappingFragment StoreEntitySet="Devices">
+          <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="RestartAt" ColumnName="RestartAt" />
+          <ScalarProperty Name="CurrentA" ColumnName="CurrentA" />
+          <ScalarProperty Name="CurrentB" ColumnName="CurrentB" />
+          <ScalarProperty Name="CurrentC" ColumnName="CurrentC" />
+          <ScalarProperty Name="VoltageA" ColumnName="VoltageA" />
+          <ScalarProperty Name="VoltageB" ColumnName="VoltageB" />
+          <ScalarProperty Name="VoltageC" ColumnName="VoltageC" />
+          <ScalarProperty Name="Power" ColumnName="Power" />
+          <ScalarProperty Name="AlarmAt" ColumnName="AlarmAt" />
+          <ScalarProperty Name="StopAt" ColumnName="StopAt" />
+          <ScalarProperty Name="TemperatureA" ColumnName="TemperatureA" />
+          <ScalarProperty Name="TemperatureB" ColumnName="TemperatureB" />
+          <ScalarProperty Name="TemperatureC" ColumnName="TemperatureC" />
+          <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+          <ScalarProperty Name="FirstRMStatus" ColumnName="FirstRMStatus" />
+          <ScalarProperty Name="SecondRMStatus" ColumnName="SecondRMStatus" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Logging">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Logging">
+        <MappingFragment StoreEntitySet="Logging">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Attributs" ColumnName="Attributs" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Users">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="LastLoginAt" ColumnName="LastLoginAt" />
+          <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+          <ScalarProperty Name="LockedAt" ColumnName="LockedAt" />
+          <ScalarProperty Name="FailedPasswordAttempts" ColumnName="FailedPasswordAttempts" />
+          <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SystemConfig">
+      <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.SystemConfig">
+        <MappingFragment StoreEntitySet="SystemConfig">
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

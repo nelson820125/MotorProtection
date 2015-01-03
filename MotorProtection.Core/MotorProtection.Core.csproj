@@ -67,8 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Entities\Auditing.cs" />
+    <Compile Include="Data\Entities\Device.cs" />
+    <Compile Include="Data\Entities\DeviceConfig.cs" />
     <Compile Include="Data\Entities\Logging.cs" />
     <Compile Include="Data\Entities\MotorProtectorEntities.cs" />
+    <Compile Include="Data\Entities\SystemConfig.cs" />
+    <Compile Include="Data\Entities\User.cs" />
     <Compile Include="SerialComm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

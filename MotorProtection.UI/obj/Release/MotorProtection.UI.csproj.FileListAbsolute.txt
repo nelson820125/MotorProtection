@@ -6,3 +6,11 @@ D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorPro
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.csproj.GenerateResource.Cache
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.exe
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.exe
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\bin\Release\MotorProtection.UI.exe
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\bin\Release\MotorProtection.UI.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.csprojResolveAssemblyReference.cache
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.frmMain.resources
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.Properties.Resources.resources
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.UI\obj\Release\MotorProtection.UI.csproj.GenerateResource.Cache

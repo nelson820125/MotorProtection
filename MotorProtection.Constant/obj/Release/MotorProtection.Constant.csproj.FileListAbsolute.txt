@@ -2,3 +2,8 @@ D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\bin\Release\Mo
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\bin\Release\MotorProtection.Constant.pdb
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.dll
 D:\Personal\NeedToDo\Liu\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.Constant\bin\Release\MotorProtection.Constant.dll
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.Constant\bin\Release\MotorProtection.Constant.pdb
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.csprojResolveAssemblyReference.cache
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.dll
+E:\ning\Personal\Freinds' Projects\LiuQiJun\MotorProtection\MotorProtection.Constant\obj\Release\MotorProtection.Constant.pdb
