@@ -10,6 +10,8 @@ namespace MotorProtection.Core.Data.Entities
     {
         #region Primitive Properties
 
+        public virtual int DeviceConfigID { get; set; }
+
         public virtual int DeviceID { get; set; }
 
         public virtual DateTime? ResetAt { get; set; }

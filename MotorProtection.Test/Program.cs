@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MotorProtection.Core.Data;
 
 namespace MotorProtection.Test
 {
@@ -9,13 +10,13 @@ namespace MotorProtection.Test
     {
         static void Main(string[] args)
         {
-            int address = 40000;
-            byte[] addrHex = BitConverter.GetBytes(address);
-            foreach (byte a in addrHex)
+            //TODO
+            using (MotorProtection.Core.Data.Entities.MotorProtectorEntities entity = new Core.Data.Entities.MotorProtectorEntities())
             {
-                Console.WriteLine(Convert.ToString(a, 16));
+                var user = entity.Users.FirstOrDefault();
+                Console.WriteLine(user.UserName);
+                Console.WriteLine(user.Password);
             }
-
             Console.ReadLine();
         }
     }

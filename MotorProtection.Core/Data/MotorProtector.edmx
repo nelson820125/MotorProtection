@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MotorProtection.Core.Data.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MotorProtection.Core.Data.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Auditing">
           <Key>
             <PropertyRef Name="ID" />
@@ -17,8 +17,9 @@
         </EntityType>
         <EntityType Name="DeviceConfigs">
           <Key>
-            <PropertyRef Name="DeviceID" />
+            <PropertyRef Name="DeviceConfigID" />
           </Key>
+          <Property Name="DeviceConfigID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DeviceID" Type="int" Nullable="false" />
           <Property Name="ResetAt" Type="datetime" />
           <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
@@ -28,7 +29,7 @@
           <Property Name="StopThreshold" Type="decimal" Precision="3" Scale="2" />
           <Property Name="FirstRMMode" Type="int" />
           <Property Name="SecondRMMode" Type="int" />
-          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Devices">
           <Key>
@@ -89,11 +90,11 @@
           <Property Name="LockedAt" Type="datetime" />
           <Property Name="FailedPasswordAttempts" Type="varchar" MaxLength="300" />
           <Property Name="Enabled" Type="bit" Nullable="false" />
-          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_DeviceConfigs_Devices">
           <End Role="Devices" Type="Self.Devices" Multiplicity="1" />
-          <End Role="DeviceConfigs" Type="Self.DeviceConfigs" Multiplicity="0..1" />
+          <End Role="DeviceConfigs" Type="Self.DeviceConfigs" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Devices">
               <PropertyRef Name="DeviceID" />
@@ -136,8 +137,7 @@
             <End Role="Devices1" EntitySet="Devices" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MotorProtection.Core.Data.Entities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -154,6 +154,7 @@
         <EntityType Name="DeviceConfigs">
           <Key>
             <PropertyRef Name="DeviceID" />
+            <PropertyRef Name="DeviceConfigID" />
           </Key>
           <Property Name="DeviceID" Type="Int32" Nullable="false" />
           <Property Name="ResetAt" Type="DateTime" Precision="3" />
@@ -164,8 +165,9 @@
           <Property Name="StopThreshold" Type="Decimal" Precision="3" Scale="2" />
           <Property Name="FirstRMMode" Type="Int32" />
           <Property Name="SecondRMMode" Type="Int32" />
-          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" Nullable="false" />
           <NavigationProperty Name="Devices" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="DeviceConfigs" ToRole="Devices" />
+          <Property Name="DeviceConfigID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Devices">
           <Key>
@@ -220,7 +222,7 @@
           <Property Name="LockedAt" Type="DateTime" Precision="3" />
           <Property Name="FailedPasswordAttempts" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" Nullable="false" />
         </EntityType>
         <EntityType Name="SystemConfig">
           <Key>
@@ -289,6 +291,7 @@
           <EntitySetMapping Name="DeviceConfigs">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigs">
               <MappingFragment StoreEntitySet="DeviceConfigs">
+                <ScalarProperty Name="DeviceConfigID" ColumnName="DeviceConfigID" />
                 <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
                 <ScalarProperty Name="ResetAt" ColumnName="ResetAt" />
                 <ScalarProperty Name="ProtectPower" ColumnName="ProtectPower" />

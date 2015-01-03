@@ -66,6 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crypto\CryptoUtils.cs" />
+    <Compile Include="Crypto\HashAlgo.cs" />
+    <Compile Include="Crypto\MD5Algo.cs" />
     <Compile Include="Data\Entities\Auditing.cs" />
     <Compile Include="Data\Entities\Device.cs" />
     <Compile Include="Data\Entities\DeviceConfig.cs" />
