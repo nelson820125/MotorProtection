@@ -39,8 +39,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "Motor Protector Job Manager";
-            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
+            this.serviceInstaller1.ServiceName = "MotorProtection JobManager";
             // 
             // ProjectInstaller
             // 

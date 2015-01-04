@@ -10,7 +10,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         #region Primitive Properties
 
-        public virtual string Key { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual string Value { get; set; }
 

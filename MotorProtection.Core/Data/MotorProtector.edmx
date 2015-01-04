@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MotorProtection.Core.Data.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MotorProtection.Core.Data.Entities.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Auditing">
           <Key>
             <PropertyRef Name="ID" />
@@ -14,6 +14,22 @@
           <Property Name="UserID" Type="int" />
           <Property Name="Attributs" Type="xml" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CacheGroups">
+          <Key>
+            <PropertyRef Name="Group" />
+          </Key>
+          <Property Name="Group" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CacheStatus">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Group" />
+          </Key>
+          <Property Name="Application" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Group" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="DeviceConfigs">
           <Key>
@@ -69,13 +85,11 @@
           <Property Name="Attributs" Type="xml" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6002: 表/视图“E:\NING\PERSONAL\FREINDS' PROJECTS\LIUQIJUN\MOTORPROTECTION\MOTORPROTECTION.CORE\DATA\MOTORPROTECTOR.MDF.dbo.SystemConfig”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="SystemConfig">
           <Key>
-            <PropertyRef Name="Key" />
+            <PropertyRef Name="Name" />
           </Key>
-          <Property Name="Key" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Value" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Users">
@@ -118,16 +132,13 @@
         </Association>
         <EntityContainer Name="MotorProtectionCoreDataEntitiesStoreContainer">
           <EntitySet Name="Auditing" EntityType="Self.Auditing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CacheGroups" EntityType="Self.CacheGroups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CacheStatus" EntityType="Self.CacheStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceConfigs" EntityType="Self.DeviceConfigs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logging" EntityType="Self.Logging" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemConfig" EntityType="Self.SystemConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SystemConfig" EntityType="Self.SystemConfig" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [SystemConfig].[Key] AS [Key], 
-    [SystemConfig].[Value] AS [Value]
-    FROM [dbo].[SystemConfig] AS [SystemConfig]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_DeviceConfigs_Devices" Association="Self.FK_DeviceConfigs_Devices">
             <End Role="Devices" EntitySet="Devices" />
             <End Role="DeviceConfigs" EntitySet="DeviceConfigs" />
@@ -137,8 +148,7 @@
             <End Role="Devices1" EntitySet="Devices" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MotorProtection.Core.Data.Entities" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -226,10 +236,10 @@
         </EntityType>
         <EntityType Name="SystemConfig">
           <Key>
-            <PropertyRef Name="Key" />
+            <PropertyRef Name="Name" />
           </Key>
-          <Property Name="Key" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_DeviceConfigs_Devices">
           <End Role="Devices" Type="Self.Device" Multiplicity="1" />
@@ -270,7 +280,25 @@
             <End Role="Devices" EntitySet="Devices" />
             <End Role="Devices1" EntitySet="Devices" />
           </AssociationSet>
+          <EntitySet Name="CacheGroups" EntityType="MotorProtection.Core.Data.Entities.CacheGroup" />
+          <EntitySet Name="CacheStatus" EntityType="MotorProtection.Core.Data.Entities.CacheStatu" />
         </EntityContainer>
+        <EntityType Name="CacheGroup">
+          <Key>
+            <PropertyRef Name="Group" />
+          </Key>
+          <Property Name="Group" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="CacheStatu">
+          <Key>
+            <PropertyRef Name="Application" />
+            <PropertyRef Name="Group" />
+          </Key>
+          <Property Name="Application" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -363,8 +391,25 @@
           <EntitySetMapping Name="SystemConfigs">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.SystemConfig">
               <MappingFragment StoreEntitySet="SystemConfig">
-                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CacheGroups">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.CacheGroup">
+              <MappingFragment StoreEntitySet="CacheGroups">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CacheStatus">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.CacheStatu">
+              <MappingFragment StoreEntitySet="CacheStatus">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -389,6 +434,19 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams></Diagrams>
+    <Diagrams>
+      <Diagram DiagramId="b112e77b33254326a9e0a20fdfc3e349" Name="Diagram1">
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Auditing" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfig" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Device" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Logging" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.User" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.SystemConfig" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <AssociationConnector Association="MotorProtection.Core.Data.Entities.FK_DeviceConfigs_Devices" ManuallyRouted="false" />
+        <AssociationConnector Association="MotorProtection.Core.Data.Entities.FK_Devices_Devices" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.CacheGroup" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.CacheStatu" Width="1.5" PointX="8.375" PointY="0.75" />
+      </Diagram>
+    </Diagrams>
   </Designer>
 </edmx:Edmx>

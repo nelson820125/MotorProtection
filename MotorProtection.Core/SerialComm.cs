@@ -70,15 +70,14 @@ namespace MotorProtection.Core
                         byte[] readBuffer = new byte[count];
                         try
                         {
-                            //Application.DoEvents();
                             serialPort.Read(readBuffer, 0, count);
                             if (DataReceived != null)
                                 DataReceived(readBuffer);
-                            Thread.Sleep(1000);
+                            Thread.Sleep(5000);
                         }
                         catch (TimeoutException)
                         {
-                            throw new Exception("串口读取超时！");
+                            throw new Exception("Serial Port Reading Timeout！");
                         }
                     }
                 }
@@ -96,7 +95,7 @@ namespace MotorProtection.Core
             }
             else
             {
-                err = "串口打开失败！";
+                err = "Serail Port Openning failed！";
             }
         }
 

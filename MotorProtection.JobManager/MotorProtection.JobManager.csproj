@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\JobController.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -66,6 +67,24 @@
     <EmbeddedResource Include="ProjectInstaller.resx">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlphaProtocal\AlphaProtocal.csproj">
+      <Project>{0a523d81-64a0-4d62-85ae-639b89d8344a}</Project>
+      <Name>AlphaProtocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MotorProtection.Constant\MotorProtection.Constant.csproj">
+      <Project>{7156d120-8942-467b-b024-a45205a3fff4}</Project>
+      <Name>MotorProtection.Constant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MotorProtection.Core\MotorProtection.Core.csproj">
+      <Project>{0a7e5d38-3f67-4aaa-9c8d-86641cd8fd7e}</Project>
+      <Name>MotorProtection.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
