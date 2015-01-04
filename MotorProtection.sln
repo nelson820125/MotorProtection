@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorProtection.Test", "Mot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PasswordGenerator", "Tool\PasswordGenerator\PasswordGenerator.csproj", "{99452F77-1B07-4002-9DCC-113EFEC770D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorProtection.JobManager", "MotorProtection.JobManager\MotorProtection.JobManager.csproj", "{C90A6A02-2849-418E-9427-D41FE2C4F424}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{99452F77-1B07-4002-9DCC-113EFEC770D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99452F77-1B07-4002-9DCC-113EFEC770D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99452F77-1B07-4002-9DCC-113EFEC770D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C90A6A02-2849-418E-9427-D41FE2C4F424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C90A6A02-2849-418E-9427-D41FE2C4F424}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C90A6A02-2849-418E-9427-D41FE2C4F424}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C90A6A02-2849-418E-9427-D41FE2C4F424}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

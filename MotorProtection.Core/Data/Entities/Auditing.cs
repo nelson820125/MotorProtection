@@ -14,7 +14,7 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual int Level { get; set; }
 
-        public virtual int UserID { get; set; }
+        public virtual Nullable<int> UserID { get; set; }
 
         public virtual string Attributes { get; set; }
 

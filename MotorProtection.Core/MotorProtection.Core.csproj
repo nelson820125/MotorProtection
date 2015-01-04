@@ -56,9 +56,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ProviderSection.cs" />
     <Compile Include="Crypto\CryptoUtils.cs" />
     <Compile Include="Crypto\HashAlgo.cs" />
     <Compile Include="Crypto\MD5Algo.cs" />
@@ -76,6 +79,13 @@
     <Compile Include="Data\Entities\MotorProtectorEntities.cs" />
     <Compile Include="Data\Entities\SystemConfig.cs" />
     <Compile Include="Data\Entities\User.cs" />
+    <Compile Include="Log\AuditingLevel.cs" />
+    <Compile Include="Log\LogController.cs" />
+    <Compile Include="Log\LoggingLevel.cs" />
+    <Compile Include="Log\LogInfo.cs" />
+    <Compile Include="Log\LogProvider.cs" />
+    <Compile Include="Log\SQLAuditingProvider.cs" />
+    <Compile Include="Log\SQLLoggingProvider.cs" />
     <Compile Include="SerialComm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
