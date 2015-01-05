@@ -71,10 +71,12 @@
     <Compile Include="AppConfig.cs" />
     <Compile Include="Cache\CacheController.cs" />
     <Compile Include="Cache\CacheUpdatedEventArgs.cs" />
+    <Compile Include="Cache\DeviceCache.cs" />
     <Compile Include="Cache\IEntityCache.cs" />
     <Compile Include="Cache\SystemConfigCache.cs" />
     <Compile Include="Common\CacheSection.cs" />
     <Compile Include="Common\ProviderSection.cs" />
+    <Compile Include="Controller\ProtocalController.cs" />
     <Compile Include="Crypto\CryptoUtils.cs" />
     <Compile Include="Crypto\HashAlgo.cs" />
     <Compile Include="Crypto\MD5Algo.cs" />
@@ -98,9 +100,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SysConfig.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controller\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Data\MotorProtector.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,4 +1,8 @@
-﻿using System;
+﻿using MotorProtection.Constant;
+using MotorProtection.Core.Cache;
+using MotorProtection.Core.Controller;
+using MotorProtection.Core.Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
@@ -12,6 +16,7 @@ namespace MotorProtection.Core
     {
         public delegate void EventHandle(byte[] readBuffer);
         public event EventHandle DataReceived;
+        public ProtocalController _protocalCtr = new ProtocalController();
 
         public SerialPort serialPort;
         Thread thread;
@@ -64,22 +69,40 @@ namespace MotorProtection.Core
             {
                 if (serialPort.IsOpen)
                 {
-                    int count = serialPort.BytesToRead;
-                    if (count > 0)
+                    try
                     {
-                        byte[] readBuffer = new byte[count];
-                        try
+                        List<Device> devices = DeviceCache.GetAllDevices();
+                        if (devices.Count > 0)
                         {
-                            serialPort.Read(readBuffer, 0, count);
-                            if (DataReceived != null)
-                                DataReceived(readBuffer);
+                            foreach (Device device in devices)
+                            {
+                                // send read register command.
+                                byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 19);
+                                WritePort(command, 0, command.Length);
+
+                                // read data from Slave.
+                                int count = serialPort.BytesToRead;
+                                if (count > 0)
+                                {
+                                    byte[] readBuffer = new byte[count];
+                                    serialPort.Read(readBuffer, 0, count);
+                                    if (DataReceived != null)
+                                        DataReceived(readBuffer);                                    
+                                }
+                            }
+
+                            // get status of protector every 5 seconds.
                             Thread.Sleep(5000);
-                        }
-                        catch (TimeoutException)
-                        {
-                            throw new Exception("Serial Port Reading Timeout！");
-                        }
+                        }                        
                     }
+                    catch (TimeoutException)
+                    {
+                        throw new Exception("Serial Port Reading Timeout！");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }                    
                 }
             }
         }
