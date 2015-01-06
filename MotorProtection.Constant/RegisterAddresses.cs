@@ -61,9 +61,9 @@ namespace MotorProtection.Constant
 
         public static byte TemperatureALo = 0x3D; // temperature-A
 
-        public static byte TemperatureBLo = 0x3E; // temperature-A
+        public static byte TemperatureBLo = 0x3E; // temperature-B
 
-        public static byte TemperatureCLo = 0x3F; // temperature-A
+        public static byte TemperatureCLo = 0x3F; // temperature-C
 
         public static byte TemperatureLo = 0x40; // temperature
 

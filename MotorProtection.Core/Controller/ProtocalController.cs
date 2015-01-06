@@ -10,6 +10,12 @@ namespace MotorProtection.Core.Controller
     {
         #region MODBUS-RTU
 
+        private MODBUSRTU _modebus = new MODBUSRTU();
+
+        /// <summary>
+        /// Create request of reading registers
+        /// </summary>
+        /// <returns></returns>
         public byte[] ReadRegistersRequest(Int16 address, byte startRegisterAddressHi, byte startRegisterAddressLo, Int16 registerOffset)
         {
             byte addr = BitConverter.GetBytes(address)[0];
@@ -28,8 +34,16 @@ namespace MotorProtection.Core.Controller
                 data[3] = offset[0];
             }
 
-            MODBUSRTU modbus = new MODBUSRTU();
-            return modbus.ReadHoldingRegisters(addr, data, 4);
+            return _modebus.ReadHoldingRegisters(addr, data, 4);
+        }
+
+        /// <summary>
+        /// Calculate CRC of data
+        /// </summary>
+        /// <returns></returns>
+        public byte CalculateCRC(byte[] data)
+        {
+            return _modebus.CRC16(data);
         }
 
         #endregion

@@ -31,7 +31,7 @@ namespace ModbusTester
             _comm.DataReceived += Comm_DataReceived;
         }
 
-        private void Comm_DataReceived(byte[] readBuffer)
+        private void Comm_DataReceived(byte[] readBuffer, int address)
         {
             if (readBuffer != null)
             {

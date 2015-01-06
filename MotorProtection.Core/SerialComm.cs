@@ -2,6 +2,7 @@
 using MotorProtection.Core.Cache;
 using MotorProtection.Core.Controller;
 using MotorProtection.Core.Data.Entities;
+using MotorProtection.Core.Log;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -14,7 +15,7 @@ namespace MotorProtection.Core
 {
     public class SerialComm
     {
-        public delegate void EventHandle(byte[] readBuffer);
+        public delegate void EventHandle(byte[] readBuffer, int address);
         public event EventHandle DataReceived;
         public ProtocalController _protocalCtr = new ProtocalController();
 
@@ -76,19 +77,53 @@ namespace MotorProtection.Core
                         {
                             foreach (Device device in devices)
                             {
-                                // send read register command.
-                                byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 19);
-                                WritePort(command, 0, command.Length);
-
-                                // read data from Slave.
-                                int count = serialPort.BytesToRead;
-                                if (count > 0)
+                                int attempts = 0;
+                                while (true)
                                 {
-                                    byte[] readBuffer = new byte[count];
-                                    serialPort.Read(readBuffer, 0, count);
-                                    if (DataReceived != null)
-                                        DataReceived(readBuffer);                                    
-                                }
+                                    attempts++;
+
+                                    // send read register command.
+                                    byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 19);
+                                    WritePort(command, 0, command.Length);
+
+                                    // read data from Slave.
+                                    int count = serialPort.BytesToRead;
+                                    if (count > 0 && count != 42) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 42 is the length of the available response data
+                                    {
+                                        byte[] readBuffer = new byte[count];
+                                        serialPort.Read(readBuffer, 0, count);
+
+                                        // verify CRC of response data.
+                                        // caculate CRC
+                                        byte[] data = readBuffer.Take(41).ToArray();
+                                        byte crc = _protocalCtr.CalculateCRC(data);
+                                        if (crc == readBuffer.Last()) // CRC is correct
+                                        {
+                                            if (DataReceived != null)
+                                                DataReceived(readBuffer.Skip(3).Take(38).ToArray(), device.Address.Value); // just parsing values area
+                                        }
+                                        else // CRC is incorrect
+                                        {
+                                            if (attempts >= AppConfig.SerialComm_Attempts)
+                                            {
+                                                LogController.LogError(LoggingLevel.Level1, new Exception("Bad response")).Write();
+                                                break;
+                                            }
+
+                                            continue;
+                                        }
+                                    }
+                                    else // data length is incorrect
+                                    {
+                                        if (attempts >= AppConfig.SerialComm_Attempts)
+                                        {
+                                            LogController.LogError(LoggingLevel.Level1, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
+                                            break;
+                                        }
+
+                                        continue;
+                                    }
+                                }                                
                             }
 
                             // get status of protector every 5 seconds.

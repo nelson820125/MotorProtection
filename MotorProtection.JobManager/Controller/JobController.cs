@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using MotorProtection.Core;
 using MotorProtection.Core.Log;
+using MotorProtection.Core.Data.Entities;
+using MotorProtection.Constant;
 
 namespace MotorProtection.JobManager.Controller
 {
@@ -42,13 +44,118 @@ namespace MotorProtection.JobManager.Controller
                 _comm.Close();
         }
 
-        private static void serialPort_DataReceived(byte[] readBuffer)
+        private static void serialPort_DataReceived(byte[] readBuffer, int address)
         {
             if (readBuffer != null)
             {
-                foreach (byte b in readBuffer)
+                // update device information in DB
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
                 {
-                    //TODO
+                    Device device = ctt.Devices.Where(d => d.Address == address).FirstOrDefault();
+                    int alarmSec = 0, alarmMin = 0, alarmHr = 0, alarmDay = 0, alarmMon = 0, alarmYear = 0, stopSec = 0, stopMin = 0, stopHr = 0, stopDay = 0, stopMon = 0, stopYear = 0;
+                    int count = 0;
+                    for (int i = 0; i <= readBuffer.Length; i = i + 2)
+                    {
+                        count++;
+
+                        //parsing received data.
+                        byte[] data = new byte[2];
+                        data[0] = readBuffer[i];
+                        data[1] = readBuffer[i + 1];
+                        switch (count)
+                        {
+                            case 1: // current A value
+                                device.CurrentA = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 2: // current B value
+                                device.CurrentA = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 3: // current C value
+                                device.CurrentA = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 4: // Voltage A value
+                                device.VoltageA = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 5: // Voltage A value
+                                device.VoltageB = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 6: // Voltage A value
+                                device.VoltageC = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 7: // Power value
+                                device.Power = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 8: // alarm second and minute value
+                                byte[] secBytes = new byte[] { data[0] };
+                                byte[] minBytes = new byte[] { data[1] };
+                                alarmSec = BitConverter.ToInt16(secBytes, 0);
+                                alarmMin = BitConverter.ToInt16(minBytes, 0);
+                                break;
+                            case 9: // alarm hour and day value
+                                byte[] hrBytes = new byte[] { data[0] };
+                                byte[] dayBytes = new byte[] { data[1] };
+                                alarmHr = BitConverter.ToInt16(hrBytes, 0);
+                                alarmDay = BitConverter.ToInt16(dayBytes, 0);
+                                break;
+                            case 10: // alarm month and year value
+                                byte[] monBytes = new byte[] { data[0] };
+                                byte[] yearBytes = new byte[] { data[1] };
+                                alarmMon = BitConverter.ToInt16(monBytes, 0);
+                                alarmYear = BitConverter.ToInt16(yearBytes, 0);
+                                break;
+                            case 11: // stop second and minute value
+                                byte[] stopSecBytes = new byte[] { data[0] };
+                                byte[] stopMinBytes = new byte[] { data[1] };
+                                stopSec = BitConverter.ToInt16(stopSecBytes, 0);
+                                stopMin = BitConverter.ToInt16(stopMinBytes, 0);
+                                break;
+                            case 12: // stop hour and day value
+                                byte[] stopHrBytes = new byte[] { data[0] };
+                                byte[] stopDayBytes = new byte[] { data[1] };
+                                stopHr = BitConverter.ToInt16(stopHrBytes, 0);
+                                stopDay = BitConverter.ToInt16(stopDayBytes, 0);
+                                break;
+                            case 13: // stop month and year value
+                                byte[] stopMonBytes = new byte[] { data[0] };
+                                byte[] stopYearBytes = new byte[] { data[1] };
+                                stopMon = BitConverter.ToInt16(stopMonBytes, 0);
+                                stopYear = BitConverter.ToInt16(stopYearBytes, 0);
+                                break;
+                            case 14: // Temperature A value
+                                device.TemperatureA = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 15: // Temperature B value
+                                device.TemperatureB = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 16: // Temperature C value
+                                device.TemperatureC = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 17: // Temperature value
+                                device.Temperature = (decimal)(BitConverter.ToDouble(data, 0) / 100);
+                                break;
+                            case 18:
+                                device.FirstRMStatus = BitConverter.ToInt16(data, 0) == 1 ? true : false;
+                                break;
+                            case 19:
+                                device.SecondRMStatus = BitConverter.ToInt16(data, 0) == 1 ? true : false;
+                                break;
+                        }
+                    }
+
+                    // set alarm and stop time to device object
+                    device.AlarmAt = new DateTime(alarmYear, alarmMon, alarmDay, alarmHr, alarmMin, alarmSec);
+                    device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);
+
+                    if (stopYear != 0 || stopMon != 0 || stopDay != 0 || stopHr != 0 || stopMin != 0 || stopSec != 0) // stop
+                        device.Status = ProtectorStatus.Stopped;
+                    else if (alarmYear != 0 || alarmMon != 0 || alarmDay != 0 || alarmHr != 0 || alarmMin != 0 || alarmSec != 0) // alarm
+                        device.Status = ProtectorStatus.Alarm;
+                    else if (!device.FirstRMStatus.Value && device.SecondRMStatus.Value) // no reset
+                        device.Status = ProtectorStatus.NoReset;
+                    else
+                        device.Status = ProtectorStatus.Normal;
+
+                    ctt.SaveChanges();
                 }
             }
         }
