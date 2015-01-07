@@ -21,7 +21,8 @@
     [Temperature]    DECIMAL (5, 2) NULL,
     [FirstRMStatus]  BIT            NULL,
     [SecondRMStatus] BIT            NULL,
-    [Status] INT NULL, 
+    [Status]         INT            NULL,
+    [UpdateTime] DATETIME NULL, 
     PRIMARY KEY CLUSTERED ([DeviceID] ASC),
     CONSTRAINT [FK_Devices_Devices] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Devices] ([DeviceID])
 );

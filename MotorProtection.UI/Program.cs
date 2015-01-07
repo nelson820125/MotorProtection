@@ -15,7 +15,16 @@ namespace MotorProtection.UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            frmLogin login = new frmLogin();
+            login.ShowDialog();
+            if (login.DialogResult == DialogResult.OK)
+            {
+                Application.Run(new frmMain());
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +65,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,6 +94,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AlphaProtocal\AlphaProtocal.csproj">
+      <Project>{0a523d81-64a0-4d62-85ae-639b89d8344a}</Project>
+      <Name>AlphaProtocal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MotorProtection.Constant\MotorProtection.Constant.csproj">
+      <Project>{7156d120-8942-467b-b024-a45205a3fff4}</Project>
+      <Name>MotorProtection.Constant</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MotorProtection.Core\MotorProtection.Core.csproj">
+      <Project>{0a7e5d38-3f67-4aaa-9c8d-86641cd8fd7e}</Project>
+      <Name>MotorProtection.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

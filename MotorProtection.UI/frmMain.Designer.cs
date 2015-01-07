@@ -29,53 +29,53 @@
         private void InitializeComponent()
         {
             this.menuSystem = new System.Windows.Forms.MenuStrip();
-            this.系统ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.电机保护系统v10ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmsiSystem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmsiSignOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAboutSystem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuSystem
             // 
             this.menuSystem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.系统ToolStripMenuItem,
-            this.关于ToolStripMenuItem});
+            this.tmsiSystem,
+            this.tsmiAbout});
             this.menuSystem.Location = new System.Drawing.Point(0, 0);
             this.menuSystem.Name = "menuSystem";
             this.menuSystem.Size = new System.Drawing.Size(1370, 24);
             this.menuSystem.TabIndex = 0;
             this.menuSystem.Text = "menuStrip1";
             // 
-            // 系统ToolStripMenuItem
+            // tmsiSystem
             // 
-            this.系统ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.退出ToolStripMenuItem});
-            this.系统ToolStripMenuItem.Name = "系统ToolStripMenuItem";
-            this.系统ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.系统ToolStripMenuItem.Text = "系统";
+            this.tmsiSystem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tmsiSignOut});
+            this.tmsiSystem.Name = "tmsiSystem";
+            this.tmsiSystem.Size = new System.Drawing.Size(45, 20);
+            this.tmsiSystem.Text = "系统";
             // 
-            // 退出ToolStripMenuItem
+            // tmsiSignOut
             // 
-            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.退出ToolStripMenuItem.Text = "退出";
-            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            this.tmsiSignOut.Name = "tmsiSignOut";
+            this.tmsiSignOut.Size = new System.Drawing.Size(152, 22);
+            this.tmsiSignOut.Text = "退出";
+            this.tmsiSignOut.Click += new System.EventHandler(this.tmsiSignOut_Click);
             // 
-            // 关于ToolStripMenuItem
+            // tsmiAbout
             // 
-            this.关于ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.电机保护系统v10ToolStripMenuItem});
-            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.关于ToolStripMenuItem.Text = "关于";
+            this.tsmiAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAboutSystem});
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(45, 20);
+            this.tsmiAbout.Text = "关于";
             // 
-            // 电机保护系统v10ToolStripMenuItem
+            // tsmiAboutSystem
             // 
-            this.电机保护系统v10ToolStripMenuItem.Name = "电机保护系统v10ToolStripMenuItem";
-            this.电机保护系统v10ToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.电机保护系统v10ToolStripMenuItem.Text = "电机保护器控制软件V1.0...";
-            this.电机保护系统v10ToolStripMenuItem.Click += new System.EventHandler(this.电机保护系统v10ToolStripMenuItem_Click);
+            this.tsmiAboutSystem.Name = "tsmiAboutSystem";
+            this.tsmiAboutSystem.Size = new System.Drawing.Size(222, 22);
+            this.tsmiAboutSystem.Text = "电机保护器控制软件V1.0...";
+            this.tsmiAboutSystem.Click += new System.EventHandler(this.tsmiAboutSystem_Click);
             // 
             // frmMain
             // 
@@ -100,10 +100,10 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuSystem;
-        private System.Windows.Forms.ToolStripMenuItem 系统ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 电机保护系统v10ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tmsiSystem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAboutSystem;
+        private System.Windows.Forms.ToolStripMenuItem tmsiSignOut;
     }
 }
 

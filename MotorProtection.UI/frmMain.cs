@@ -16,12 +16,12 @@ namespace MotorProtection.UI
             InitializeComponent();
         }
 
-        private void 电机保护系统v10ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tsmiAboutSystem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("电机保护器控制软件V1.0\n技术支持：李宁");
         }
 
-        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void tmsiSignOut_Click(object sender, EventArgs e)
         {
             this.Close();
         }

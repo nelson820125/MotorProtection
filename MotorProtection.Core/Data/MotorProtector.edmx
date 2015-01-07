@@ -74,6 +74,7 @@
           <Property Name="FirstRMStatus" Type="bit" />
           <Property Name="SecondRMStatus" Type="bit" />
           <Property Name="Status" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Logging">
           <Key>
@@ -209,6 +210,7 @@
           <NavigationProperty Name="DeviceConfigs" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="Devices" ToRole="DeviceConfigs" />
           <NavigationProperty Name="Devices1" Relationship="Self.FK_Devices_Devices" FromRole="Devices" ToRole="Devices1" />
           <NavigationProperty Name="Device1" Relationship="Self.FK_Devices_Devices" FromRole="Devices1" ToRole="Devices" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Logging">
           <Key>
@@ -336,6 +338,7 @@
           <EntitySetMapping Name="Devices">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Device">
               <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -430,7 +433,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

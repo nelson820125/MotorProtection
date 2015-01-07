@@ -44,6 +44,9 @@ namespace MotorProtection.JobManager.Controller
                 _comm.Close();
         }
 
+        /// <summary>
+        /// Get buffer data at the port to parse
+        /// </summary>
         private static void serialPort_DataReceived(byte[] readBuffer, int address)
         {
             if (readBuffer != null)
@@ -154,6 +157,8 @@ namespace MotorProtection.JobManager.Controller
                         device.Status = ProtectorStatus.NoReset;
                     else
                         device.Status = ProtectorStatus.Normal;
+
+                    device.UpdateTime = DateTime.Now;
 
                     ctt.SaveChanges();
                 }
