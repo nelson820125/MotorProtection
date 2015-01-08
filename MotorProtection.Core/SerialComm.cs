@@ -83,24 +83,24 @@ namespace MotorProtection.Core
                                     attempts++;
 
                                     // send read register command.
-                                    byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 19);
+                                    byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 20);
                                     WritePort(command, 0, command.Length);
 
                                     // read data from Slave.
                                     int count = serialPort.BytesToRead;
-                                    if (count > 0 && count != 42) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 42 is the length of the available response data
+                                    if (count > 0 && count != 44) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 42 is the length of the available response data
                                     {
                                         byte[] readBuffer = new byte[count];
                                         serialPort.Read(readBuffer, 0, count);
 
                                         // verify CRC of response data.
                                         // caculate CRC
-                                        byte[] data = readBuffer.Take(41).ToArray();
+                                        byte[] data = readBuffer.Take(43).ToArray();
                                         byte crc = _protocalCtr.CalculateCRC(data);
                                         if (crc == readBuffer.Last()) // CRC is correct
                                         {
                                             if (DataReceived != null)
-                                                DataReceived(readBuffer.Skip(3).Take(38).ToArray(), device.Address.Value); // just parsing values area
+                                                DataReceived(readBuffer.Skip(3).Take(40).ToArray(), device.Address.Value); // just parsing values area
                                         }
                                         else // CRC is incorrect
                                         {

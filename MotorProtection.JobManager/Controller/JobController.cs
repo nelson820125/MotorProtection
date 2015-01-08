@@ -142,21 +142,21 @@ namespace MotorProtection.JobManager.Controller
                             case 19:
                                 device.SecondRMStatus = BitConverter.ToInt16(data, 0) == 1 ? true : false;
                                 break;
+                            case 20:
+                                Int16 status = BitConverter.ToInt16(data, 0);
+                                if (status == 0) // 0 - working
+                                    device.Status = ProtectorStatus.Normal;
+                                else if (status == 15) // 0x0f - alarm
+                                    device.Status = ProtectorStatus.Alarm;
+                                else if (status == 255) // 0xff - stopped
+                                    device.Status = ProtectorStatus.Stopped;
+                                break;
                         }
                     }
 
                     // set alarm and stop time to device object
                     device.AlarmAt = new DateTime(alarmYear, alarmMon, alarmDay, alarmHr, alarmMin, alarmSec);
-                    device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);
-
-                    if (stopYear != 0 || stopMon != 0 || stopDay != 0 || stopHr != 0 || stopMin != 0 || stopSec != 0) // stop
-                        device.Status = ProtectorStatus.Stopped;
-                    else if (alarmYear != 0 || alarmMon != 0 || alarmDay != 0 || alarmHr != 0 || alarmMin != 0 || alarmSec != 0) // alarm
-                        device.Status = ProtectorStatus.Alarm;
-                    else if (!device.FirstRMStatus.Value && device.SecondRMStatus.Value) // no reset
-                        device.Status = ProtectorStatus.NoReset;
-                    else
-                        device.Status = ProtectorStatus.Normal;
+                    device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);                        
 
                     device.UpdateTime = DateTime.Now;
 
