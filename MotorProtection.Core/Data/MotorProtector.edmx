@@ -433,12 +433,12 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram DiagramId="b112e77b33254326a9e0a20fdfc3e349" Name="Diagram1">
+      <Diagram DiagramId="b112e77b33254326a9e0a20fdfc3e349" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Auditing" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfig" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Device" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
