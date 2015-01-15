@@ -47,6 +47,31 @@
           <Property Name="SecondRMMode" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="DeviceConfigurationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="int" Nullable="false" />
+          <Property Name="FunCode" Type="int" Nullable="false" />
+          <Property Name="Commands" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceConfigurationPool">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="int" Nullable="false" />
+          <Property Name="FunCode" Type="int" Nullable="false" />
+          <Property Name="Commands" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Attempt" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Devices">
           <Key>
             <PropertyRef Name="DeviceID" />
@@ -136,6 +161,8 @@
           <EntitySet Name="CacheGroups" EntityType="Self.CacheGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CacheStatus" EntityType="Self.CacheStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceConfigs" EntityType="Self.DeviceConfigs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceConfigurationLog" EntityType="Self.DeviceConfigurationLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceConfigurationPool" EntityType="Self.DeviceConfigurationPool" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Logging" EntityType="Self.Logging" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemConfig" EntityType="Self.SystemConfig" Schema="dbo" store:Type="Tables" />
@@ -284,6 +311,8 @@
           </AssociationSet>
           <EntitySet Name="CacheGroups" EntityType="MotorProtection.Core.Data.Entities.CacheGroup" />
           <EntitySet Name="CacheStatus" EntityType="MotorProtection.Core.Data.Entities.CacheStatu" />
+          <EntitySet Name="DeviceConfigurationLogs" EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationLog" />
+          <EntitySet Name="DeviceConfigurationPools" EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationPool" />
         </EntityContainer>
         <EntityType Name="CacheGroup">
           <Key>
@@ -300,6 +329,31 @@
           <Property Name="Application" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="Group" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DeviceConfigurationLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="Int32" Nullable="false" />
+          <Property Name="FunCode" Type="Int32" Nullable="false" />
+          <Property Name="Commands" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DeviceConfigurationPool">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="Int32" Nullable="false" />
+          <Property Name="FunCode" Type="Int32" Nullable="false" />
+          <Property Name="Commands" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Attempt" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -416,6 +470,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DeviceConfigurationLogs">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigurationLog">
+              <MappingFragment StoreEntitySet="DeviceConfigurationLog">
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Commands" ColumnName="Commands" />
+                <ScalarProperty Name="FunCode" ColumnName="FunCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceConfigurationPools">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigurationPool">
+              <MappingFragment StoreEntitySet="DeviceConfigurationPool">
+                <ScalarProperty Name="Attempt" ColumnName="Attempt" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Commands" ColumnName="Commands" />
+                <ScalarProperty Name="FunCode" ColumnName="FunCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -433,7 +514,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -449,6 +530,8 @@
         <AssociationConnector Association="MotorProtection.Core.Data.Entities.FK_Devices_Devices" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.CacheGroup" Width="1.5" PointX="7.375" PointY="6.75" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.CacheStatu" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationLog" Width="1.5" PointX="9.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationPool" Width="1.5" PointX="5.375" PointY="9.75" />
       </Diagram>
     </Diagrams>
   </Designer>
