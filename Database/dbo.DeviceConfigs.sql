@@ -10,6 +10,7 @@
     [FirstRMMode]    INT            NULL,
     [SecondRMMode]   INT            NULL,
     [UpdateTime]     DATETIME       NOT NULL,
+    [Status] INT NOT NULL, 
     PRIMARY KEY CLUSTERED ([DeviceConfigID] ASC),
     CONSTRAINT [FK_DeviceConfigs_Devices] FOREIGN KEY ([DeviceID]) REFERENCES [dbo].[Devices] ([DeviceID])
 );

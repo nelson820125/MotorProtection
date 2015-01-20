@@ -88,7 +88,7 @@ namespace MotorProtection.Core
 
                                     // read data from Slave.
                                     int count = serialPort.BytesToRead;
-                                    if (count > 0 && count != 44) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 42 is the length of the available response data
+                                    if (count > 0 && count != 44) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 44 is the length of the available response data
                                     {
                                         byte[] readBuffer = new byte[count];
                                         serialPort.Read(readBuffer, 0, count);

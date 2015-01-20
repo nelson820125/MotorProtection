@@ -44,6 +44,8 @@ namespace AlphaProtocal.Constant
 
         public static byte RTU_READ_FIFO_QUEUE = 0x18; // Read FIFO Queue #24
 
+        public static byte RTU_ERROR_CODE_PRE = 0x80;
+
         #endregion
     }
 }

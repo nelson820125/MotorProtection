@@ -24,6 +24,8 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual DateTime CreateTime { set; get; }
 
+        public virtual int? Status { set; get; }
+
         #endregion
     }
 

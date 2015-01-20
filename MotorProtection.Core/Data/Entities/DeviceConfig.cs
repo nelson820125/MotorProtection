@@ -32,6 +32,8 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual DateTime UpdateTime { get; set; }
 
+        public virtual int Status { get; set; }
+
         #endregion
 
         #region Navigation Properties

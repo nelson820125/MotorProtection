@@ -26,6 +26,8 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual int Attempt { set; get; }
 
+        public virtual int? Status { set; get; }
+
         #endregion
     }
 

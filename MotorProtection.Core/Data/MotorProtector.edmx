@@ -46,6 +46,7 @@
           <Property Name="FirstRMMode" Type="int" />
           <Property Name="SecondRMMode" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DeviceConfigurationLog">
           <Key>
@@ -58,6 +59,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="DeviceConfigurationPool">
           <Key>
@@ -71,6 +73,7 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="Attempt" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="Devices">
           <Key>
@@ -206,6 +209,7 @@
           <Property Name="SecondRMMode" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Device" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="DeviceConfigs" ToRole="Devices" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Device">
           <Key>
@@ -341,6 +345,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
         <EntityType Name="DeviceConfigurationPool">
           <Key>
@@ -354,6 +359,7 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Attempt" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -375,6 +381,7 @@
           <EntitySetMapping Name="DeviceConfigs">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfig">
               <MappingFragment StoreEntitySet="DeviceConfigs">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="DeviceConfigID" ColumnName="DeviceConfigID" />
                 <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
                 <ScalarProperty Name="ResetAt" ColumnName="ResetAt" />
@@ -473,6 +480,7 @@
           <EntitySetMapping Name="DeviceConfigurationLogs">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigurationLog">
               <MappingFragment StoreEntitySet="DeviceConfigurationLog">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -486,6 +494,7 @@
           <EntitySetMapping Name="DeviceConfigurationPools">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigurationPool">
               <MappingFragment StoreEntitySet="DeviceConfigurationPool">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Attempt" ColumnName="Attempt" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

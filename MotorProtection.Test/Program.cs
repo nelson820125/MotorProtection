@@ -11,8 +11,10 @@ namespace MotorProtection.Test
         static void Main(string[] args)
         {
             //TODO
-            string str = "0x0F";
-            Console.WriteLine(Convert.ToInt16(str, 16).ToString());
+            byte a = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_READ_HOLDING_REGISTERS);
+            byte b = 0x83;
+            Console.WriteLine(Convert.ToString(a, 16));
+            Console.WriteLine(Convert.ToString(b, 16));
             Console.ReadLine();
         }
     }

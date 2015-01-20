@@ -6,7 +6,8 @@
     [Description] NVARCHAR (MAX) NULL,
     [UserID]      INT            NOT NULL,
     [CreateTime]  DATETIME       NOT NULL,
-    [Attempt] INT NOT NULL, 
+    [Attempt]     INT            NOT NULL,
+    [Status] INT NULL, 
     PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 
