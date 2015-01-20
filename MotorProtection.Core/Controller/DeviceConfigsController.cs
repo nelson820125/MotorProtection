@@ -109,6 +109,7 @@ namespace MotorProtection.Core.Controller
                     command = ReadConfigurationFromSilverCommand(config);
                     break;
                 case FunctionCodes.WIRTE_SINGLE_REGISTER:
+                    command = ResetSilverCommand(config);
                     break;
                 case FunctionCodes.WRITE_MULTI_REGITERS:
                     break;
@@ -122,8 +123,11 @@ namespace MotorProtection.Core.Controller
             switch (config.FunCode)
             {
                 case FunctionCodes.READ_REGISTERS:
-                    UpdateDeviceConfigToDB(config, receivedData);
-                    break; 
+                    SyncSilverSettingsToDeviceConfig(config, receivedData);
+                    break;
+                case FunctionCodes.WIRTE_SINGLE_REGISTER:
+                    ResetSilver(config, receivedData);
+                    break;
             }
         }
 
@@ -132,9 +136,24 @@ namespace MotorProtection.Core.Controller
             Int16 addr = Convert.ToInt16(config.Address);
             byte registerAddrHi = Convert.ToByte(config.Commands.Split(' ')[0], 16);
             byte registerAddrLow = Convert.ToByte(config.Commands.Split(' ')[1], 16);
-            Int16 offset = Convert.ToInt16(config.Commands.Split(' ')[2], 16);
+            byte[] offsetBytes = new byte[] { Convert.ToByte(config.Commands.Split(' ')[2], 16), Convert.ToByte(config.Commands.Split(' ')[3], 16) };
+            Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
 
             return _protocalCtrl.ReadRegistersRequest(addr, registerAddrHi, registerAddrLow, offset);
+        }
+
+        /// <summary>
+        /// Reset register
+        /// </summary>
+        /// <returns></returns>
+        private byte[] ResetSilverCommand(DeviceConfigurationPool config)
+        {
+            Int16 addr = Convert.ToInt16(config.Address);
+            byte registerAddrHi = Convert.ToByte(config.Commands.Split(' ')[0], 16);
+            byte registerAddrLow = Convert.ToByte(config.Commands.Split(' ')[1], 16);
+            byte[] data = new byte[] { Convert.ToByte(config.Commands.Split(' ')[2], 16), Convert.ToByte(config.Commands.Split(' ')[3], 16) };
+
+            return _protocalCtrl.WriteSingleRegisterRequest(addr, registerAddrHi, registerAddrLow, data);
         }
 
         private void InvalidResponse(DeviceConfigurationPool config)
@@ -179,28 +198,63 @@ namespace MotorProtection.Core.Controller
             return config;
         }
 
-        private int GetDeviceConfigIDByAddress(int address)
+        #region Sync from Sliver to Databse
+
+        /// <summary>
+        /// update the related config data against new parsing configuration.
+        /// </summary>
+        private bool UpdateDeviceConfig(int address, DeviceConfig newConfig)
         {
-            int id = 0;
+            bool isSuccess = false;
+            if (newConfig != null)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    var device = ctt.Devices.Where(d => d.Address == address).FirstOrDefault();
+                    if (device != null)
+                    {
+                        var deviceConfig = ctt.DeviceConfigs.Where(dc => dc.DeviceID == device.DeviceID).FirstOrDefault();
+                        if (deviceConfig != null)
+                        {
+                            deviceConfig.Status = newConfig.Status;
+                            deviceConfig.ProtectPower = newConfig.ProtectPower;
+                            deviceConfig.ProtectMode = newConfig.ProtectMode;
+                            deviceConfig.MIRatio = newConfig.MIRatio;
+                            deviceConfig.AlarmThreshold = newConfig.AlarmThreshold;
+                            deviceConfig.StopThreshold = newConfig.StopThreshold;
+                            deviceConfig.FirstRMMode = newConfig.FirstRMMode;
+                            deviceConfig.SecondRMMode = newConfig.SecondRMMode;
+                            ctt.SaveChanges();
+
+                            isSuccess = true;
+                        }
+                    }
+                }
+            }
+            return isSuccess;
+        }
+
+        private DeviceConfig GetDeviceConfigByAddress(int address)
+        {
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
                 var device = ctt.Devices.Where(d => d.Address == address).FirstOrDefault();
                 if (device != null)
                 {
                     var deviceConfig = ctt.DeviceConfigs.Where(dc => dc.DeviceID == device.DeviceID).FirstOrDefault();
-                    if (device != null)
-                    {
-                        id = deviceConfig.DeviceConfigID;
-                    }
+                    return deviceConfig;
+                }
+                else
+                {
+                    return null;
                 }
             }
-            return id;
         }
 
         /// <summary>
         /// Verify received data and update the database
         /// </summary>
-        private void UpdateDeviceConfigToDB(DeviceConfigurationPool config, byte[] receivedData)
+        private void SyncSilverSettingsToDeviceConfig(DeviceConfigurationPool config, byte[] receivedData)
         {
             byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_READ_HOLDING_REGISTERS);
             bool isSuccess = true;
@@ -219,31 +273,13 @@ namespace MotorProtection.Core.Controller
                     byte crc = _protocalCtrl.CalculateCRC(data);
                     if (crc == receivedData.Last()) // CRC is correct.
                     {
-                        int configId = GetDeviceConfigIDByAddress(config.Address);
-                        if (configId != 0)
-                        {
-                            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
-                            {
-                                var deviceConfig = ctt.DeviceConfigs.Where(dc => dc.DeviceConfigID == configId).FirstOrDefault();
-                                var newConfig = ConvertSilverDataToDeviceConfig(receivedData);
-                                deviceConfig.Status = newConfig.Status;
-                                deviceConfig.ProtectPower = newConfig.ProtectPower;
-                                deviceConfig.ProtectMode = newConfig.ProtectMode;
-                                deviceConfig.MIRatio = newConfig.MIRatio;
-                                deviceConfig.AlarmThreshold = newConfig.AlarmThreshold;
-                                deviceConfig.StopThreshold = newConfig.StopThreshold;
-                                deviceConfig.FirstRMMode = newConfig.FirstRMMode;
-                                deviceConfig.SecondRMMode = newConfig.SecondRMMode;
-                                ctt.SaveChanges();
-                            }
+                        var newConfig = ConvertSilverDataToDeviceConfig(receivedData);
+                        isSuccess = UpdateDeviceConfig(config.Address, newConfig);
 
-                            isSuccess = true;
-                        }
-                        else
+                        if (!isSuccess)
                         {
                             LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
                             DeleteDeviceConfigurationFromPool(config.ID);
-                            isSuccess = false;
                         }
                     }
                     else
@@ -266,5 +302,60 @@ namespace MotorProtection.Core.Controller
                 UpdatePoolAfterSuccess(config.ID);
             }
         }
+
+        #endregion
+
+        #region Sync from Databse to Sliver
+
+        private void ResetSilver(DeviceConfigurationPool config, byte[] receivedData)
+        {
+            byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_READ_HOLDING_REGISTERS);
+            bool isSuccess = true;
+
+            if (receivedData.Length > 0)
+            {
+                if (receivedData[1] == errorCode) // return errors. and log exception code.
+                {
+                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    InvalidResponse(config);
+                    isSuccess = false;
+                }
+                else
+                {
+                    byte[] data = receivedData.Take(6).ToArray();
+                    byte crc = _protocalCtrl.CalculateCRC(data);
+                    if (crc == receivedData.Last()) // CRC is correct.
+                    {
+                        var newConfig = GetDeviceConfigByAddress(config.Address);
+                        isSuccess = UpdateDeviceConfig(config.Address, newConfig);
+
+                        if (!isSuccess)
+                        {
+                            LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                            DeleteDeviceConfigurationFromPool(config.ID);
+                        }
+                    }
+                    else
+                    {
+                        LogController.LogError(LoggingLevel.Level1).Add("Description", "Bad response").Write();
+                        InvalidResponse(config);
+                        isSuccess = false;
+                    }
+                }
+            }
+            else
+            {
+                LogController.LogError(LoggingLevel.Level1).Add("Description", "Invalid response: No response data").Write();
+                InvalidResponse(config);
+                isSuccess = false;
+            }
+
+            if (isSuccess)
+            {
+                UpdatePoolAfterSuccess(config.ID);
+            }
+        }
+
+        #endregion
     }
 }

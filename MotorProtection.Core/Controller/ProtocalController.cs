@@ -38,6 +38,22 @@ namespace MotorProtection.Core.Controller
         }
 
         /// <summary>
+        /// Create request of single register writing
+        /// </summary>
+        /// <returns></returns>
+        public byte[] WriteSingleRegisterRequest(Int16 address, byte registerAddressHi, byte registerAddressLo, byte[] sendData)
+        {
+            byte addr = BitConverter.GetBytes(address)[0];
+            byte[] data = new byte[4];
+            data[0] = registerAddressHi;
+            data[1] = registerAddressLo;
+            data[2] = sendData[0];
+            data[3] = sendData[1];
+
+            return _modebus.PresetSingleRegister(addr, data, 4);
+        }
+
+        /// <summary>
         /// Calculate CRC of data
         /// </summary>
         /// <returns></returns>
