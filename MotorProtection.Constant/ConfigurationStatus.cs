@@ -7,8 +7,10 @@ namespace MotorProtection.Constant
 {
     public class ConfigurationStatus
     {
-        public const int NORMAL = 0;
+        public const int PROCESSING = 0;
 
         public const int ERROR = 1;
+
+        public const int SUCCESS = 2;
     }
 }

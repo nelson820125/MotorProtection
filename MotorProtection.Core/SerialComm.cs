@@ -96,7 +96,7 @@ namespace MotorProtection.Core
                                         // verify CRC of response data.
                                         // caculate CRC
                                         byte[] data = readBuffer.Take(43).ToArray();
-                                        byte crc = _protocalCtr.CalculateCRC(data);
+                                        Int16 crc = _protocalCtr.CalculateCRC(data);
                                         if (crc == readBuffer.Last()) // CRC is correct
                                         {
                                             if (DataReceived != null)

@@ -70,13 +70,14 @@ namespace MotorProtection.Core.Controller
                 var config = ctt.DeviceConfigurationPools.Where(dc => dc.ID == configId).FirstOrDefault();
                 if (config != null)
                 {
-                    var configLog = new DeviceConfigurationLog() { 
+                    var configLog = new DeviceConfigurationLog()
+                    {
                         Address = config.Address,
                         FunCode = config.FunCode,
                         Commands = config.Commands,
                         Description = config.Description,
                         UserID = config.UserID,
-                        Status = ConfigurationStatus.NORMAL,
+                        Status = ConfigurationStatus.SUCCESS,
                         CreateTime = DateTime.Now
                     };
 
@@ -112,6 +113,7 @@ namespace MotorProtection.Core.Controller
                     command = ResetSilverCommand(config);
                     break;
                 case FunctionCodes.WRITE_MULTI_REGITERS:
+                    command = WriteConfigurationToSliverCommand(config);
                     break;
             }
 
@@ -128,15 +130,20 @@ namespace MotorProtection.Core.Controller
                 case FunctionCodes.WIRTE_SINGLE_REGISTER:
                     ResetSilver(config, receivedData);
                     break;
+                case FunctionCodes.WRITE_MULTI_REGITERS:
+                    SyncDeviceConfigToSilver(config, receivedData);
+                    break;
             }
         }
 
         private byte[] ReadConfigurationFromSilverCommand(DeviceConfigurationPool config)
         {
             Int16 addr = Convert.ToInt16(config.Address);
-            byte registerAddrHi = Convert.ToByte(config.Commands.Split(' ')[0], 16);
-            byte registerAddrLow = Convert.ToByte(config.Commands.Split(' ')[1], 16);
-            byte[] offsetBytes = new byte[] { Convert.ToByte(config.Commands.Split(' ')[2], 16), Convert.ToByte(config.Commands.Split(' ')[3], 16) };
+            string[] commands = config.Commands.Split(' ');
+            byte registerAddrHi = Convert.ToByte(commands[0], 16);
+            byte registerAddrLow = Convert.ToByte(commands[1], 16);
+            byte[] offsetBytes = new byte[] { Convert.ToByte(commands[2], 16), Convert.ToByte(commands[3], 16) };
+            Array.Reverse(offsetBytes);
             Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
 
             return _protocalCtrl.ReadRegistersRequest(addr, registerAddrHi, registerAddrLow, offset);
@@ -149,11 +156,33 @@ namespace MotorProtection.Core.Controller
         private byte[] ResetSilverCommand(DeviceConfigurationPool config)
         {
             Int16 addr = Convert.ToInt16(config.Address);
-            byte registerAddrHi = Convert.ToByte(config.Commands.Split(' ')[0], 16);
-            byte registerAddrLow = Convert.ToByte(config.Commands.Split(' ')[1], 16);
-            byte[] data = new byte[] { Convert.ToByte(config.Commands.Split(' ')[2], 16), Convert.ToByte(config.Commands.Split(' ')[3], 16) };
+            string[] commands = config.Commands.Split(' ');
+            byte registerAddrHi = Convert.ToByte(commands[0], 16);
+            byte registerAddrLow = Convert.ToByte(commands[1], 16);
+            byte[] data = new byte[] { Convert.ToByte(commands[2], 16), Convert.ToByte(commands[3], 16) };
 
             return _protocalCtrl.WriteSingleRegisterRequest(addr, registerAddrHi, registerAddrLow, data);
+        }
+
+        /// <summary>
+        /// Write commands to multi registers
+        /// </summary>
+        /// <returns></returns>
+        private byte[] WriteConfigurationToSliverCommand(DeviceConfigurationPool config)
+        {
+            Int16 addr = Convert.ToInt16(config.Address);
+            string[] commands = config.Commands.Split(' ');
+            byte registerAddrHi = Convert.ToByte(commands[0], 16);
+            byte registerAddrLow = Convert.ToByte(commands[1], 16);
+            byte[] data = new byte[commands.Length - 3];
+            for (int i = 3, j = 0; i < commands.Length; i++, j++)
+            {
+                data[j] = Convert.ToByte(commands[i], 16);
+            }
+            byte[] offsetBytes = new byte[] { data[0], data[1] };
+            Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
+
+            return _protocalCtrl.WriteMultiRegistersRequest(addr, registerAddrHi, registerAddrLow, offset, data);
         }
 
         private void InvalidResponse(DeviceConfigurationPool config)
@@ -185,15 +214,16 @@ namespace MotorProtection.Core.Controller
         private DeviceConfig ConvertSilverDataToDeviceConfig(byte[] receivedData)
         {
             byte[] dataBuffer = receivedData.Skip(3).Take(16).ToArray();
-            DeviceConfig config = new DeviceConfig() { 
-                Status = BitConverter.ToInt32(dataBuffer.Take(2).ToArray(), 0),
+            DeviceConfig config = new DeviceConfig()
+            {
+                Status = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
                 ProtectPower = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(2).Take(2).ToArray(), 0) / 100),
-                ProtectMode = BitConverter.ToInt32(dataBuffer.Skip(4).Take(2).ToArray(), 0),
-                MIRatio = BitConverter.ToInt32(dataBuffer.Skip(6).Take(2).ToArray(), 0),
+                ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
+                MIRatio = BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
                 AlarmThreshold = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(8).Take(2).ToArray(), 0) / 100),
                 StopThreshold = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(10).Take(2).ToArray(), 0) / 100),
-                FirstRMMode = BitConverter.ToInt32(dataBuffer.Skip(12).Take(2).ToArray(), 0),
-                SecondRMMode = BitConverter.ToInt32(dataBuffer.Skip(14).Take(2).ToArray(), 0)
+                FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0),
+                SecondRMMode = BitConverter.ToInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
             };
             return config;
         }
@@ -251,6 +281,19 @@ namespace MotorProtection.Core.Controller
             }
         }
 
+        private void ConvertNewConfigurationToDeviceConfig(byte[] updateData, DeviceConfig newConfig)
+        {
+            Array.Reverse(updateData);
+
+            newConfig.SecondRMMode = BitConverter.ToInt16(updateData.Take(2).ToArray(), 0);
+            newConfig.FirstRMMode = BitConverter.ToInt16(updateData.Skip(2).Take(2).ToArray(), 0);
+            newConfig.StopThreshold = (decimal)(BitConverter.ToDouble(updateData.Skip(4).Take(2).ToArray(), 0) / 100);
+            newConfig.AlarmThreshold = (decimal)(BitConverter.ToDouble(updateData.Skip(6).Take(2).ToArray(), 0) / 100);
+            newConfig.MIRatio = BitConverter.ToInt16(updateData.Skip(8).Take(2).ToArray(), 0);
+            newConfig.ProtectMode = BitConverter.ToInt16(updateData.Skip(10).Take(2).ToArray(), 0);
+            newConfig.ProtectPower = (decimal)(BitConverter.ToDouble(updateData.Skip(12).Take(2).ToArray(), 0) / 100);
+        }
+
         /// <summary>
         /// Verify received data and update the database
         /// </summary>
@@ -270,7 +313,7 @@ namespace MotorProtection.Core.Controller
                 else
                 {
                     byte[] data = receivedData.Take(19).ToArray();
-                    byte crc = _protocalCtrl.CalculateCRC(data);
+                    Int16 crc = _protocalCtrl.CalculateCRC(data);
                     if (crc == receivedData.Last()) // CRC is correct.
                     {
                         var newConfig = ConvertSilverDataToDeviceConfig(receivedData);
@@ -309,7 +352,7 @@ namespace MotorProtection.Core.Controller
 
         private void ResetSilver(DeviceConfigurationPool config, byte[] receivedData)
         {
-            byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_READ_HOLDING_REGISTERS);
+            byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_PRESET_SIGNLE_REGISTER);
             bool isSuccess = true;
 
             if (receivedData.Length > 0)
@@ -323,10 +366,71 @@ namespace MotorProtection.Core.Controller
                 else
                 {
                     byte[] data = receivedData.Take(6).ToArray();
-                    byte crc = _protocalCtrl.CalculateCRC(data);
+                    Int16 crc = _protocalCtrl.CalculateCRC(data);
                     if (crc == receivedData.Last()) // CRC is correct.
                     {
                         var newConfig = GetDeviceConfigByAddress(config.Address);
+                        Array.Reverse(receivedData);
+                        newConfig.Status = BitConverter.ToInt16(receivedData.Take(3).ToArray(), 1);
+                        isSuccess = UpdateDeviceConfig(config.Address, newConfig);
+
+                        if (!isSuccess)
+                        {
+                            LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                            DeleteDeviceConfigurationFromPool(config.ID);
+                        }
+                    }
+                    else
+                    {
+                        LogController.LogError(LoggingLevel.Level1).Add("Description", "Bad response").Write();
+                        InvalidResponse(config);
+                        isSuccess = false;
+                    }
+                }
+            }
+            else
+            {
+                LogController.LogError(LoggingLevel.Level1).Add("Description", "Invalid response: No response data").Write();
+                InvalidResponse(config);
+                isSuccess = false;
+            }
+
+            if (isSuccess)
+            {
+                UpdatePoolAfterSuccess(config.ID);
+            }
+        }
+
+        /// <summary>
+        /// sync multi-registers
+        /// </summary>
+        private void SyncDeviceConfigToSilver(DeviceConfigurationPool config, byte[] receivedData)
+        {
+            byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_PRESET_MULTI_REGS);
+            bool isSuccess = true;
+
+            if (receivedData.Length > 0)
+            {
+                if (receivedData[1] == errorCode) // return errors. and log exception code.
+                {
+                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    InvalidResponse(config);
+                    isSuccess = false;
+                }
+                else
+                {
+                    byte[] data = receivedData.Take(6).ToArray();
+                    Int16 crc = _protocalCtrl.CalculateCRC(data);
+                    if (crc == receivedData.Last()) // CRC is correct.
+                    {
+                        var newConfig = GetDeviceConfigByAddress(config.Address);
+                        string[] commands = config.Commands.Split(' ');
+                        byte[] updateData = new byte[commands.Length - 2];
+                        for (int i = 2, j = 0; i < commands.Length; i++, j++)
+                        {
+                            updateData[j] = Convert.ToByte(commands[i], 16);
+                        }
+                        ConvertNewConfigurationToDeviceConfig(updateData, newConfig);
                         isSuccess = UpdateDeviceConfig(config.Address, newConfig);
 
                         if (!isSuccess)

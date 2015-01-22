@@ -26,9 +26,17 @@ namespace AlphaProtocal.Core.MODBUS
         }
 
         /// <summary>
+        /// Preset the register
+        /// </summary>
+        public byte[] PresetMultiRegisters(byte address, byte[] data, int dataLen)
+        {
+            return RegisterOperation(address, MODBUSFunCodes.RTU_PRESET_MULTI_REGS, data, dataLen);
+        }
+
+        /// <summary>
         /// Calculate CRC
         /// </summary>
-        public byte CRC16(byte[] data)
+        public Int16 CRC16(byte[] data)
         {
             byte CRCHi = 0xFF; // high byte of CRC initialized.
             byte CRCLo = 0xFF; // low byte of CRC initialized.
@@ -41,7 +49,7 @@ namespace AlphaProtocal.Core.MODBUS
                 CRCLo = CRCTable.authCRCLo[index];
             }
 
-            return (byte)(CRCHi << 8 | CRCLo);
+            return (Int16)(CRCHi << 8 | CRCLo);
         }
 
         /// <summary>
@@ -49,12 +57,15 @@ namespace AlphaProtocal.Core.MODBUS
         /// </summary>
         byte[] RegisterOperation(byte address, byte funCode, byte[] data, int dataLen)
         {
-            byte[] aduFrame = new byte[dataLen + 3];
+            byte[] aduFrame = new byte[dataLen + 4];
 
             aduFrame[0] = address;
             aduFrame[1] = funCode;
             data.CopyTo(aduFrame, 2);
-            aduFrame[dataLen + 2] = CRC16(data);
+
+            byte[] crc = BitConverter.GetBytes(CRC16(aduFrame.Take(dataLen + 2).ToArray()));
+            Array.Reverse(crc);
+            crc.CopyTo(aduFrame, dataLen + 2);
 
             return aduFrame;
         }

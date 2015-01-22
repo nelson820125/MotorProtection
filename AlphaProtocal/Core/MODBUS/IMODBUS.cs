@@ -21,6 +21,6 @@ namespace AlphaProtocal.Core.MODBUS
         /// <summary>
         /// Calculate CRC
         /// </summary>
-        byte CRC16(byte[] data);
+        Int16 CRC16(byte[] data);
     }
 }

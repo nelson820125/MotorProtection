@@ -54,10 +54,35 @@ namespace MotorProtection.Core.Controller
         }
 
         /// <summary>
+        /// Create request of single register writing
+        /// PDU format
+        /// FunCode         1byte
+        /// StartAddress    2bytes
+        /// RegisterNum     2bytes
+        /// ByteNum         1byte -- 2*N
+        /// RegisterValue   2*Nbytes
+        /// </summary>
+        /// <returns></returns>
+        public byte[] WriteMultiRegistersRequest(Int16 address, byte registerAddressHi, byte registerAddressLo, Int16 registerOffset, byte[] sendData)
+        {
+            byte addr = BitConverter.GetBytes(address)[0];
+            byte[] data = new byte[registerOffset * 2 + 6];
+            data[0] = registerAddressHi;
+            data[1] = registerAddressLo;
+            byte[] offsets = BitConverter.GetBytes(registerOffset);
+            data[2] = offsets[1];
+            data[3] = offsets[0];
+            data[4] = BitConverter.GetBytes(registerOffset * 2)[0];
+            sendData.CopyTo(data, 5);
+
+            return _modebus.PresetMultiRegisters(addr, data, data.Length);
+        }
+
+        /// <summary>
         /// Calculate CRC of data
         /// </summary>
         /// <returns></returns>
-        public byte CalculateCRC(byte[] data)
+        public Int16 CalculateCRC(byte[] data)
         {
             return _modebus.CRC16(data);
         }
