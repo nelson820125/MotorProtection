@@ -109,7 +109,7 @@ namespace MotorProtection.Core.Controller
                 case FunctionCodes.READ_REGISTERS:
                     command = ReadConfigurationFromSilverCommand(config);
                     break;
-                case FunctionCodes.WIRTE_SINGLE_REGISTER:
+                case FunctionCodes.WRITE_SINGLE_REGISTER:
                     command = ResetSilverCommand(config);
                     break;
                 case FunctionCodes.WRITE_MULTI_REGITERS:
@@ -127,7 +127,7 @@ namespace MotorProtection.Core.Controller
                 case FunctionCodes.READ_REGISTERS:
                     SyncSilverSettingsToDeviceConfig(config, receivedData);
                     break;
-                case FunctionCodes.WIRTE_SINGLE_REGISTER:
+                case FunctionCodes.WRITE_SINGLE_REGISTER:
                     ResetSilver(config, receivedData);
                     break;
                 case FunctionCodes.WRITE_MULTI_REGITERS:
@@ -174,13 +174,14 @@ namespace MotorProtection.Core.Controller
             string[] commands = config.Commands.Split(' ');
             byte registerAddrHi = Convert.ToByte(commands[0], 16);
             byte registerAddrLow = Convert.ToByte(commands[1], 16);
-            byte[] data = new byte[commands.Length - 3];
-            for (int i = 3, j = 0; i < commands.Length; i++, j++)
+            byte[] offsetBytes = new byte[] { Convert.ToByte(commands[2], 16), Convert.ToByte(commands[3], 16) };
+            Array.Reverse(offsetBytes);
+            Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
+            byte[] data = new byte[commands.Length - 5];
+            for (int i = 5, j = 0; i < commands.Length; i++, j++)
             {
                 data[j] = Convert.ToByte(commands[i], 16);
             }
-            byte[] offsetBytes = new byte[] { data[0], data[1] };
-            Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
 
             return _protocalCtrl.WriteMultiRegistersRequest(addr, registerAddrHi, registerAddrLow, offset, data);
         }
@@ -214,16 +215,18 @@ namespace MotorProtection.Core.Controller
         private DeviceConfig ConvertSilverDataToDeviceConfig(byte[] receivedData)
         {
             byte[] dataBuffer = receivedData.Skip(3).Take(16).ToArray();
+            Array.Reverse(dataBuffer);
+
             DeviceConfig config = new DeviceConfig()
             {
-                Status = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
-                ProtectPower = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(2).Take(2).ToArray(), 0) / 100),
-                ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
-                MIRatio = BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
-                AlarmThreshold = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(8).Take(2).ToArray(), 0) / 100),
-                StopThreshold = (decimal)(BitConverter.ToDouble(dataBuffer.Skip(10).Take(2).ToArray(), 0) / 100),
-                FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0),
-                SecondRMMode = BitConverter.ToInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
+                SecondRMMode = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
+                FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
+                StopThreshold = (decimal)BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0) / 100,
+                AlarmThreshold = (decimal)BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0) / 100,
+                MIRatio = BitConverter.ToInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
+                ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
+                ProtectPower = (decimal)BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100,
+                Status = BitConverter.ToInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
             };
             return config;
         }
@@ -287,11 +290,11 @@ namespace MotorProtection.Core.Controller
 
             newConfig.SecondRMMode = BitConverter.ToInt16(updateData.Take(2).ToArray(), 0);
             newConfig.FirstRMMode = BitConverter.ToInt16(updateData.Skip(2).Take(2).ToArray(), 0);
-            newConfig.StopThreshold = (decimal)(BitConverter.ToDouble(updateData.Skip(4).Take(2).ToArray(), 0) / 100);
-            newConfig.AlarmThreshold = (decimal)(BitConverter.ToDouble(updateData.Skip(6).Take(2).ToArray(), 0) / 100);
+            newConfig.StopThreshold = (decimal)BitConverter.ToInt16(updateData.Skip(4).Take(2).ToArray(), 0) / 100;
+            newConfig.AlarmThreshold = (decimal)BitConverter.ToInt16(updateData.Skip(6).Take(2).ToArray(), 0) / 100;
             newConfig.MIRatio = BitConverter.ToInt16(updateData.Skip(8).Take(2).ToArray(), 0);
             newConfig.ProtectMode = BitConverter.ToInt16(updateData.Skip(10).Take(2).ToArray(), 0);
-            newConfig.ProtectPower = (decimal)(BitConverter.ToDouble(updateData.Skip(12).Take(2).ToArray(), 0) / 100);
+            newConfig.ProtectPower = (decimal)BitConverter.ToInt16(updateData.Skip(12).Take(2).ToArray(), 0) / 100;
         }
 
         /// <summary>
@@ -314,7 +317,9 @@ namespace MotorProtection.Core.Controller
                 {
                     byte[] data = receivedData.Take(19).ToArray();
                     Int16 crc = _protocalCtrl.CalculateCRC(data);
-                    if (crc == receivedData.Last()) // CRC is correct.
+                    byte[] receivedDataCRC = receivedData.Skip(19).Take(2).ToArray();
+                    Array.Reverse(receivedDataCRC);
+                    if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
                     {
                         var newConfig = ConvertSilverDataToDeviceConfig(receivedData);
                         isSuccess = UpdateDeviceConfig(config.Address, newConfig);
@@ -367,11 +372,13 @@ namespace MotorProtection.Core.Controller
                 {
                     byte[] data = receivedData.Take(6).ToArray();
                     Int16 crc = _protocalCtrl.CalculateCRC(data);
-                    if (crc == receivedData.Last()) // CRC is correct.
+                    byte[] receivedDataCRC = receivedData.Skip(6).Take(2).ToArray();
+                    Array.Reverse(receivedDataCRC);
+                    if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
                     {
                         var newConfig = GetDeviceConfigByAddress(config.Address);
                         Array.Reverse(receivedData);
-                        newConfig.Status = BitConverter.ToInt16(receivedData.Take(3).ToArray(), 1);
+                        newConfig.Status = BitConverter.ToInt16(receivedData.Skip(2).Take(2).ToArray(), 0);
                         isSuccess = UpdateDeviceConfig(config.Address, newConfig);
 
                         if (!isSuccess)
@@ -421,12 +428,14 @@ namespace MotorProtection.Core.Controller
                 {
                     byte[] data = receivedData.Take(6).ToArray();
                     Int16 crc = _protocalCtrl.CalculateCRC(data);
-                    if (crc == receivedData.Last()) // CRC is correct.
+                    byte[] receivedDataCRC = receivedData.Skip(6).Take(2).ToArray();
+                    Array.Reverse(receivedDataCRC);
+                    if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
                     {
                         var newConfig = GetDeviceConfigByAddress(config.Address);
                         string[] commands = config.Commands.Split(' ');
-                        byte[] updateData = new byte[commands.Length - 2];
-                        for (int i = 2, j = 0; i < commands.Length; i++, j++)
+                        byte[] updateData = new byte[commands.Length - 5];
+                        for (int i = 5, j = 0; i < commands.Length; i++, j++)
                         {
                             updateData[j] = Convert.ToByte(commands[i], 16);
                         }
@@ -458,6 +467,20 @@ namespace MotorProtection.Core.Controller
             {
                 UpdatePoolAfterSuccess(config.ID);
             }
+        }
+
+        #endregion
+
+        #region For test
+
+        public void ConvertNewConfigurationToDeviceConfigForTest(byte[] updateData, DeviceConfig newConfig)
+        {
+            ConvertNewConfigurationToDeviceConfig(updateData, newConfig);
+        }
+
+        public DeviceConfig ConvertSilverDataToDeviceConfigForTest(byte[] receivedData)
+        {
+            return ConvertSilverDataToDeviceConfig(receivedData);
         }
 
         #endregion

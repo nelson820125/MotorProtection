@@ -66,7 +66,7 @@ namespace MotorProtection.Core.Controller
         public byte[] WriteMultiRegistersRequest(Int16 address, byte registerAddressHi, byte registerAddressLo, Int16 registerOffset, byte[] sendData)
         {
             byte addr = BitConverter.GetBytes(address)[0];
-            byte[] data = new byte[registerOffset * 2 + 6];
+            byte[] data = new byte[registerOffset * 2 + 5];
             data[0] = registerAddressHi;
             data[1] = registerAddressLo;
             byte[] offsets = BitConverter.GetBytes(registerOffset);

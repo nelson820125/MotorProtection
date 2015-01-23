@@ -12,11 +12,11 @@ namespace MotorProtection.Test
         static void Main(string[] args)
         {
             //TODO
-            byte[] b = new byte[] { 0x01, 0x03, 0x1b, 0x8c, 0x00, 0x08 };
-            MODBUSRTU modbus = new MODBUSRTU();
-            Int16 f = modbus.CRC16(b);
-            byte[] crc = BitConverter.GetBytes(modbus.CRC16(b));
-            byte[] c = new byte[] { 0x01, 0x03, 0x1b, 0x8c, 0x00, 0x08, crc[1], crc[0] };
+            MODBUSRTU _modbus = new MODBUSRTU();
+            byte[] receivedData = new byte[] { 0x01, 0x03, 0x10, 0x00, 0x00, 0x00, 0x64, 0x00, 0x01, 0x00, 0x0A, 0x00, 0x0A, 0x00, 0x0A, 0x00, 0x02, 0x00, 0x01 };
+            Int16 crc = _modbus.CRC16(receivedData);
+            byte[] crcBytes = BitConverter.GetBytes(crc);
+            Int16 crc1 = BitConverter.ToInt16(crcBytes, 0);
             Console.ReadLine();
         }
     }
