@@ -20,6 +20,29 @@ namespace MotorProtection.UI
 
         private void btnSignIn_Click(object sender, EventArgs e)
         {
+            Authenticate();
+        }
+
+        private void txtUserName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSignIn_Click(sender, e);
+            }
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSignIn_Click(sender, e);
+            }
+        }
+
+        #region Common
+
+        private void Authenticate()
+        {
             lblMsg.Text = "";
 
             string username = txtUserName.Text.Trim();
@@ -48,7 +71,7 @@ namespace MotorProtection.UI
                 if (isValid)
                 {
                     this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                    this.Close();                    
+                    this.Close();
                 }
                 else
                 {
@@ -57,5 +80,7 @@ namespace MotorProtection.UI
                 }
             }
         }
+
+        #endregion
     }
 }
