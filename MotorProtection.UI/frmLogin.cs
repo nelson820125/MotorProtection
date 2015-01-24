@@ -27,7 +27,7 @@ namespace MotorProtection.UI
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                lblMsg.Text = "Please input username and password";
+                lblMsg.Text = "请输入用户名和密码";
                 return;
             }
             else
@@ -52,7 +52,7 @@ namespace MotorProtection.UI
                 }
                 else
                 {
-                    lblMsg.Text = "Username or password is invalid.";
+                    lblMsg.Text = "用户名或密码错误";
                     return;
                 }
             }
