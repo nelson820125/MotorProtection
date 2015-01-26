@@ -38,10 +38,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +55,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\WinServiceController.cs" />
+    <Compile Include="frmBasicSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBasicSetting.Designer.cs">
+      <DependentUpon>frmBasicSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,13 +74,25 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMessage.Designer.cs">
+      <DependentUpon>frmMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmBasicSetting.resx">
+      <DependentUpon>frmBasicSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMessage.resx">
+      <DependentUpon>frmMessage.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -106,6 +127,11 @@
     <Content Include="images\icon\16x16\running.png" />
     <Content Include="images\icon\16x16\stop.png" />
     <Content Include="images\icon\16x16\username.png" />
+    <Content Include="images\icon\32x32\attention.gif" />
+    <Content Include="images\icon\32x32\loading.gif" />
+    <Content Include="images\icon\32x32\login.ico" />
+    <Content Include="images\icon\32x32\main.ico" />
+    <Content Include="images\icon\32x32\setting.ico" />
     <Content Include="images\icon\64x64\login.ico" />
     <Content Include="images\icon\64x64\main.ico" />
   </ItemGroup>

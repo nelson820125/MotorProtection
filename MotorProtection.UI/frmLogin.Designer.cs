@@ -42,18 +42,18 @@
             // 
             // txtUserName
             // 
-            this.txtUserName.Location = new System.Drawing.Point(37, 28);
+            this.txtUserName.Location = new System.Drawing.Point(37, 30);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(185, 21);
+            this.txtUserName.Size = new System.Drawing.Size(185, 20);
             this.txtUserName.TabIndex = 2;
             this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(37, 55);
+            this.txtPassword.Location = new System.Drawing.Point(37, 60);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(185, 21);
+            this.txtPassword.Size = new System.Drawing.Size(185, 20);
             this.txtPassword.TabIndex = 3;
             this.txtPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPassword_KeyDown);
             // 
@@ -61,10 +61,10 @@
             // 
             this.btnSignIn.BackColor = System.Drawing.Color.LightSkyBlue;
             this.btnSignIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSignIn.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSignIn.Location = new System.Drawing.Point(147, 82);
+            this.btnSignIn.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnSignIn.Location = new System.Drawing.Point(147, 89);
             this.btnSignIn.Name = "btnSignIn";
-            this.btnSignIn.Size = new System.Drawing.Size(75, 25);
+            this.btnSignIn.Size = new System.Drawing.Size(75, 27);
             this.btnSignIn.TabIndex = 4;
             this.btnSignIn.Text = "登录";
             this.btnSignIn.UseVisualStyleBackColor = false;
@@ -74,15 +74,15 @@
             // 
             this.lblMsg.AutoSize = true;
             this.lblMsg.ForeColor = System.Drawing.Color.Red;
-            this.lblMsg.Location = new System.Drawing.Point(13, 8);
+            this.lblMsg.Location = new System.Drawing.Point(13, 9);
             this.lblMsg.Name = "lblMsg";
-            this.lblMsg.Size = new System.Drawing.Size(0, 12);
+            this.lblMsg.Size = new System.Drawing.Size(0, 13);
             this.lblMsg.TabIndex = 5;
             // 
             // picUsername
             // 
             this.picUsername.Image = ((System.Drawing.Image)(resources.GetObject("picUsername.Image")));
-            this.picUsername.Location = new System.Drawing.Point(12, 30);
+            this.picUsername.Location = new System.Drawing.Point(12, 33);
             this.picUsername.Name = "picUsername";
             this.picUsername.Size = new System.Drawing.Size(16, 16);
             this.picUsername.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -92,7 +92,7 @@
             // picPassword
             // 
             this.picPassword.Image = ((System.Drawing.Image)(resources.GetObject("picPassword.Image")));
-            this.picPassword.Location = new System.Drawing.Point(12, 57);
+            this.picPassword.Location = new System.Drawing.Point(12, 62);
             this.picPassword.Name = "picPassword";
             this.picPassword.Size = new System.Drawing.Size(16, 16);
             this.picPassword.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -102,9 +102,9 @@
             // lblCopyRight
             // 
             this.lblCopyRight.AutoSize = true;
-            this.lblCopyRight.Font = new System.Drawing.Font("宋体", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblCopyRight.Font = new System.Drawing.Font("SimSun", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblCopyRight.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblCopyRight.Location = new System.Drawing.Point(12, 118);
+            this.lblCopyRight.Location = new System.Drawing.Point(12, 128);
             this.lblCopyRight.Name = "lblCopyRight";
             this.lblCopyRight.Size = new System.Drawing.Size(216, 11);
             this.lblCopyRight.TabIndex = 7;
@@ -113,9 +113,9 @@
             // frmLogin
             // 
             this.AcceptButton = this.btnSignIn;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 139);
+            this.ClientSize = new System.Drawing.Size(234, 151);
             this.Controls.Add(this.lblCopyRight);
             this.Controls.Add(this.picPassword);
             this.Controls.Add(this.picUsername);
