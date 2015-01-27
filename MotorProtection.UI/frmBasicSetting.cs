@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.ServiceProcess;
 using MotorProtection.Constant;
 using MotorProtection.Core;
+using System.Media;
+using MotorProtection.Core.Log;
+using MotorProtection.Core.Cache;
 
 namespace MotorProtection.UI
 {
@@ -18,23 +21,14 @@ namespace MotorProtection.UI
         public frmBasicSetting()
         {
             InitializeComponent();
-
-            var service = Controller.WinServiceController.GetServiceByName(JobManagerKey.JOB_NAME);
-            if (service == null || service.Status == ServiceControllerStatus.Stopped || service.Status == ServiceControllerStatus.Paused)
-                Initialize();
-            else
-                BindData();
         }
 
         private void Initialize()
         {
-            cbxBaydRate.SelectedItem = "9600";
-
             BindComputerComms();
-            cbxPortName.Enabled = true;
-            cbxPortName.Enabled = true;
-            txtAttempts.Enabled = true;
-            btnSave.Enabled = true;
+            cbxPortName.SelectedItem = AppConfig.SerialComm_PortName;
+            cbxBaydRate.SelectedItem = AppConfig.SerialComm_BaudRate;
+            txtAttempts.Text = AppConfig.SerialComm_Attempts.ToString();
         }
 
         /// <summary>
@@ -106,6 +100,8 @@ namespace MotorProtection.UI
                 ctt.SaveChanges();
             }
 
+            CacheController.UpdateAllCacheGroupTimestamp();
+
             this.Close();
         }
 
@@ -114,16 +110,30 @@ namespace MotorProtection.UI
             this.Close();
         }
 
-        private void BindData()
+        private void DisableComponent()
         {
-            BindComputerComms();
-            cbxPortName.SelectedItem = AppConfig.SerialComm_PortName;
-            cbxBaydRate.SelectedItem = AppConfig.SerialComm_BaudRate;
-            txtAttempts.Text = AppConfig.SerialComm_Attempts.ToString();
             cbxPortName.Enabled = false;
             cbxPortName.Enabled = false;
             txtAttempts.Enabled = false;
             btnSave.Enabled = false;
+        }
+
+        private void EnableComponent()
+        {
+            cbxPortName.Enabled = true;
+            cbxPortName.Enabled = true;
+            txtAttempts.Enabled = true;
+            btnSave.Enabled = true;
+        }
+
+        private void frmBasicSetting_Load(object sender, EventArgs e)
+        {
+            Initialize();
+            var service = Controller.WinServiceController.GetServiceByName(JobManagerKey.JOB_NAME);
+            if (service == null || service.Status == ServiceControllerStatus.Stopped || service.Status == ServiceControllerStatus.Paused)
+                EnableComponent();
+            else
+                DisableComponent();
         }
     }
 }

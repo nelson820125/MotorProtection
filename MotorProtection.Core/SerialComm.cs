@@ -106,7 +106,7 @@ namespace MotorProtection.Core
                                         {
                                             if (attempts >= AppConfig.SerialComm_Attempts)
                                             {
-                                                LogController.LogError(LoggingLevel.Level1, new Exception("Bad response")).Write();
+                                                LogController.LogError(LoggingLevel.Error, new Exception("Bad response")).Write();
                                                 break;
                                             }
 
@@ -117,7 +117,7 @@ namespace MotorProtection.Core
                                     {
                                         if (attempts >= AppConfig.SerialComm_Attempts)
                                         {
-                                            LogController.LogError(LoggingLevel.Level1, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
+                                            LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
                                             break;
                                         }
 

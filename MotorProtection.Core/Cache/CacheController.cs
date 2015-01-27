@@ -105,7 +105,7 @@ namespace MotorProtection.Core.Cache
                                         Expires = DateTime.Now
                                     };
 
-                                    LogController.LogError(LoggingLevel.Level1, e).Add("Type", "Cache").Add("Action", "Initialize")
+                                    LogController.LogError(LoggingLevel.Error, e).Add("Type", "Cache").Add("Action", "Initialize")
                                         .Add("Name", cEle.Name).Add("Required", "false").Write();
                                 }
                             }
@@ -127,7 +127,7 @@ namespace MotorProtection.Core.Cache
                     s_thread = new Thread(new ThreadStart(Synchronize));
                     s_thread.Start();
 
-                    LogController.LogEvent(AuditingLevel.Level1, "Cache", "Initialized").Write();
+                    LogController.LogEvent(AuditingLevel.High, "Cache", "Initialized").Write();
                 }
                 catch (Exception e)
                 {
@@ -139,7 +139,7 @@ namespace MotorProtection.Core.Cache
                     Thread t = new Thread(new ThreadStart(ReTryInitialize));
                     t.Start();
 
-                    LogController.LogError(LoggingLevel.Level1, e).Add("Type", "Cache").Add("Action", "Initialize").Write();
+                    LogController.LogError(LoggingLevel.Error, e).Add("Type", "Cache").Add("Action", "Initialize").Write();
                 }
 
             }
@@ -181,7 +181,7 @@ namespace MotorProtection.Core.Cache
                         catch (Exception e)
                         {
                             // DO NOT need to update cache, keep the original vlaue in the cache
-                            LogController.LogError(LoggingLevel.Level1, e).Add("Type", "Cache").Add("Action", "Synchronize")
+                            LogController.LogError(LoggingLevel.Error, e).Add("Type", "Cache").Add("Action", "Synchronize")
                                 .Add("Name", cEle.Name).Add("Required", "false").Write();
                         }
                     }
@@ -233,7 +233,7 @@ namespace MotorProtection.Core.Cache
                                                 Name = cEle.Name,
                                                 Expires = DateTime.Now
                                             };
-                                            LogController.LogError(LoggingLevel.Level1, e).Add("Type", "Cache").Add("Action", "Synchronize")
+                                            LogController.LogError(LoggingLevel.Error, e).Add("Type", "Cache").Add("Action", "Synchronize")
                                                 .Add("Name", cEle.Name).Add("Required", "false").Write();
                                         }
                                     }
@@ -255,7 +255,7 @@ namespace MotorProtection.Core.Cache
 
                                 UpdateCacheStatus(group);
 
-                                LogController.LogEvent(AuditingLevel.Level1, "Cache", "Synchronized").Add("Group", group).Write();
+                                LogController.LogEvent(AuditingLevel.High, "Cache", "Synchronized").Add("Group", group).Write();
 
                                 #endregion
                             }
@@ -266,7 +266,7 @@ namespace MotorProtection.Core.Cache
                 }
                 catch (Exception e)
                 {
-                    LogController.LogError(LoggingLevel.Level1, e).Add("Type", "Cache").Add("Action", "Synchronize").Write();
+                    LogController.LogError(LoggingLevel.Error, e).Add("Type", "Cache").Add("Action", "Synchronize").Write();
                 }
             }
         }

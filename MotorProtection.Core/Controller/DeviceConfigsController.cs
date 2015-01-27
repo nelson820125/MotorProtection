@@ -309,7 +309,7 @@ namespace MotorProtection.Core.Controller
             {
                 if (receivedData[1] == errorCode) // return errors. and log exception code.
                 {
-                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Reading sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Reading sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
                     InvalidResponse(config);
                     isSuccess = false;
                 }
@@ -326,13 +326,13 @@ namespace MotorProtection.Core.Controller
 
                         if (!isSuccess)
                         {
-                            LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                            LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
                             DeleteDeviceConfigurationFromPool(config.ID);
                         }
                     }
                     else
                     {
-                        LogController.LogError(LoggingLevel.Level1).Add("Description", "Bad response").Write();
+                        LogController.LogError(LoggingLevel.Error).Add("Description", "Bad response").Write();
                         InvalidResponse(config);
                         isSuccess = false;
                     }
@@ -340,7 +340,7 @@ namespace MotorProtection.Core.Controller
             }
             else
             {
-                LogController.LogError(LoggingLevel.Level1).Add("Description", "Invalid response: No response data").Write();
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Invalid response: No response data").Write();
                 InvalidResponse(config);
                 isSuccess = false;
             }
@@ -364,7 +364,7 @@ namespace MotorProtection.Core.Controller
             {
                 if (receivedData[1] == errorCode) // return errors. and log exception code.
                 {
-                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
                     InvalidResponse(config);
                     isSuccess = false;
                 }
@@ -383,13 +383,13 @@ namespace MotorProtection.Core.Controller
 
                         if (!isSuccess)
                         {
-                            LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                            LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
                             DeleteDeviceConfigurationFromPool(config.ID);
                         }
                     }
                     else
                     {
-                        LogController.LogError(LoggingLevel.Level1).Add("Description", "Bad response").Write();
+                        LogController.LogError(LoggingLevel.Error).Add("Description", "Bad response").Write();
                         InvalidResponse(config);
                         isSuccess = false;
                     }
@@ -397,7 +397,7 @@ namespace MotorProtection.Core.Controller
             }
             else
             {
-                LogController.LogError(LoggingLevel.Level1).Add("Description", "Invalid response: No response data").Write();
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Invalid response: No response data").Write();
                 InvalidResponse(config);
                 isSuccess = false;
             }
@@ -420,7 +420,7 @@ namespace MotorProtection.Core.Controller
             {
                 if (receivedData[1] == errorCode) // return errors. and log exception code.
                 {
-                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Writing sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
                     InvalidResponse(config);
                     isSuccess = false;
                 }
@@ -444,13 +444,13 @@ namespace MotorProtection.Core.Controller
 
                         if (!isSuccess)
                         {
-                            LogController.LogError(LoggingLevel.Level1).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                            LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
                             DeleteDeviceConfigurationFromPool(config.ID);
                         }
                     }
                     else
                     {
-                        LogController.LogError(LoggingLevel.Level1).Add("Description", "Bad response").Write();
+                        LogController.LogError(LoggingLevel.Error).Add("Description", "Bad response").Write();
                         InvalidResponse(config);
                         isSuccess = false;
                     }
@@ -458,7 +458,7 @@ namespace MotorProtection.Core.Controller
             }
             else
             {
-                LogController.LogError(LoggingLevel.Level1).Add("Description", "Invalid response: No response data").Write();
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Invalid response: No response data").Write();
                 InvalidResponse(config);
                 isSuccess = false;
             }

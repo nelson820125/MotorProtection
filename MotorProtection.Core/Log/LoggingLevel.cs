@@ -7,8 +7,12 @@ namespace MotorProtection.Core.Log
 {
     public enum LoggingLevel
     {
+        All = -1,
         Off = 0,
-        Level1 = 1,
-        Level2 = 2
+        Fatal = 10,
+        Error = 20,
+        Warning = 30,
+        Information = 40,
+        Verbose = 50
     }
 }

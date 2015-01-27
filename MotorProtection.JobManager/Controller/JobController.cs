@@ -29,12 +29,12 @@ namespace MotorProtection.JobManager.Controller
 
                 if (!string.IsNullOrEmpty(err))
                 {
-                    LogController.LogError(LoggingLevel.Level1).Add("Description", err).Write();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", err).Write();
                 }
             }
             catch (Exception ex)
             {
-                LogController.LogError(LoggingLevel.Level1, ex).Add("Description", ex.Message).Write();
+                LogController.LogError(LoggingLevel.Error, ex).Add("Description", ex.Message).Write();
             }
         }
 

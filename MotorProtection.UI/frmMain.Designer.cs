@@ -45,6 +45,7 @@
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stsBottom = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsmiAlarmSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.SuspendLayout();
@@ -104,7 +105,8 @@
             // tsmiEdit
             // 
             this.tsmiEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiBasicParameterSetting});
+            this.tsmiBasicParameterSetting,
+            this.tsmiAlarmSetting});
             this.tsmiEdit.Name = "tsmiEdit";
             this.tsmiEdit.Size = new System.Drawing.Size(45, 20);
             this.tsmiEdit.Text = "设置";
@@ -112,8 +114,8 @@
             // tsmiBasicParameterSetting
             // 
             this.tsmiBasicParameterSetting.Name = "tsmiBasicParameterSetting";
-            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(126, 22);
-            this.tsmiBasicParameterSetting.Text = "基本参数";
+            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBasicParameterSetting.Text = "通讯设置";
             this.tsmiBasicParameterSetting.Click += new System.EventHandler(this.tsmiBasicParameterSetting_Click);
             // 
             // menuView
@@ -177,6 +179,13 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(233, 17);
             this.toolStripStatusLabel1.Text = "Copyright 2015 大连环宇佳机电有限公司";
             // 
+            // tsmiAlarmSetting
+            // 
+            this.tsmiAlarmSetting.Name = "tsmiAlarmSetting";
+            this.tsmiAlarmSetting.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAlarmSetting.Text = "系统设置";
+            this.tsmiAlarmSetting.Click += new System.EventHandler(this.tsmiAlarmSetting_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,6 +200,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "保护器监控系统";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.menuSystem.ResumeLayout(false);
             this.menuSystem.PerformLayout();
             this.stsBottom.ResumeLayout(false);
@@ -218,6 +228,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiStop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAlarmSetting;
     }
 }
 

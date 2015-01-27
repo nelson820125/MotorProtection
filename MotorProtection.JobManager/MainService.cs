@@ -25,16 +25,16 @@ namespace MotorProtection.JobManager
 
             JobController.Start();
 
-            LogController.LogEvent(AuditingLevel.Level1, "Service", "Started").Write();
+            LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
         }
 
         protected override void OnStop()
         {
-            LogController.LogEvent(AuditingLevel.Level1, "Service", "Stopping").Write();
+            LogController.LogEvent(AuditingLevel.High, "Service", "Stopping").Write();
 
             JobController.Stop();
 
-            LogController.LogEvent(AuditingLevel.Level1, "Service", "Stopped").Write();
+            LogController.LogEvent(AuditingLevel.High, "Service", "Stopped").Write();
         }
     }
 }

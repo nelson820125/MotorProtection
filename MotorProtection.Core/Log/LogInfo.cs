@@ -7,7 +7,7 @@ namespace MotorProtection.Core.Log
 {
     public class LogInfo
     {
-        public string Level { get; set; }
+        public int Level { get; set; }
         public int? UserId { get; set; }
         public int? ImpersonateBy { get; set; }
         private Dictionary<string, string> _attributes = new Dictionary<string, string>();

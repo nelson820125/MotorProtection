@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MotorProtection.Core.Data.Entities
 {
+    [Serializable]
     public partial class SystemConfig
     {
         #region Primitive Properties
@@ -21,7 +22,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         public ObjectSet<SystemConfig> SystemConfigs
         {
-            get { return _systemConfigs ?? (_systemConfigs = CreateObjectSet<SystemConfig>("SystemConfig")); }
+            get { return _systemConfigs ?? (_systemConfigs = CreateObjectSet<SystemConfig>("SystemConfigs")); }
         }
         private ObjectSet<SystemConfig> _systemConfigs;
     }

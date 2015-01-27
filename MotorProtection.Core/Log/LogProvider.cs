@@ -8,9 +8,9 @@ namespace MotorProtection.Core.Log
 {
     public abstract class LogProvider : ProviderBase
     {
-        public abstract DateTime Add(string level, int? userId, Dictionary<string, string> attributes);
+        public abstract DateTime Add(int level, int? userId, Dictionary<string, string> attributes);
 
-        protected string Serialize(string level, int? userId, Dictionary<string, string> attributes)
+        protected string Serialize(int level, int? userId, Dictionary<string, string> attributes)
         {
             string log = string.Format("[Level]{0} [UserID]{1}\n", level, userId);
             if (attributes != null && attributes.Count() > 0)

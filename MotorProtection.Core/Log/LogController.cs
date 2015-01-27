@@ -14,10 +14,10 @@ namespace MotorProtection.Core.Log
     public static class LogController
     {
         private static LogProvider s_loggingProvider;
-        private static LoggingLevel s_loggingLevel;
+        private static int s_loggingLevel;
 
         private static LogProvider s_auditingProvider;
-        private static AuditingLevel s_auditingLevel;
+        private static int s_auditingLevel;
 
         static LogController()
         {
@@ -37,7 +37,7 @@ namespace MotorProtection.Core.Log
             s_loggingProvider = (LogProvider)providers[config.DefaultProvider];
 
             NameValueCollection settings = config.Providers[config.DefaultProvider].Parameters;
-            s_loggingLevel = (LoggingLevel)Enum.Parse(typeof(LoggingLevel), settings["level"]);
+            s_loggingLevel = int.Parse(settings["level"]);
         }
 
         private static void InitAuditingProvider()
@@ -52,38 +52,43 @@ namespace MotorProtection.Core.Log
             s_auditingProvider = (LogProvider)providers[config.DefaultProvider];
 
             NameValueCollection settings = config.Providers[config.DefaultProvider].Parameters;
-            s_auditingLevel = (AuditingLevel)Enum.Parse(typeof(AuditingLevel), settings["level"]);
+            s_auditingLevel = int.Parse(settings["level"]);
         }
 
-        public static LogInfo LogError(LoggingLevel level)
+        public static LogInfo LogError(int level, Exception e = null)
         {
             LogInfo logInfo = new LogInfo(s_loggingProvider);
 
-            if (s_loggingLevel != LoggingLevel.Off && s_loggingLevel >= level)
+            if (s_loggingLevel == -1 || (s_loggingLevel != 0 && s_loggingLevel >= level))
             {
                 logInfo.Enabled = true;
 
-                InitLogInfo(logInfo, level.ToString());
+                InitLogInfo(logInfo, level);
             }
             else logInfo.Enabled = false;
 
             return logInfo;
         }
 
-        public static LogInfo LogError(LoggingLevel level, Exception e)
+        public static LogInfo LogError(LoggingLevel level, Exception e = null)
         {
-            return LogError(level).Add("Exception", e.ToString());
+            return LogError((int)level, e);
         }
 
-        public static LogInfo LogEvent(AuditingLevel level, string type, string action)
+        public static LogInfo LogEvent(AuditingLevel level, string target = null, string action = null)
+        {
+            return LogEvent((int)level, target, action);
+        }
+
+        public static LogInfo LogEvent(int level, string type, string action)
         {
             LogInfo logInfo = new LogInfo(s_auditingProvider);
 
-            if (s_auditingLevel != AuditingLevel.Off && s_auditingLevel >= level)
+            if (s_auditingLevel == -1 || (s_auditingLevel != 0 && s_auditingLevel >= level))
             {
                 logInfo.Enabled = true;
 
-                InitLogInfo(logInfo, level.ToString());
+                InitLogInfo(logInfo, level);
 
                 if (!string.IsNullOrEmpty(type)) logInfo.Add("Type", type);
                 if (!string.IsNullOrEmpty(action)) logInfo.Add("Action", action);
@@ -93,7 +98,7 @@ namespace MotorProtection.Core.Log
             return logInfo;
         }
 
-        private static void InitLogInfo(LogInfo logInfo, string level)
+        private static void InitLogInfo(LogInfo logInfo, int level)
         {
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {

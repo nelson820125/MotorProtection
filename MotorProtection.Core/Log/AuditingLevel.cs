@@ -7,8 +7,12 @@ namespace MotorProtection.Core.Log
 {
     public enum AuditingLevel
     {
+        All = -1,
         Off = 0,
-        Level1 = 1,
-        Level2 = 2
+        Unexpected = 10,
+        High = 20,
+        Medium = 30,
+        Low = 40,
+        Verbose = 50
     }
 }

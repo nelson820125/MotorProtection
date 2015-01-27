@@ -6,6 +6,7 @@ using System.Text;
 
 namespace MotorProtection.Core.Data.Entities
 {
+    [Serializable]
     public partial class CacheGroup
     {
         #region Primitive Properties

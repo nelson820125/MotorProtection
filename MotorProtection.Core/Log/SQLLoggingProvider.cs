@@ -9,7 +9,7 @@ namespace MotorProtection.Core.Log
 {
     public class SQLLoggingProvider : LogProvider
     {
-        public override DateTime Add(string level, int? userId, Dictionary<string, string> attributes)
+        public override DateTime Add(int level, int? userId, Dictionary<string, string> attributes)
         {
             DateTime now = DateTime.Now;
 
@@ -36,7 +36,7 @@ namespace MotorProtection.Core.Log
 
             Logging log = new Logging
             {
-                Level = Convert.ToInt32(level),
+                Level = level,
                 UserID = userId,
                 Attributes = xmlAttr.InnerXml,
                 CreateTime = now

@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.ServiceProcess;
 using MotorProtection.Constant;
 using MotorProtection.Core.Log;
+using MotorProtection.Core.Cache;
 
 namespace MotorProtection.UI
 {
@@ -62,6 +63,8 @@ namespace MotorProtection.UI
         {
             frmBasicSetting frmSetting = new frmBasicSetting();
             frmSetting.ShowDialog();
+            if (frmSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel || frmSetting.DialogResult == System.Windows.Forms.DialogResult.OK || frmSetting.DialogResult == System.Windows.Forms.DialogResult.Yes)
+                frmSetting.Close();
         }
 
         private void InitializeComponentStatus()
@@ -102,7 +105,7 @@ namespace MotorProtection.UI
                 else if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.Cancel)
                 {
                     frmMsg.Close();
-                    LogController.LogError(LoggingLevel.Level1).Add("Description", "Motor Protection Manager start failed.").Write();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Motor Protection Manager start failed.").Write();
 
                     frmMessage frmMsg1 = new frmMessage("操作失败，请重试或联系管理员");
                     frmMsg1.ShowDialog();
@@ -121,6 +124,19 @@ namespace MotorProtection.UI
             frmMessage frmMsg = new frmMessage("操作失败，请重试或联系管理员");
             frmMsg.ShowDialog();
             DialogResult result = frmMsg.DialogResult;
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            CacheController.Initialize();
+        }
+
+        private void tsmiAlarmSetting_Click(object sender, EventArgs e)
+        {
+            frmSystemSetting frmSystemSetting = new frmSystemSetting();
+            frmSystemSetting.ShowDialog();
+            if (frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel || frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.OK || frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Yes)
+                frmSystemSetting.Close();
         }
     }
 }
