@@ -28,7 +28,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         public ObjectSet<Auditing> Auditings
         {
-            get { return _auditings ?? (_auditings = CreateObjectSet<Auditing>("Auditing")); }
+            get { return _auditings ?? (_auditings = CreateObjectSet<Auditing>("Auditings")); }
         }
         private ObjectSet<Auditing> _auditings;
     }

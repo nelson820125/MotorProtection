@@ -15,7 +15,13 @@ namespace MotorProtection.Test
             //TODO
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
-                var configs = ctt.SystemConfigs;
+                SystemConfig config = new SystemConfig()
+                {
+                    Name = "test",
+                    Value = "test"
+                };
+                ctt.SystemConfigs.AddObject(config);
+                ctt.SaveChanges();
             }
             Console.ReadLine();
         }

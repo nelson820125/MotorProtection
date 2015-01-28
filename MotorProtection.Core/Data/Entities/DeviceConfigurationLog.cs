@@ -34,7 +34,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         public ObjectSet<DeviceConfigurationLog> DeviceConfigurationLogs
         {
-            get { return _configLogs ?? (_configLogs = CreateObjectSet<DeviceConfigurationLog>("DeviceConfigurationLog")); }
+            get { return _configLogs ?? (_configLogs = CreateObjectSet<DeviceConfigurationLog>("DeviceConfigurationLogs")); }
         }
         private ObjectSet<DeviceConfigurationLog> _configLogs;
     }

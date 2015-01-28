@@ -28,7 +28,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         public ObjectSet<Logging> Loggings
         {
-            get { return _loggings ?? (_loggings = CreateObjectSet<Logging>("Logging")); }
+            get { return _loggings ?? (_loggings = CreateObjectSet<Logging>("Loggings")); }
         }
         private ObjectSet<Logging> _loggings;
     }

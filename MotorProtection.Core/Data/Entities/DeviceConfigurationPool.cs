@@ -36,7 +36,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         public ObjectSet<DeviceConfigurationPool> DeviceConfigurationPools
         {
-            get { return _configPools ?? (_configPools = CreateObjectSet<DeviceConfigurationPool>("DeviceConfigurationPool")); }
+            get { return _configPools ?? (_configPools = CreateObjectSet<DeviceConfigurationPool>("DeviceConfigurationPools")); }
         }
         private ObjectSet<DeviceConfigurationPool> _configPools;
     }
