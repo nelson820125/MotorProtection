@@ -10,6 +10,7 @@ using System.Media;
 using MotorProtection.Core.Log;
 using MotorProtection.Core.Data.Entities;
 using MotorProtection.Core.Cache;
+using MotorProtection.Core;
 
 namespace MotorProtection.UI
 {
@@ -36,7 +37,13 @@ namespace MotorProtection.UI
 
         private void frmSystemSetting_Load(object sender, EventArgs e)
         {
+            Initialize();
             UpdateAudioTestButtonStatus();
+        }
+
+        private void Initialize()
+        {
+            txtAlarmAudioPath.Text = AppConfig.Audio_Alarm_FilePath == null ? "" : AppConfig.Audio_Alarm_FilePath.Trim();
         }
 
         private void btnAudioTest_Click(object sender, EventArgs e)

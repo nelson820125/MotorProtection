@@ -11,6 +11,21 @@
     <AssemblyName>MotorProtection.UI</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,12 +70,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constant\OperationKey.cs" />
     <Compile Include="Controller\WinServiceController.cs" />
     <Compile Include="frmBasicSetting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmBasicSetting.Designer.cs">
       <DependentUpon>frmBasicSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLineSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLineSetting.Designer.cs">
+      <DependentUpon>frmLineSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="frmLogin.cs">
       <SubType>Form</SubType>
@@ -91,6 +113,9 @@
     <EmbeddedResource Include="frmBasicSetting.resx">
       <DependentUpon>frmBasicSetting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmLineSetting.resx">
+      <DependentUpon>frmLineSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,7 +140,28 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlphaProtocal\AlphaProtocal.csproj">
       <Project>{0a523d81-64a0-4d62-85ae-639b89d8344a}</Project>
@@ -132,11 +178,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="images\icon\16x16\alarm.png" />
+    <Content Include="images\icon\16x16\connect.png" />
+    <Content Include="images\icon\16x16\disconnect.png" />
     <Content Include="images\icon\16x16\password.png" />
     <Content Include="images\icon\16x16\running.png" />
+    <Content Include="images\icon\16x16\server.png" />
     <Content Include="images\icon\16x16\stop.png" />
     <Content Include="images\icon\16x16\username.png" />
     <Content Include="images\icon\32x32\attention.gif" />
+    <Content Include="images\icon\32x32\edit.ico" />
     <Content Include="images\icon\32x32\loading.gif" />
     <Content Include="images\icon\32x32\login.ico" />
     <Content Include="images\icon\32x32\main.ico" />
