@@ -54,12 +54,22 @@
             this.tsslSystemStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlNodes = new System.Windows.Forms.Panel();
             this.tvProtectors = new System.Windows.Forms.TreeView();
+            this.imgListStatus = new System.Windows.Forms.ImageList(this.components);
             this.sprMain = new System.Windows.Forms.Splitter();
             this.pnlMainShow = new System.Windows.Forms.Panel();
-            this.imgListStatus = new System.Windows.Forms.ImageList(this.components);
+            this.cmsParent = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmiRightAddProtector = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRightDeactive = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsChild = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiRightLineEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRightEditProtector = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRightDeactiveProtector = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.pnlNodes.SuspendLayout();
+            this.cmsParent.SuspendLayout();
+            this.cmsChild.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuSystem
@@ -128,21 +138,21 @@
             // tsmiBasicParameterSetting
             // 
             this.tsmiBasicParameterSetting.Name = "tsmiBasicParameterSetting";
-            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(152, 22);
+            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(126, 22);
             this.tsmiBasicParameterSetting.Text = "通讯设置";
             this.tsmiBasicParameterSetting.Click += new System.EventHandler(this.tsmiBasicParameterSetting_Click);
             // 
             // tsmiAlarmSetting
             // 
             this.tsmiAlarmSetting.Name = "tsmiAlarmSetting";
-            this.tsmiAlarmSetting.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAlarmSetting.Size = new System.Drawing.Size(126, 22);
             this.tsmiAlarmSetting.Text = "系统设置";
             this.tsmiAlarmSetting.Click += new System.EventHandler(this.tsmiAlarmSetting_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(123, 6);
             // 
             // tsmiAddNodes
             // 
@@ -150,21 +160,22 @@
             this.tsmiAddLines,
             this.tsmiAddProtectors});
             this.tsmiAddNodes.Name = "tsmiAddNodes";
-            this.tsmiAddNodes.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAddNodes.Size = new System.Drawing.Size(126, 22);
             this.tsmiAddNodes.Text = "添加节点";
             // 
             // tsmiAddLines
             // 
             this.tsmiAddLines.Name = "tsmiAddLines";
-            this.tsmiAddLines.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAddLines.Size = new System.Drawing.Size(139, 22);
             this.tsmiAddLines.Text = "添加生产线";
             this.tsmiAddLines.Click += new System.EventHandler(this.tsmiAddLines_Click);
             // 
             // tsmiAddProtectors
             // 
             this.tsmiAddProtectors.Name = "tsmiAddProtectors";
-            this.tsmiAddProtectors.Size = new System.Drawing.Size(152, 22);
+            this.tsmiAddProtectors.Size = new System.Drawing.Size(139, 22);
             this.tsmiAddProtectors.Text = "添加保护器";
+            this.tsmiAddProtectors.Click += new System.EventHandler(this.tsmiAddProtectors_Click);
             // 
             // menuView
             // 
@@ -264,6 +275,16 @@
             this.tvProtectors.SelectedImageIndex = 0;
             this.tvProtectors.Size = new System.Drawing.Size(196, 600);
             this.tvProtectors.TabIndex = 0;
+            this.tvProtectors.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvProtectors_MouseDown);
+            // 
+            // imgListStatus
+            // 
+            this.imgListStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListStatus.ImageStream")));
+            this.imgListStatus.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgListStatus.Images.SetKeyName(0, "running.png");
+            this.imgListStatus.Images.SetKeyName(1, "alarm.png");
+            this.imgListStatus.Images.SetKeyName(2, "stop.png");
+            this.imgListStatus.Images.SetKeyName(3, "server.png");
             // 
             // sprMain
             // 
@@ -282,14 +303,59 @@
             this.pnlMainShow.Size = new System.Drawing.Size(1167, 604);
             this.pnlMainShow.TabIndex = 4;
             // 
-            // imgListStatus
+            // cmsParent
             // 
-            this.imgListStatus.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgListStatus.ImageStream")));
-            this.imgListStatus.TransparentColor = System.Drawing.Color.Transparent;
-            this.imgListStatus.Images.SetKeyName(0, "running.png");
-            this.imgListStatus.Images.SetKeyName(1, "alarm.png");
-            this.imgListStatus.Images.SetKeyName(2, "stop.png");
-            this.imgListStatus.Images.SetKeyName(3, "server.png");
+            this.cmsParent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRightAddProtector,
+            this.toolStripSeparator3,
+            this.tsmiRightLineEdit,
+            this.tsmiRightDeactive});
+            this.cmsParent.Name = "cmsParent";
+            this.cmsParent.Size = new System.Drawing.Size(140, 76);
+            // 
+            // tsmiRightAddProtector
+            // 
+            this.tsmiRightAddProtector.Name = "tsmiRightAddProtector";
+            this.tsmiRightAddProtector.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightAddProtector.Text = "添加保护器";
+            this.tsmiRightAddProtector.Click += new System.EventHandler(this.tsmiRightAddProtector_Click);
+            // 
+            // tsmiRightDeactive
+            // 
+            this.tsmiRightDeactive.Name = "tsmiRightDeactive";
+            this.tsmiRightDeactive.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightDeactive.Text = "禁用";
+            // 
+            // cmsChild
+            // 
+            this.cmsChild.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiRightEditProtector,
+            this.tsmiRightDeactiveProtector});
+            this.cmsChild.Name = "cmsChild";
+            this.cmsChild.Size = new System.Drawing.Size(101, 48);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
+            // 
+            // tsmiRightLineEdit
+            // 
+            this.tsmiRightLineEdit.Name = "tsmiRightLineEdit";
+            this.tsmiRightLineEdit.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightLineEdit.Text = "编辑";
+            // 
+            // tsmiRightEditProtector
+            // 
+            this.tsmiRightEditProtector.Name = "tsmiRightEditProtector";
+            this.tsmiRightEditProtector.Size = new System.Drawing.Size(152, 22);
+            this.tsmiRightEditProtector.Text = "编辑";
+            // 
+            // tsmiRightDeactiveProtector
+            // 
+            this.tsmiRightDeactiveProtector.Name = "tsmiRightDeactiveProtector";
+            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(152, 22);
+            this.tsmiRightDeactiveProtector.Text = "禁用";
             // 
             // frmMain
             // 
@@ -315,6 +381,8 @@
             this.stsBottom.ResumeLayout(false);
             this.stsBottom.PerformLayout();
             this.pnlNodes.ResumeLayout(false);
+            this.cmsParent.ResumeLayout(false);
+            this.cmsChild.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,6 +417,14 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiAddLines;
         private System.Windows.Forms.ToolStripMenuItem tsmiAddProtectors;
         private System.Windows.Forms.ImageList imgListStatus;
+        private System.Windows.Forms.ContextMenuStrip cmsParent;
+        private System.Windows.Forms.ContextMenuStrip cmsChild;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRightAddProtector;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRightDeactive;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRightLineEdit;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRightEditProtector;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRightDeactiveProtector;
     }
 }
 

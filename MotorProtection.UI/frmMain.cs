@@ -125,7 +125,7 @@ namespace MotorProtection.UI
                 {
                     frmMsg.Close();
                 }
-            }                
+            }
         }
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
@@ -138,6 +138,16 @@ namespace MotorProtection.UI
         private void frmMain_Load(object sender, EventArgs e)
         {
             CacheController.Initialize();
+        }
+
+        private void tvProtectors_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                TreeNode mySelect = tvProtectors.SelectedNode;
+                if (mySelect != null)
+                    tvProtectors.SelectedNode = mySelect;
+            }
         }
 
         private void tsmiAlarmSetting_Click(object sender, EventArgs e)
@@ -163,6 +173,26 @@ namespace MotorProtection.UI
                 ReloadDeviceTree();
         }
 
+        private void tsmiAddProtectors_Click(object sender, EventArgs e)
+        {
+            frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Add, null, null);
+            protectorSetting.ShowDialog();
+            if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                protectorSetting.Close();
+            else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+                ReloadDeviceTree();
+        }
+
+        private void tsmiRightAddProtector_Click(object sender, EventArgs e)
+        {
+            frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Add, null, tvProtectors.SelectedNode.Text);
+            protectorSetting.ShowDialog();
+            if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                protectorSetting.Close();
+            else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+                ReloadDeviceTree();
+        }
+
         #region private
 
         private void ReloadDeviceTree()
@@ -176,28 +206,46 @@ namespace MotorProtection.UI
 
             var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
 
-            foreach (Device parent in parents)
+            if (parents.Count > 0)
             {
-                TreeNode pNode = new TreeNode();
-                pNode.Text = parent.Name;
-                tvProtectors.Nodes.Add(pNode);
-
-                var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive).ToList();
-                if (children.Count > 0)
+                tvProtectors.Nodes.Clear();
+                foreach (Device parent in parents)
                 {
-                    foreach (Device child in children)
+                    TreeNode pNode = new TreeNode();
+                    pNode.Text = parent.Name;
+                    pNode.ImageIndex = 3;
+                    pNode.SelectedImageIndex = 3;
+                    pNode.ContextMenuStrip = cmsParent;
+                    tvProtectors.Nodes.Add(pNode);
+
+                    var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive).ToList();
+                    if (children.Count > 0)
                     {
-                        TreeNode cNode = new TreeNode();
-                        cNode.Name = child.Name;
-                        if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
-                            cNode.ImageIndex = 0;
-                        else if (child.Status.Value == ProtectorStatus.Stopped)
-                            cNode.ImageIndex = 2;
-                        else if (child.Status.Value == ProtectorStatus.Alarm)
-                            cNode.ImageIndex = 1;
-                        pNode.Nodes.Add(cNode);
+                        foreach (Device child in children)
+                        {
+                            TreeNode cNode = new TreeNode();
+                            cNode.Text = child.Name;
+                            cNode.ContextMenuStrip = cmsChild;
+                            if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
+                            {
+                                cNode.ImageIndex = 0;
+                                cNode.SelectedImageIndex = 0;
+                            }
+                            else if (child.Status.Value == ProtectorStatus.Stopped)
+                            {
+                                cNode.ImageIndex = 2;
+                                cNode.SelectedImageIndex = 2;
+                            }
+                            else if (child.Status.Value == ProtectorStatus.Alarm)
+                            {
+                                cNode.ImageIndex = 1;
+                                cNode.SelectedImageIndex = 1;
+                            }
+                            pNode.Nodes.Add(cNode);
+                        }
                     }
                 }
+                tvProtectors.ExpandAll();
             }
         }
 

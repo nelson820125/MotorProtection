@@ -122,7 +122,7 @@ namespace MotorProtection.UI
                     line.UpdateTime = DateTime.Now;
                     ctt.SaveChanges();
 
-                    LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} edit the device, ID is {1} and updated at {2}.", "1", line.DeviceID.ToString(), line.CreateTime.ToString())).Write();
+                    LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} edit the device, ID is {1} and updated at {2}.", "1", line.DeviceID.ToString(), line.UpdateTime.ToString())).Write();
                     this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 }
             }
