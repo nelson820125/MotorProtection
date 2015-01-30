@@ -23,9 +23,9 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual int? MIRatio { get; set; }
 
-        public virtual decimal? AlarmThreshold { get; set; }
+        public virtual int? AlarmThreshold { get; set; }
 
-        public virtual decimal? StopThreshold { get; set; }
+        public virtual int? StopThreshold { get; set; }
 
         public virtual int? FirstRMMode { get; set; }
 

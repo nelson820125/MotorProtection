@@ -38,8 +38,8 @@
             this.lblProtectorAddressDesc = new System.Windows.Forms.Label();
             this.lblProtectorStatus = new System.Windows.Forms.Label();
             this.pnlProtectorStatus = new System.Windows.Forms.Panel();
-            this.rbtnActive = new System.Windows.Forms.RadioButton();
             this.rbtnDeactive = new System.Windows.Forms.RadioButton();
+            this.rbtnActive = new System.Windows.Forms.RadioButton();
             this.btnDetailSetting = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -124,6 +124,17 @@
             this.pnlProtectorStatus.Size = new System.Drawing.Size(183, 36);
             this.pnlProtectorStatus.TabIndex = 8;
             // 
+            // rbtnDeactive
+            // 
+            this.rbtnDeactive.AutoSize = true;
+            this.rbtnDeactive.Location = new System.Drawing.Point(60, 10);
+            this.rbtnDeactive.Name = "rbtnDeactive";
+            this.rbtnDeactive.Size = new System.Drawing.Size(49, 17);
+            this.rbtnDeactive.TabIndex = 1;
+            this.rbtnDeactive.TabStop = true;
+            this.rbtnDeactive.Text = "禁用";
+            this.rbtnDeactive.UseVisualStyleBackColor = true;
+            // 
             // rbtnActive
             // 
             this.rbtnActive.AutoSize = true;
@@ -136,17 +147,6 @@
             this.rbtnActive.Text = "启用";
             this.rbtnActive.UseVisualStyleBackColor = true;
             // 
-            // rbtnDeactive
-            // 
-            this.rbtnDeactive.AutoSize = true;
-            this.rbtnDeactive.Location = new System.Drawing.Point(60, 10);
-            this.rbtnDeactive.Name = "rbtnDeactive";
-            this.rbtnDeactive.Size = new System.Drawing.Size(49, 17);
-            this.rbtnDeactive.TabIndex = 1;
-            this.rbtnDeactive.TabStop = true;
-            this.rbtnDeactive.Text = "禁用";
-            this.rbtnDeactive.UseVisualStyleBackColor = true;
-            // 
             // btnDetailSetting
             // 
             this.btnDetailSetting.Location = new System.Drawing.Point(16, 161);
@@ -155,6 +155,7 @@
             this.btnDetailSetting.TabIndex = 9;
             this.btnDetailSetting.Text = "详细设置 >>";
             this.btnDetailSetting.UseVisualStyleBackColor = true;
+            this.btnDetailSetting.Click += new System.EventHandler(this.btnDetailSetting_Click);
             // 
             // btnSave
             // 

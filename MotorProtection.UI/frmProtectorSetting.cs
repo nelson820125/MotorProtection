@@ -17,7 +17,13 @@ namespace MotorProtection.UI
     {
         private OperationKey _oper = OperationKey.Add;
         private Device _device = null;
+        private DeviceConfig _deviceConfig = null;
+        private int _deviceId;
         private string _lineName;
+
+        private int START_ADDRESS = 40001;
+        private int BYTE_NUM = 14;
+        private int REG_NUM = 7;
 
         public frmProtectorSetting()
         {
@@ -30,6 +36,7 @@ namespace MotorProtection.UI
             _oper = oper;
             _device = device;
             _lineName = lineName;
+            _deviceConfig = device.DeviceConfigs.FirstOrDefault();
         }
 
         #region events
@@ -65,6 +72,16 @@ namespace MotorProtection.UI
             }
         }
 
+        private void btnDetailSetting_Click(object sender, EventArgs e)
+        {
+            frmProtectorDetailsSetting protectorDetail = new frmProtectorDetailsSetting();
+            if (_oper == OperationKey.Edit)
+                protectorDetail = new frmProtectorDetailsSetting(_deviceConfig);
+            protectorDetail.ShowDialog();
+            if (protectorDetail.DialogResult == System.Windows.Forms.DialogResult.Cancel || protectorDetail.DialogResult == System.Windows.Forms.DialogResult.OK)
+                protectorDetail.Close();
+        }
+
         #endregion
 
         #region private
@@ -72,9 +89,14 @@ namespace MotorProtection.UI
         private void InitializeComp()
         {
             if (_oper == OperationKey.Add)
+            {
                 this.Text = "添加保护器信息";
+            }
             else if (_oper == OperationKey.Edit)
+            {
                 this.Text = "编辑保护器信息";
+                CompsBind();
+            }
 
             LineListBind(GetLines());
         }
@@ -105,9 +127,19 @@ namespace MotorProtection.UI
                 }
                 else if (_oper == OperationKey.Edit)
                 {
-                    cbxLineName.SelectedValue = _device.ParentID; 
+                    cbxLineName.SelectedValue = _device.ParentID;
                 }
             }
+        }
+
+        private void CompsBind()
+        {
+            txtProtectorName.Text = _device.Name;
+            txtProtectorAddress.Text = _device.Address.Value.ToString();
+            if (_device.IsActive)
+                rbtnActive.Checked = true;
+            else if (!_device.IsActive)
+                rbtnDeactive.Checked = true;
         }
 
         private void InputsValidation()
@@ -174,6 +206,7 @@ namespace MotorProtection.UI
                         };
                         ctt.Devices.AddObject(device);
                         ctt.SaveChanges();
+                        _deviceId = device.DeviceID;
 
                         LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} add new device at line{1}, name is {2} and created at {3}.", "1", lineName, protectorName, device.CreateTime.ToString())).Write();
                         this.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -211,14 +244,69 @@ namespace MotorProtection.UI
                         protector.Address = address;
                         protector.ParentID = parentId;
                         protector.UpdateTime = DateTime.Now;
-                        
+
                         ctt.SaveChanges();
+
+                        _deviceId = protector.DeviceID;
 
                         LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} edit the device at line{1}, ID is {1} and updated at {2}.", "1", lineName, protector.DeviceID, protector.UpdateTime.ToString())).Write();
                         this.DialogResult = System.Windows.Forms.DialogResult.OK;
                     }
                 }
             }
+        }
+
+        private string ParsingWriteCommands()
+        {
+            string command = "";
+
+            StringBuilder builder = new StringBuilder();
+            builder.Clear();
+
+            byte[] startAddr = BitConverter.GetBytes(START_ADDRESS);
+            Array.Reverse(startAddr);
+
+            byte[] regNum = BitConverter.GetBytes(REG_NUM);
+            Array.Reverse(regNum);
+
+            byte[] byteNum = BitConverter.GetBytes(BYTE_NUM);
+            Array.Reverse(byteNum);
+
+            byte[] power = BitConverter.GetBytes(Convert.ToInt32(_deviceConfig.ProtectPower.Value * 100));
+            Array.Reverse(power);
+
+            byte[] proMode = BitConverter.GetBytes(_deviceConfig.ProtectMode.Value);
+            Array.Reverse(proMode);
+
+            byte[] mir = BitConverter.GetBytes(_deviceConfig.MIRatio.Value);
+            Array.Reverse(mir);
+
+            byte[] alarmThreshold = BitConverter.GetBytes(_deviceConfig.AlarmThreshold.Value);
+            Array.Reverse(alarmThreshold);
+
+            byte[] stopThreshold = BitConverter.GetBytes(Convert.ToInt32(_deviceConfig.StopThreshold.Value));
+            Array.Reverse(stopThreshold);
+
+            byte[] mr1Mode = BitConverter.GetBytes(_deviceConfig.FirstRMMode.Value);
+            Array.Reverse(mr1Mode);
+
+            byte[] mr2Mode = BitConverter.GetBytes(_deviceConfig.SecondRMMode.Value);
+            Array.Reverse(mr2Mode);
+
+            builder.Append(" " + startAddr[2].ToString("X2") + " " + startAddr[3].ToString("X2"));
+            builder.Append(" " + regNum[2].ToString("X2") + " " + regNum[3].ToString("X2"));
+            builder.Append(" " + byteNum[3].ToString("X2"));
+            builder.Append(" " + power[2].ToString("X2") + " " + power[3].ToString("X2"));
+            builder.Append(" " + proMode[2].ToString("X2") + " " + proMode[3].ToString("X2"));
+            builder.Append(" " + mir[2].ToString("X2") + " " + mir[3].ToString("X2"));
+            builder.Append(" " + alarmThreshold[2].ToString("X2") + " " + alarmThreshold[3].ToString("X2"));
+            builder.Append(" " + stopThreshold[2].ToString("X2") + " " + stopThreshold[3].ToString("X2"));
+            builder.Append(" " + mr1Mode[2].ToString("X2") + " " + mr1Mode[3].ToString("X2"));
+            builder.Append(" " + mr2Mode[2].ToString("X2") + " " + mr2Mode[3].ToString("X2"));
+
+            command = builder.ToString().Trim();
+
+            return command;
         }
 
         #endregion

@@ -221,8 +221,8 @@ namespace MotorProtection.Core.Controller
             {
                 SecondRMMode = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
                 FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
-                StopThreshold = (decimal)BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0) / 100,
-                AlarmThreshold = (decimal)BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0) / 100,
+                StopThreshold = BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
+                AlarmThreshold = BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
                 MIRatio = BitConverter.ToInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
                 ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
                 ProtectPower = (decimal)BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100,
@@ -290,8 +290,8 @@ namespace MotorProtection.Core.Controller
 
             newConfig.SecondRMMode = BitConverter.ToInt16(updateData.Take(2).ToArray(), 0);
             newConfig.FirstRMMode = BitConverter.ToInt16(updateData.Skip(2).Take(2).ToArray(), 0);
-            newConfig.StopThreshold = (decimal)BitConverter.ToInt16(updateData.Skip(4).Take(2).ToArray(), 0) / 100;
-            newConfig.AlarmThreshold = (decimal)BitConverter.ToInt16(updateData.Skip(6).Take(2).ToArray(), 0) / 100;
+            newConfig.StopThreshold = BitConverter.ToInt16(updateData.Skip(4).Take(2).ToArray(), 0);
+            newConfig.AlarmThreshold = BitConverter.ToInt16(updateData.Skip(6).Take(2).ToArray(), 0);
             newConfig.MIRatio = BitConverter.ToInt16(updateData.Skip(8).Take(2).ToArray(), 0);
             newConfig.ProtectMode = BitConverter.ToInt16(updateData.Skip(10).Take(2).ToArray(), 0);
             newConfig.ProtectPower = (decimal)BitConverter.ToInt16(updateData.Skip(12).Take(2).ToArray(), 0) / 100;

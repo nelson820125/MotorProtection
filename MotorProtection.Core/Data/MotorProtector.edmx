@@ -41,8 +41,8 @@
           <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
           <Property Name="ProtectMode" Type="int" />
           <Property Name="MIRatio" Type="int" />
-          <Property Name="AlarmThreshold" Type="decimal" Precision="3" Scale="2" />
-          <Property Name="StopThreshold" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="AlarmThreshold" Type="int" />
+          <Property Name="StopThreshold" Type="int" />
           <Property Name="FirstRMMode" Type="int" />
           <Property Name="SecondRMMode" Type="int" />
           <Property Name="UpdateTime" Type="datetime" Nullable="false" />
@@ -203,8 +203,8 @@
           <Property Name="ProtectPower" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="ProtectMode" Type="Int32" />
           <Property Name="MIRatio" Type="Int32" />
-          <Property Name="AlarmThreshold" Type="Decimal" Precision="3" Scale="2" />
-          <Property Name="StopThreshold" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="AlarmThreshold" Type="Int32" />
+          <Property Name="StopThreshold" Type="Int32" />
           <Property Name="FirstRMMode" Type="Int32" />
           <Property Name="SecondRMMode" Type="Int32" />
           <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -523,12 +523,12 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram DiagramId="b112e77b33254326a9e0a20fdfc3e349" Name="Diagram1" ZoomLevel="80">
+      <Diagram DiagramId="b112e77b33254326a9e0a20fdfc3e349" Name="Diagram1" ZoomLevel="77">
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Auditing" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfig" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.Device" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />

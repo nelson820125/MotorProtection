@@ -5,12 +5,12 @@
     [ProtectPower]   DECIMAL (8, 2) NULL,
     [ProtectMode]    INT            NULL,
     [MIRatio]        INT            NULL,
-    [AlarmThreshold] DECIMAL (3, 2) NULL,
-    [StopThreshold]  DECIMAL (3, 2) NULL,
+    [AlarmThreshold] INT NULL,
+    [StopThreshold]  INT NULL,
     [FirstRMMode]    INT            NULL,
     [SecondRMMode]   INT            NULL,
     [UpdateTime]     DATETIME       NOT NULL,
-    [Status] INT NOT NULL, 
+    [Status]         INT            NOT NULL,
     PRIMARY KEY CLUSTERED ([DeviceConfigID] ASC),
     CONSTRAINT [FK_DeviceConfigs_Devices] FOREIGN KEY ([DeviceID]) REFERENCES [dbo].[Devices] ([DeviceID])
 );

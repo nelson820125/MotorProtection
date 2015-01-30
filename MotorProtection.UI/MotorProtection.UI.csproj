@@ -102,6 +102,12 @@
     <Compile Include="frmMessage.Designer.cs">
       <DependentUpon>frmMessage.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmProtectorDetailsSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProtectorDetailsSetting.Designer.cs">
+      <DependentUpon>frmProtectorDetailsSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmProtectorSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMessage.resx">
       <DependentUpon>frmMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProtectorDetailsSetting.resx">
+      <DependentUpon>frmProtectorDetailsSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmProtectorSetting.resx">
       <DependentUpon>frmProtectorSetting.cs</DependentUpon>

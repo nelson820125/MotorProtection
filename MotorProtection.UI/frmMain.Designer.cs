@@ -48,7 +48,6 @@
             this.menuExitFullScreen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAboutSystem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stsBottom = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSystemStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,10 +58,10 @@
             this.pnlMainShow = new System.Windows.Forms.Panel();
             this.cmsParent = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRightAddProtector = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiRightDeactive = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsChild = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiRightLineEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRightDeactive = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsChild = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRightEditProtector = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRightDeactiveProtector = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
@@ -78,8 +77,7 @@
             this.tmsiSystem,
             this.tsmiEdit,
             this.menuView,
-            this.tsmiAbout,
-            this.testToolStripMenuItem});
+            this.tsmiAbout});
             this.menuSystem.Location = new System.Drawing.Point(0, 0);
             this.menuSystem.Name = "menuSystem";
             this.menuSystem.Size = new System.Drawing.Size(1370, 24);
@@ -101,7 +99,7 @@
             // 
             this.tsmiStart.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStart.Image")));
             this.tsmiStart.Name = "tsmiStart";
-            this.tsmiStart.Size = new System.Drawing.Size(126, 22);
+            this.tsmiStart.Size = new System.Drawing.Size(152, 22);
             this.tsmiStart.Text = "启动系统";
             this.tsmiStart.Click += new System.EventHandler(this.tsmiStart_Click);
             // 
@@ -109,18 +107,18 @@
             // 
             this.tsmiStop.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStop.Image")));
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(126, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(152, 22);
             this.tsmiStop.Text = "停止系统";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // tmsiSignOut
             // 
             this.tmsiSignOut.Name = "tmsiSignOut";
-            this.tmsiSignOut.Size = new System.Drawing.Size(126, 22);
+            this.tmsiSignOut.Size = new System.Drawing.Size(152, 22);
             this.tmsiSignOut.Text = "退出";
             this.tmsiSignOut.Click += new System.EventHandler(this.tmsiSignOut_Click);
             // 
@@ -215,13 +213,6 @@
             this.tsmiAboutSystem.Size = new System.Drawing.Size(222, 22);
             this.tsmiAboutSystem.Text = "电机保护器控制软件V1.0...";
             this.tsmiAboutSystem.Click += new System.EventHandler(this.tsmiAboutSystem_Click);
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
-            this.testToolStripMenuItem.Text = "test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // stsBottom
             // 
@@ -320,6 +311,17 @@
             this.tsmiRightAddProtector.Text = "添加保护器";
             this.tsmiRightAddProtector.Click += new System.EventHandler(this.tsmiRightAddProtector_Click);
             // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
+            // 
+            // tsmiRightLineEdit
+            // 
+            this.tsmiRightLineEdit.Name = "tsmiRightLineEdit";
+            this.tsmiRightLineEdit.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightLineEdit.Text = "编辑";
+            // 
             // tsmiRightDeactive
             // 
             this.tsmiRightDeactive.Name = "tsmiRightDeactive";
@@ -332,29 +334,19 @@
             this.tsmiRightEditProtector,
             this.tsmiRightDeactiveProtector});
             this.cmsChild.Name = "cmsChild";
-            this.cmsChild.Size = new System.Drawing.Size(101, 48);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
-            // 
-            // tsmiRightLineEdit
-            // 
-            this.tsmiRightLineEdit.Name = "tsmiRightLineEdit";
-            this.tsmiRightLineEdit.Size = new System.Drawing.Size(139, 22);
-            this.tsmiRightLineEdit.Text = "编辑";
+            this.cmsChild.Size = new System.Drawing.Size(153, 70);
             // 
             // tsmiRightEditProtector
             // 
             this.tsmiRightEditProtector.Name = "tsmiRightEditProtector";
             this.tsmiRightEditProtector.Size = new System.Drawing.Size(152, 22);
             this.tsmiRightEditProtector.Text = "编辑";
+            this.tsmiRightEditProtector.Click += new System.EventHandler(this.tsmiRightEditProtector_Click);
             // 
             // tsmiRightDeactiveProtector
             // 
             this.tsmiRightDeactiveProtector.Name = "tsmiRightDeactiveProtector";
-            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(152, 22);
+            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(100, 22);
             this.tsmiRightDeactiveProtector.Text = "禁用";
             // 
             // frmMain
@@ -405,7 +397,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiStart;
         private System.Windows.Forms.ToolStripMenuItem tsmiStop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiAlarmSetting;
         private System.Windows.Forms.Panel pnlNodes;
         private System.Windows.Forms.Splitter sprMain;

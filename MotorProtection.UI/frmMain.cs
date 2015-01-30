@@ -92,7 +92,7 @@ namespace MotorProtection.UI
                 {
                     tsmiStart.Enabled = false;
                     tsmiStop.Enabled = true;
-                    tsslSystemStatus.Text = "已运行";
+                    tsslSystemStatus.Text = "已启动";
                     tsslSystemStatus.Image = Image.FromFile(@"images\icon\16x16\connect.png");
                 }
             }
@@ -144,7 +144,8 @@ namespace MotorProtection.UI
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                TreeNode mySelect = tvProtectors.SelectedNode;
+                Point clickPoint = new Point(e.X, e.Y);
+                TreeNode mySelect = tvProtectors.GetNodeAt(clickPoint);
                 if (mySelect != null)
                     tvProtectors.SelectedNode = mySelect;
             }
@@ -193,6 +194,25 @@ namespace MotorProtection.UI
                 ReloadDeviceTree();
         }
 
+        private void tsmiRightEditProtector_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            Device device;
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                device.DeviceConfigs = ctt.DeviceConfigs.Where(dc => dc.DeviceID == deviceId).ToList();
+            }
+
+            frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Edit, device, tvProtectors.SelectedNode.Parent.Text);
+            protectorSetting.ShowDialog();
+            if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                protectorSetting.Close();
+            else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+                ReloadDeviceTree();
+        }
+
         #region private
 
         private void ReloadDeviceTree()
@@ -213,6 +233,7 @@ namespace MotorProtection.UI
                 {
                     TreeNode pNode = new TreeNode();
                     pNode.Text = parent.Name;
+                    pNode.ToolTipText = parent.DeviceID.ToString();
                     pNode.ImageIndex = 3;
                     pNode.SelectedImageIndex = 3;
                     pNode.ContextMenuStrip = cmsParent;
@@ -225,6 +246,7 @@ namespace MotorProtection.UI
                         {
                             TreeNode cNode = new TreeNode();
                             cNode.Text = child.Name;
+                            cNode.ToolTipText = child.DeviceID.ToString();
                             cNode.ContextMenuStrip = cmsChild;
                             if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
                             {
