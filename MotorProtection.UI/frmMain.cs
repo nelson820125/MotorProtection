@@ -204,7 +204,7 @@ namespace MotorProtection.UI
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
                 device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
-                ctt.DeviceConfigs.Where(dc => dc.DeviceID == deviceId);
+                ctt.DeviceConfigs.Where(dc => dc.DeviceID == deviceId).ToList();
             }
 
             frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Edit, device, tvProtectors.SelectedNode.Parent.Text);
