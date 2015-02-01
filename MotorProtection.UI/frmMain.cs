@@ -138,6 +138,8 @@ namespace MotorProtection.UI
         private void frmMain_Load(object sender, EventArgs e)
         {
             CacheController.Initialize();
+
+            ReloadDeviceTree();
         }
 
         private void tvProtectors_MouseDown(object sender, MouseEventArgs e)
@@ -202,7 +204,7 @@ namespace MotorProtection.UI
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
                 device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
-                device.DeviceConfigs = ctt.DeviceConfigs.Where(dc => dc.DeviceID == deviceId).ToList();
+                ctt.DeviceConfigs.Where(dc => dc.DeviceID == deviceId);
             }
 
             frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Edit, device, tvProtectors.SelectedNode.Parent.Text);

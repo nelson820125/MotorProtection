@@ -45,7 +45,7 @@
           <Property Name="StopThreshold" Type="int" />
           <Property Name="FirstRMMode" Type="int" />
           <Property Name="SecondRMMode" Type="int" />
-          <Property Name="UpdateTime" Type="datetime" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
           <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DeviceConfigurationLog">
@@ -207,7 +207,7 @@
           <Property Name="StopThreshold" Type="Int32" />
           <Property Name="FirstRMMode" Type="Int32" />
           <Property Name="SecondRMMode" Type="Int32" />
-          <Property Name="UpdateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Device" Relationship="Self.FK_DeviceConfigs_Devices" FromRole="DeviceConfigs" ToRole="Devices" />
           <Property Name="Status" Type="Int32" Nullable="false" />
         </EntityType>
@@ -523,7 +523,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

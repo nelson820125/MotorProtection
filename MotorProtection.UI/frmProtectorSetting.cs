@@ -1,4 +1,5 @@
-﻿using MotorProtection.Core.Cache;
+﻿using MotorProtection.Constant;
+using MotorProtection.Core.Cache;
 using MotorProtection.Core.Data.Entities;
 using MotorProtection.Core.Log;
 using MotorProtection.UI.Constant;
@@ -36,7 +37,8 @@ namespace MotorProtection.UI
             _oper = oper;
             _device = device;
             _lineName = lineName;
-            _deviceConfig = device.DeviceConfigs.FirstOrDefault();
+            if (device != null && device.DeviceConfigs != null && device.DeviceConfigs.Count > 0)
+                _deviceConfig = device.DeviceConfigs.FirstOrDefault();
         }
 
         #region events
@@ -74,9 +76,19 @@ namespace MotorProtection.UI
 
         private void btnDetailSetting_Click(object sender, EventArgs e)
         {
-            frmProtectorDetailsSetting protectorDetail = new frmProtectorDetailsSetting();
-            if (_oper == OperationKey.Edit)
-                protectorDetail = new frmProtectorDetailsSetting(_deviceConfig);
+            string addr = "";
+            if (string.IsNullOrEmpty(txtProtectorAddress.Text.Trim()))
+            {
+                if (_device != null && _device.Address != 0)
+                    addr = _device.Address.ToString();
+            }
+            else
+            {
+                addr = txtProtectorAddress.Text.Trim();
+            }
+
+            if (_deviceConfig == null) _deviceConfig = new DeviceConfig();
+            frmProtectorDetailsSetting protectorDetail = new frmProtectorDetailsSetting(_deviceConfig, addr);
             protectorDetail.ShowDialog();
             if (protectorDetail.DialogResult == System.Windows.Forms.DialogResult.Cancel || protectorDetail.DialogResult == System.Windows.Forms.DialogResult.OK)
                 protectorDetail.Close();
@@ -205,6 +217,28 @@ namespace MotorProtection.UI
                             IsActive = rbtnActive.Checked
                         };
                         ctt.Devices.AddObject(device);
+
+                        if (_deviceConfig != null)
+                        {
+                            // sync to silver commands
+                            DeviceConfigurationPool pool = new DeviceConfigurationPool()
+                            {
+                                Address = address,
+                                FunCode = FunctionCodes.READ_REGISTERS,
+                                Commands = ParsingWriteCommands(),
+                                Description = "",
+                                UserID = 1,
+                                CreateTime = DateTime.Now,
+                                Attempt = 0,
+                                Status = ConfigurationStatus.PROCESSING
+                            };
+
+                            ctt.DeviceConfigurationPools.AddObject(pool);
+
+                            // add device configuration
+                            ctt.DeviceConfigs.AddObject(_deviceConfig);
+                        }
+
                         ctt.SaveChanges();
                         _deviceId = device.DeviceID;
 
@@ -245,9 +279,43 @@ namespace MotorProtection.UI
                         protector.ParentID = parentId;
                         protector.UpdateTime = DateTime.Now;
 
-                        ctt.SaveChanges();
+                        // sync to silver commands
+                        DeviceConfigurationPool pool = new DeviceConfigurationPool()
+                        {
+                            Address = address,
+                            FunCode = FunctionCodes.READ_REGISTERS,
+                            Commands = ParsingWriteCommands(),
+                            Description = "",
+                            UserID = 1,
+                            CreateTime = DateTime.Now,
+                            Attempt = 0,
+                            Status = ConfigurationStatus.PROCESSING
+                        };
 
-                        _deviceId = protector.DeviceID;
+                        ctt.DeviceConfigurationPools.AddObject(pool);
+
+                        if (_deviceConfig != null)
+                        {
+                            // update device configuration
+                            var config = ctt.DeviceConfigs.Where(dc => dc.DeviceID == _device.DeviceID).FirstOrDefault();
+                            if (config != null)
+                            {
+                                config.AlarmThreshold = _deviceConfig.AlarmThreshold;
+                                config.StopThreshold = _deviceConfig.StopThreshold;
+                                config.UpdateTime = DateTime.Now;
+                                config.ProtectPower = _deviceConfig.ProtectPower;
+                                config.ProtectMode = _deviceConfig.ProtectMode;
+                                config.MIRatio = _deviceConfig.MIRatio;
+                                config.FirstRMMode = _deviceConfig.FirstRMMode;
+                                config.SecondRMMode = _deviceConfig.SecondRMMode;
+                            }
+                            else
+                            {
+                                ctt.DeviceConfigs.AddObject(_deviceConfig);
+                            }
+                        }
+
+                        ctt.SaveChanges();
 
                         LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} edit the device at line{1}, ID is {1} and updated at {2}.", "1", lineName, protector.DeviceID, protector.UpdateTime.ToString())).Write();
                         this.DialogResult = System.Windows.Forms.DialogResult.OK;
