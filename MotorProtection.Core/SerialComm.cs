@@ -64,6 +64,32 @@ namespace MotorProtection.Core
             }
         }
 
+        private void WriteRequests()
+        {
+            List<DeviceConfigurationPool> pools = new List<DeviceConfigurationPool>();
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                pools = ctt.DeviceConfigurationPools.ToList();                
+            }
+
+            if (pools != null && pools.Count > 0)
+            {
+                DeviceConfigsController configCtrl = new DeviceConfigsController();
+                foreach (DeviceConfigurationPool pool in pools)
+                {
+                    byte[] command = configCtrl.SyncSilverCommand(pool);
+                    WritePort(command, 0, command.Length);
+
+                    // read data from Slave.
+                    int count = serialPort.BytesToRead;
+                    byte[] readBuffer = new byte[count];
+                    serialPort.Read(readBuffer, 0, count);
+
+                    configCtrl.SyncSilverFinalize(pool, readBuffer);
+                }
+            }
+        }
+
         private void ReadPort()
         {
             while (_keepReading)
@@ -77,6 +103,9 @@ namespace MotorProtection.Core
                         {
                             foreach (Device device in devices)
                             {
+                                // deal with WRITE commands first
+                                WriteRequests();
+
                                 int attempts = 0;
                                 while (true)
                                 {

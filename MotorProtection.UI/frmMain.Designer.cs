@@ -99,7 +99,7 @@
             // 
             this.tsmiStart.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStart.Image")));
             this.tsmiStart.Name = "tsmiStart";
-            this.tsmiStart.Size = new System.Drawing.Size(152, 22);
+            this.tsmiStart.Size = new System.Drawing.Size(126, 22);
             this.tsmiStart.Text = "启动系统";
             this.tsmiStart.Click += new System.EventHandler(this.tsmiStart_Click);
             // 
@@ -107,18 +107,18 @@
             // 
             this.tsmiStop.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStop.Image")));
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(152, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(126, 22);
             this.tsmiStop.Text = "停止系统";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
             // 
             // tmsiSignOut
             // 
             this.tmsiSignOut.Name = "tmsiSignOut";
-            this.tmsiSignOut.Size = new System.Drawing.Size(152, 22);
+            this.tmsiSignOut.Size = new System.Drawing.Size(126, 22);
             this.tmsiSignOut.Text = "退出";
             this.tmsiSignOut.Click += new System.EventHandler(this.tmsiSignOut_Click);
             // 
@@ -302,7 +302,7 @@
             this.tsmiRightLineEdit,
             this.tsmiRightDeactive});
             this.cmsParent.Name = "cmsParent";
-            this.cmsParent.Size = new System.Drawing.Size(140, 76);
+            this.cmsParent.Size = new System.Drawing.Size(153, 98);
             // 
             // tsmiRightAddProtector
             // 
@@ -325,8 +325,9 @@
             // tsmiRightDeactive
             // 
             this.tsmiRightDeactive.Name = "tsmiRightDeactive";
-            this.tsmiRightDeactive.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightDeactive.Size = new System.Drawing.Size(152, 22);
             this.tsmiRightDeactive.Text = "禁用";
+            this.tsmiRightDeactive.Click += new System.EventHandler(this.tsmiRightDeactive_Click);
             // 
             // cmsChild
             // 
@@ -334,7 +335,7 @@
             this.tsmiRightEditProtector,
             this.tsmiRightDeactiveProtector});
             this.cmsChild.Name = "cmsChild";
-            this.cmsChild.Size = new System.Drawing.Size(153, 70);
+            this.cmsChild.Size = new System.Drawing.Size(101, 48);
             // 
             // tsmiRightEditProtector
             // 
@@ -346,8 +347,9 @@
             // tsmiRightDeactiveProtector
             // 
             this.tsmiRightDeactiveProtector.Name = "tsmiRightDeactiveProtector";
-            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(100, 22);
+            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(152, 22);
             this.tsmiRightDeactiveProtector.Text = "禁用";
+            this.tsmiRightDeactiveProtector.Click += new System.EventHandler(this.tsmiRightDeactiveProtector_Click);
             // 
             // frmMain
             // 

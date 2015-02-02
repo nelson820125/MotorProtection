@@ -29,6 +29,8 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual int? Status { set; get; }
 
+        public virtual bool JobRemovable { set; get; }
+
         #endregion
     }
 

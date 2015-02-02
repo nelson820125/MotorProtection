@@ -1,4 +1,6 @@
 ﻿using MotorProtection.Constant;
+using MotorProtection.Core.Controller;
+using MotorProtection.Core.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +19,7 @@ namespace MotorProtection.UI
         private ServiceController _service = null;
         private JobOperation _operation;
         private bool _hasOperation = false;
+        private DeviceConfigurationPool _pool = null;
 
         public frmMessage()
         {
@@ -40,6 +43,15 @@ namespace MotorProtection.UI
             _hasOperation = true;
         }
 
+        public frmMessage(string msg, DeviceConfigurationPool pool)
+        {
+            InitializeComponent();
+            lblMsg.Text = msg;
+            _pool = pool;
+            _operation = JobOperation.None;
+            _hasOperation = true;
+        }
+
         private void VerifyStatus()
         {
             if (_operation == JobOperation.Start)
@@ -53,7 +65,10 @@ namespace MotorProtection.UI
                     while (true)
                     {
                         if (_service.Status == ServiceControllerStatus.Running)
+                        {
                             this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                            break;
+                        }
                     }
                 }
             }
@@ -68,9 +83,43 @@ namespace MotorProtection.UI
                     while (true)
                     {
                         if (_service.Status == ServiceControllerStatus.Stopped)
+                        {
                             this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                            break;
+                        }                            
                     }
                 }
+            }
+            else if (_operation == JobOperation.None && _pool != null) // deal the operation from high level
+            {
+                bool isSuccess = false;
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    while (true)
+                    {
+                        var pool = ctt.DeviceConfigurationPools.Where(dcp =>dcp.ID == _pool.ID).FirstOrDefault();
+                        if (pool.Status == ConfigurationStatus.PROCESSING)
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                        else {
+                            if (pool.Status == ConfigurationStatus.SUCCESS)
+                                isSuccess = true;
+                            else if (pool.Status == ConfigurationStatus.ERROR)
+                                isSuccess = false;
+                            break;
+                        }
+                    }
+                }
+
+                DeviceConfigsController ctrl = new DeviceConfigsController();
+                ctrl.UpdatePoolAfterSuccess(_pool.ID);
+
+                if (isSuccess)
+                    this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                else
+                    this.DialogResult = System.Windows.Forms.DialogResult.No;
             }
 
             Thread.CurrentThread.Abort();

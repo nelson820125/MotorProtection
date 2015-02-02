@@ -57,6 +57,7 @@
             // 
             // cbxLineName
             // 
+            this.cbxLineName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxLineName.FormattingEnabled = true;
             this.cbxLineName.Location = new System.Drawing.Point(89, 10);
             this.cbxLineName.Name = "cbxLineName";

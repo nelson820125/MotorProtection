@@ -60,6 +60,16 @@ namespace MotorProtection.Core.Controller
             }
         }
 
+        public void UpdatePoolStatus(int poolId, int status)
+        {
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var pool = ctt.DeviceConfigurationPools.Where(dcp => dcp.ID == poolId).FirstOrDefault();
+                pool.Status = status;
+                ctt.SaveChanges();
+            }
+        }
+
         /// <summary>
         /// Move configuration from pool to log table if sync to silver successfully.
         /// </summary>
@@ -231,6 +241,25 @@ namespace MotorProtection.Core.Controller
             return config;
         }
 
+        private DeviceConfigsLog ConvertSilverDataToDeviceConfigsLog(byte[] receivedData)
+        {
+            byte[] dataBuffer = receivedData.Skip(3).Take(16).ToArray();
+            Array.Reverse(dataBuffer);
+
+            DeviceConfigsLog config = new DeviceConfigsLog()
+            {
+                SecondRMMode = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
+                FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
+                StopThreshold = BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
+                AlarmThreshold = BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
+                MIRatio = BitConverter.ToInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
+                ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
+                ProtectPower = (decimal)BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100,
+                Status = BitConverter.ToInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
+            };
+            return config;
+        }
+
         #region Sync from Sliver to Databse
 
         /// <summary>
@@ -264,6 +293,39 @@ namespace MotorProtection.Core.Controller
                     }
                 }
             }
+            return isSuccess;
+        }
+
+        private bool UpdateDeviceConfigsLog(int address, DeviceConfigsLog newConfig)
+        {
+            bool isSuccess = false;
+            if (newConfig != null)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == address).FirstOrDefault();
+                    if (configLog != null)
+                    {
+                        configLog.Status = newConfig.Status;
+                        configLog.ProtectPower = newConfig.ProtectPower;
+                        configLog.ProtectMode = newConfig.ProtectMode;
+                        configLog.MIRatio = newConfig.MIRatio;
+                        configLog.AlarmThreshold = newConfig.AlarmThreshold;
+                        configLog.StopThreshold = newConfig.StopThreshold;
+                        configLog.FirstRMMode = newConfig.FirstRMMode;
+                        configLog.SecondRMMode = newConfig.SecondRMMode;                        
+                    }
+                    else
+                    {
+                        ctt.DeviceConfigsLogs.AddObject(newConfig);
+                    }
+
+                    ctt.SaveChanges();
+
+                    isSuccess = true;
+                }
+            }
+
             return isSuccess;
         }
 
@@ -321,8 +383,8 @@ namespace MotorProtection.Core.Controller
                     Array.Reverse(receivedDataCRC);
                     if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
                     {
-                        var newConfig = ConvertSilverDataToDeviceConfig(receivedData);
-                        isSuccess = UpdateDeviceConfig(config.Address, newConfig);
+                        var newConfig = ConvertSilverDataToDeviceConfigsLog(receivedData);
+                        isSuccess = UpdateDeviceConfigsLog(config.Address, newConfig);
 
                         if (!isSuccess)
                         {
@@ -347,7 +409,10 @@ namespace MotorProtection.Core.Controller
 
             if (isSuccess)
             {
-                UpdatePoolAfterSuccess(config.ID);
+                if (config.JobRemovable)
+                    UpdatePoolAfterSuccess(config.ID);
+                else
+                    UpdatePoolStatus(config.ID, config.Status.Value);
             }
         }
 
@@ -404,7 +469,10 @@ namespace MotorProtection.Core.Controller
 
             if (isSuccess)
             {
-                UpdatePoolAfterSuccess(config.ID);
+                if (config.JobRemovable)
+                    UpdatePoolAfterSuccess(config.ID);
+                else
+                    UpdatePoolStatus(config.ID, config.Status.Value);
             }
         }
 
@@ -465,7 +533,10 @@ namespace MotorProtection.Core.Controller
 
             if (isSuccess)
             {
-                UpdatePoolAfterSuccess(config.ID);
+                if (config.JobRemovable)
+                    UpdatePoolAfterSuccess(config.ID);
+                else
+                    UpdatePoolStatus(config.ID, config.Status.Value);
             }
         }
 

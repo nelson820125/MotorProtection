@@ -157,8 +157,15 @@ namespace MotorProtection.UI
         {
             frmSystemSetting frmSystemSetting = new frmSystemSetting();
             frmSystemSetting.ShowDialog();
-            if (frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel || frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.OK || frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Yes)
+            if (frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
                 frmSystemSetting.Close();
+            }
+            else if (frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.OK || frmSystemSetting.DialogResult == System.Windows.Forms.DialogResult.Yes)
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
+                frmSystemSetting.Close();
+            }
         }
 
         private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -171,9 +178,15 @@ namespace MotorProtection.UI
             frmLineSetting lineSetting = new frmLineSetting(OperationKey.Add, null);
             lineSetting.ShowDialog();
             if (lineSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
                 lineSetting.Close();
+            }
             else if (lineSetting.DialogResult == System.Windows.Forms.DialogResult.OK || lineSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                lineSetting.Close();
+            }
         }
 
         private void tsmiAddProtectors_Click(object sender, EventArgs e)
@@ -181,9 +194,15 @@ namespace MotorProtection.UI
             frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Add, null, null);
             protectorSetting.ShowDialog();
             if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
                 protectorSetting.Close();
+            }
             else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                protectorSetting.Close();
+            }
         }
 
         private void tsmiRightAddProtector_Click(object sender, EventArgs e)
@@ -191,9 +210,15 @@ namespace MotorProtection.UI
             frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Add, null, tvProtectors.SelectedNode.Text);
             protectorSetting.ShowDialog();
             if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
                 protectorSetting.Close();
+            }
             else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                protectorSetting.Close();
+            }
         }
 
         private void tsmiRightEditProtector_Click(object sender, EventArgs e)
@@ -210,9 +235,62 @@ namespace MotorProtection.UI
             frmProtectorSetting protectorSetting = new frmProtectorSetting(OperationKey.Edit, device, tvProtectors.SelectedNode.Parent.Text);
             protectorSetting.ShowDialog();
             if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
                 protectorSetting.Close();
+            }
             else if (protectorSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorSetting.DialogResult == System.Windows.Forms.DialogResult.Yes) // reload tree if operation is success
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                protectorSetting.Close();
+            }
+        }
+
+        private void tsmiRightDeactiveProtector_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                if (device != null)
+                {
+                    device.IsActive = false;
+                    ctt.SaveChanges();
+
+                    CacheController.UpdateAllCacheGroupTimestamp();
+                }
+            }
+
+            ReloadDeviceTree();
+        }
+
+        private void tsmiRightDeactive_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var parent = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                if (parent != null)
+                {
+                    parent.IsActive = false;
+
+                    var children = ctt.Devices.Where(d => d.ParentID == deviceId).ToList();
+                    if (children != null && children.Count > 0)
+                    {
+                        foreach (Device child in children)
+                        {
+                            child.IsActive = false;
+                        }
+                    }
+                    ctt.SaveChanges();
+
+                    CacheController.UpdateAllCacheGroupTimestamp();
+                }
+            }
+
+            ReloadDeviceTree();
         }
 
         #region private
@@ -228,9 +306,10 @@ namespace MotorProtection.UI
 
             var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
 
+            tvProtectors.Nodes.Clear();
+
             if (parents.Count > 0)
             {
-                tvProtectors.Nodes.Clear();
                 foreach (Device parent in parents)
                 {
                     TreeNode pNode = new TreeNode();

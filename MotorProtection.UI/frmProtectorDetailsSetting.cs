@@ -17,10 +17,6 @@ namespace MotorProtection.UI
         private byte[] READ_START_ADDRESS = new byte[] { RegisterAddresses.ProtectorSettingHi, RegisterAddresses.ProtectorPowerSettingLo };
         private byte[] READ_REGISTER_NUM = new byte[] { 0x00, 0x07 };
 
-        private int START_ADDRESS = 40001;
-        private int BYTE_NUM = 14;
-        private int REG_NUM = 7;
-
         private DeviceConfig _config = new DeviceConfig();
         private ServiceController _serviceCtrl = null;
         private string _addressID;
@@ -60,22 +56,39 @@ namespace MotorProtection.UI
             }
             else
             {
+                DeviceConfigurationPool pool = new DeviceConfigurationPool();
                 using (MotorProtectorEntities ctt = new MotorProtectorEntities())
                 {
-                    DeviceConfigurationPool pool = new DeviceConfigurationPool()
-                    {
-                        Address = Convert.ToInt32(_addressID),
-                        FunCode = FunctionCodes.READ_REGISTERS,
-                        Commands = ParsingReadCommands(),
-                        Description = "",
-                        UserID = 1,
-                        CreateTime = DateTime.Now,
-                        Attempt = 0,
-                        Status = ConfigurationStatus.PROCESSING
-                    };
+                    pool.Address = Convert.ToInt32(_addressID);
+                    pool.FunCode = FunctionCodes.READ_REGISTERS;
+                    pool.Commands = ParsingReadCommands();
+                    pool.Description = "";
+                    pool.UserID = 1;
+                    pool.CreateTime = DateTime.Now;
+                    pool.Attempt = 0;
+                    pool.Status = ConfigurationStatus.PROCESSING;
+                    pool.JobRemovable = false;
 
                     ctt.DeviceConfigurationPools.AddObject(pool);
                     ctt.SaveChanges();
+                }
+
+                frmMessage message = new frmMessage("", pool);
+                message.ShowDialog();
+                if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                    {
+                        var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == Convert.ToInt32(_addressID)).FirstOrDefault();
+                        BindFields(configLog);
+                        ctt.DeviceConfigsLogs.DeleteObject(configLog);
+                        ctt.SaveChanges();
+                    }
+                    message.Close();
+                }
+                else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
+                {
+                    MessageBox.Show("读取信息失败，请重试或联系管理员");
                 }
             }
         }
@@ -144,13 +157,48 @@ namespace MotorProtection.UI
                 else if (_config.FirstRMMode.Value == 4)
                     rbtnStopOpen.Checked = true;
 
-                if (_config.SecondRMMode == null || _config.SecondRMMode.Value == 1)
+                if (_config.SecondRMMode.Value == 1)
                     rbtnAlarmClose1.Checked = true;
                 else if (_config.SecondRMMode.Value == 2)
                     rbtnAlarmOpen1.Checked = true;
                 else if (_config.SecondRMMode.Value == 3)
                     rbtnStopClose1.Checked = true;
-                else if (_config.SecondRMMode.Value == 4)
+                else if (_config.SecondRMMode == null || _config.SecondRMMode.Value == 4)
+                    rbtnStopOpen1.Checked = true;
+            }
+        }
+
+        private void BindFields(DeviceConfigsLog configLog)
+        {
+            if (configLog != null)
+            {
+                txtProtectPower.Text = configLog.ProtectPower == null ? "" : configLog.ProtectPower.Value.ToString("G");
+
+                if (configLog.ProtectMode == null || configLog.ProtectMode.Value == 0) // current
+                    rbtnCurrentMode.Checked = true;
+                else
+                    rbtnPowerMode.Checked = true;
+
+                txtMRI.Text = configLog.MIRatio == null ? "" : configLog.MIRatio.Value.ToString();
+                txtAlarmGate.Text = configLog.AlarmThreshold == null ? "" : configLog.AlarmThreshold.Value.ToString();
+                txtStopGate.Text = configLog.StopThreshold == null ? "" : configLog.StopThreshold.Value.ToString();
+
+                if (configLog.FirstRMMode == null || configLog.FirstRMMode.Value == 1)
+                    rbtnAlarmClose.Checked = true;
+                else if (configLog.FirstRMMode.Value == 2)
+                    rbtnAlarmOpen.Checked = true;
+                else if (configLog.FirstRMMode.Value == 3)
+                    rbtnStopClose.Checked = true;
+                else if (configLog.FirstRMMode.Value == 4)
+                    rbtnStopOpen.Checked = true;
+
+                if (configLog.SecondRMMode.Value == 1)
+                    rbtnAlarmClose1.Checked = true;
+                else if (configLog.SecondRMMode.Value == 2)
+                    rbtnAlarmOpen1.Checked = true;
+                else if (configLog.SecondRMMode.Value == 3)
+                    rbtnStopClose1.Checked = true;
+                else if (configLog.SecondRMMode == null || configLog.SecondRMMode.Value == 4)
                     rbtnStopOpen1.Checked = true;
             }
         }

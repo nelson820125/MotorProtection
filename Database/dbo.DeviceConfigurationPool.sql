@@ -7,7 +7,8 @@
     [UserID]      INT            NOT NULL,
     [CreateTime]  DATETIME       NOT NULL,
     [Attempt]     INT            NOT NULL,
-    [Status] INT NULL, 
+    [Status]      INT            NULL,
+    [JobRemovable]   BIT            NOT NULL,
     PRIMARY KEY CLUSTERED ([ID] ASC)
 );
 

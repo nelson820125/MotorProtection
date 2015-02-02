@@ -13,6 +13,7 @@ namespace MotorProtection.Constant
     public enum JobOperation
     {
         Start,
-        Stop
+        Stop,
+        None
     }
 }

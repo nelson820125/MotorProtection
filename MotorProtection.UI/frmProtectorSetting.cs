@@ -230,7 +230,8 @@ namespace MotorProtection.UI
                                 UserID = 1,
                                 CreateTime = DateTime.Now,
                                 Attempt = 0,
-                                Status = ConfigurationStatus.PROCESSING
+                                Status = ConfigurationStatus.PROCESSING,
+                                JobRemovable = true
                             };
 
                             ctt.DeviceConfigurationPools.AddObject(pool);
@@ -289,7 +290,8 @@ namespace MotorProtection.UI
                             UserID = 1,
                             CreateTime = DateTime.Now,
                             Attempt = 0,
-                            Status = ConfigurationStatus.PROCESSING
+                            Status = ConfigurationStatus.PROCESSING,
+                            JobRemovable = true
                         };
 
                         ctt.DeviceConfigurationPools.AddObject(pool);

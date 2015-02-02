@@ -86,6 +86,7 @@
     <Compile Include="Data\Entities\CacheStatus.cs" />
     <Compile Include="Data\Entities\Device.cs" />
     <Compile Include="Data\Entities\DeviceConfig.cs" />
+    <Compile Include="Data\Entities\DeviceConfigsLog.cs" />
     <Compile Include="Data\Entities\DeviceConfigurationLog.cs" />
     <Compile Include="Data\Entities\DeviceConfigurationPool.cs" />
     <Compile Include="Data\Entities\Logging.cs" />

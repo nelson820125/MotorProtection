@@ -48,6 +48,21 @@
           <Property Name="UpdateTime" Type="datetime" />
           <Property Name="Status" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="DeviceConfigsLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="ProtectMode" Type="int" />
+          <Property Name="MIRatio" Type="int" />
+          <Property Name="AlarmThreshold" Type="int" />
+          <Property Name="StopThreshold" Type="int" />
+          <Property Name="FirstRMMode" Type="int" />
+          <Property Name="SecondRMMode" Type="int" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="DeviceConfigurationLog">
           <Key>
             <PropertyRef Name="ID" />
@@ -74,6 +89,7 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="Attempt" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" />
+          <Property Name="JobRemovable" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Devices">
           <Key>
@@ -164,6 +180,7 @@
           <EntitySet Name="CacheGroups" EntityType="Self.CacheGroups" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CacheStatus" EntityType="Self.CacheStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceConfigs" EntityType="Self.DeviceConfigs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceConfigsLog" EntityType="Self.DeviceConfigsLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceConfigurationLog" EntityType="Self.DeviceConfigurationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DeviceConfigurationPool" EntityType="Self.DeviceConfigurationPool" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Devices" EntityType="Self.Devices" Schema="dbo" store:Type="Tables" />
@@ -317,6 +334,7 @@
           <EntitySet Name="CacheStatus" EntityType="MotorProtection.Core.Data.Entities.CacheStatus" />
           <EntitySet Name="DeviceConfigurationLogs" EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationLog" />
           <EntitySet Name="DeviceConfigurationPools" EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationPool" />
+          <EntitySet Name="DeviceConfigsLogs" EntityType="MotorProtection.Core.Data.Entities.DeviceConfigsLog" />
         </EntityContainer>
         <EntityType Name="CacheGroup">
           <Key>
@@ -360,6 +378,22 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Attempt" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Int32" />
+          <Property Name="JobRemovable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceConfigsLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProtectPower" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="ProtectMode" Type="Int32" />
+          <Property Name="MIRatio" Type="Int32" />
+          <Property Name="AlarmThreshold" Type="Int32" />
+          <Property Name="StopThreshold" Type="Int32" />
+          <Property Name="FirstRMMode" Type="Int32" />
+          <Property Name="SecondRMMode" Type="Int32" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -494,6 +528,7 @@
           <EntitySetMapping Name="DeviceConfigurationPools">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigurationPool">
               <MappingFragment StoreEntitySet="DeviceConfigurationPool">
+                <ScalarProperty Name="JobRemovable" ColumnName="JobRemovable" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Attempt" ColumnName="Attempt" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
@@ -502,6 +537,22 @@
                 <ScalarProperty Name="Commands" ColumnName="Commands" />
                 <ScalarProperty Name="FunCode" ColumnName="FunCode" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceConfigsLogs">
+            <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.DeviceConfigsLog">
+              <MappingFragment StoreEntitySet="DeviceConfigsLog">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="SecondRMMode" ColumnName="SecondRMMode" />
+                <ScalarProperty Name="FirstRMMode" ColumnName="FirstRMMode" />
+                <ScalarProperty Name="StopThreshold" ColumnName="StopThreshold" />
+                <ScalarProperty Name="AlarmThreshold" ColumnName="AlarmThreshold" />
+                <ScalarProperty Name="MIRatio" ColumnName="MIRatio" />
+                <ScalarProperty Name="ProtectMode" ColumnName="ProtectMode" />
+                <ScalarProperty Name="ProtectPower" ColumnName="ProtectPower" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -523,7 +574,7 @@
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="默认值" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Default" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -541,6 +592,7 @@
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.CacheStatus" Width="1.5" PointX="8.375" PointY="0.75" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationLog" Width="1.5" PointX="9.375" PointY="3.75" />
         <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigurationPool" Width="1.5" PointX="5.375" PointY="9.75" />
+        <EntityTypeShape EntityType="MotorProtection.Core.Data.Entities.DeviceConfigsLog" Width="1.5" PointX="9.375" PointY="7.75" />
       </Diagram>
     </Diagrams>
   </Designer>
