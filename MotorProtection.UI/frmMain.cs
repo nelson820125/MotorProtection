@@ -19,6 +19,10 @@ namespace MotorProtection.UI
     {
         private ServiceController _serviceCtrl = null;
 
+        private byte[] RESET_REGISTER_ADDRESS = new byte[] { RegisterAddresses.ProtectorSettingHi, RegisterAddresses.ProtectorStatusResetLo };
+        private byte[] CLEAR_ALARM = new byte[] { 0xa5, 0xa5 };
+        private byte[] RESET = new byte[] { 0xaa, 0x55 };
+
         public frmMain()
         {
             InitializeComponent();
@@ -318,6 +322,79 @@ namespace MotorProtection.UI
             }
         }
 
+        private void tsmiClearProtectorAlarm_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            DeviceConfigurationPool pool = new DeviceConfigurationPool();
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                pool.Address = device.Address.Value;
+                pool.FunCode = FunctionCodes.WRITE_SINGLE_REGISTER;
+                pool.Commands = ParsingClearProtectorAlarmCommands();
+                pool.Description = "";
+                pool.UserID = 1;
+                pool.CreateTime = DateTime.Now;
+                pool.Attempt = 0;
+                pool.Status = ConfigurationStatus.PROCESSING;
+                pool.JobRemovable = false;
+
+                ctt.DeviceConfigurationPools.AddObject(pool);
+                ctt.SaveChanges();
+            }
+
+            frmMessage message = new frmMessage("正在清除保护器" + tvProtectors.SelectedNode.Text + "的报警，请稍后...", pool);
+            message.ShowDialog();
+            if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                message.Close();
+            }
+            else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
+            {
+                MessageBox.Show("清除报警失败，请重试或联系管理员");
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Clear protector " + tvProtectors.SelectedNode.Text + " alarm by user id: 1 at " + DateTime.Now.ToString()).Write();
+            }
+        }
+
+        private void tsmiProtectorReset_Click(object sender, EventArgs e)
+        {
+            string name = tvProtectors.SelectedNode.Text;
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            DeviceConfigurationPool pool = new DeviceConfigurationPool();
+            DialogResult result = MessageBox.Show("确认要复位保护器 "+name+" 吗?", "系统提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                    pool.Address = device.Address.Value;
+                    pool.FunCode = FunctionCodes.WRITE_SINGLE_REGISTER;
+                    pool.Commands = ParsingProtectorResetCommands();
+                    pool.Description = "";
+                    pool.UserID = 1;
+                    pool.CreateTime = DateTime.Now;
+                    pool.Attempt = 0;
+                    pool.Status = ConfigurationStatus.PROCESSING;
+                    pool.JobRemovable = false;
+
+                    ctt.DeviceConfigurationPools.AddObject(pool);
+                    ctt.SaveChanges();
+                }
+
+                frmMessage message = new frmMessage("正在复位保护器" + name + "，请稍后...", pool);
+                message.ShowDialog();
+                if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    message.Close();
+                }
+                else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
+                {
+                    MessageBox.Show("复位失败，请重试或联系管理员");
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Reset protector " + name + " by user id: 1 at " + DateTime.Now.ToString()).Write();
+                }
+            }
+        }
+
         #region private
 
         private void ReloadDeviceTree()
@@ -358,16 +435,19 @@ namespace MotorProtection.UI
                             {
                                 cNode.ImageIndex = 0;
                                 cNode.SelectedImageIndex = 0;
+                                cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = false;
                             }
                             else if (child.Status.Value == ProtectorStatus.Stopped)
                             {
                                 cNode.ImageIndex = 2;
                                 cNode.SelectedImageIndex = 2;
+                                cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = false;
                             }
                             else if (child.Status.Value == ProtectorStatus.Alarm)
                             {
                                 cNode.ImageIndex = 1;
                                 cNode.SelectedImageIndex = 1;
+                                cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = true;
                             }
                             pNode.Nodes.Add(cNode);
                         }
@@ -375,6 +455,58 @@ namespace MotorProtection.UI
                 }
                 tvProtectors.ExpandAll();
             }
+        }
+
+        private string ParsingClearProtectorAlarmCommands()
+        {
+            string command = "";
+
+            StringBuilder builder = new StringBuilder();
+            builder.Clear();
+
+            foreach (byte addr in RESET_REGISTER_ADDRESS)
+            {
+                if (builder.Length != 0)
+                    builder.Append(" ");
+                builder.Append(addr.ToString("X2"));
+            }
+
+            foreach (byte o in CLEAR_ALARM)
+            {
+                if (builder.Length != 0)
+                    builder.Append(" ");
+                builder.Append(o.ToString("X2"));
+            }
+
+            command = builder.ToString();
+
+            return command;
+        }
+
+        private string ParsingProtectorResetCommands()
+        {
+            string command = "";
+
+            StringBuilder builder = new StringBuilder();
+            builder.Clear();
+
+            foreach (byte addr in RESET_REGISTER_ADDRESS)
+            {
+                if (builder.Length != 0)
+                    builder.Append(" ");
+                builder.Append(addr.ToString("X2"));
+            }
+
+            foreach (byte o in RESET)
+            {
+                if (builder.Length != 0)
+                    builder.Append(" ");
+                builder.Append(o.ToString("X2"));
+            }
+
+            command = builder.ToString();
+
+            return command;
         }
 
         #endregion

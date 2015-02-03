@@ -73,7 +73,7 @@ namespace MotorProtection.UI
                     ctt.SaveChanges();
                 }
 
-                frmMessage message = new frmMessage("", pool);
+                frmMessage message = new frmMessage("正在读取设备设置信息，请稍后...", pool);
                 message.ShowDialog();
                 if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {

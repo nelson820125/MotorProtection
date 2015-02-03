@@ -42,9 +42,9 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(81, 133);
+            this.btnSave.Location = new System.Drawing.Point(81, 123);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 33);
+            this.btnSave.Size = new System.Drawing.Size(75, 30);
             this.btnSave.TabIndex = 7;
             this.btnSave.Text = "保存";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -52,9 +52,9 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(163, 133);
+            this.btnCancel.Location = new System.Drawing.Point(163, 123);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 33);
+            this.btnCancel.Size = new System.Drawing.Size(75, 30);
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "取消";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -63,27 +63,27 @@
             // lblPortName
             // 
             this.lblPortName.AutoSize = true;
-            this.lblPortName.Location = new System.Drawing.Point(12, 9);
+            this.lblPortName.Location = new System.Drawing.Point(12, 8);
             this.lblPortName.Name = "lblPortName";
-            this.lblPortName.Size = new System.Drawing.Size(61, 13);
+            this.lblPortName.Size = new System.Drawing.Size(65, 12);
             this.lblPortName.TabIndex = 9;
-            this.lblPortName.Text = "端        口: ";
+            this.lblPortName.Text = "端    口: ";
             // 
             // lblBaudRate
             // 
             this.lblBaudRate.AutoSize = true;
-            this.lblBaudRate.Location = new System.Drawing.Point(12, 45);
+            this.lblBaudRate.Location = new System.Drawing.Point(12, 42);
             this.lblBaudRate.Name = "lblBaudRate";
-            this.lblBaudRate.Size = new System.Drawing.Size(61, 13);
+            this.lblBaudRate.Size = new System.Drawing.Size(65, 12);
             this.lblBaudRate.TabIndex = 11;
-            this.lblBaudRate.Text = "波  特  率: ";
+            this.lblBaudRate.Text = "波 特 率: ";
             // 
             // lblAttemptsDescribe
             // 
             this.lblAttemptsDescribe.AutoSize = true;
             this.lblAttemptsDescribe.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblAttemptsDescribe.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.lblAttemptsDescribe.Location = new System.Drawing.Point(77, 108);
+            this.lblAttemptsDescribe.Location = new System.Drawing.Point(77, 100);
             this.lblAttemptsDescribe.Name = "lblAttemptsDescribe";
             this.lblAttemptsDescribe.Size = new System.Drawing.Size(123, 13);
             this.lblAttemptsDescribe.TabIndex = 15;
@@ -92,17 +92,17 @@
             // lblAttempts
             // 
             this.lblAttempts.AutoSize = true;
-            this.lblAttempts.Location = new System.Drawing.Point(12, 83);
+            this.lblAttempts.Location = new System.Drawing.Point(12, 77);
             this.lblAttempts.Name = "lblAttempts";
-            this.lblAttempts.Size = new System.Drawing.Size(61, 13);
+            this.lblAttempts.Size = new System.Drawing.Size(65, 12);
             this.lblAttempts.TabIndex = 13;
             this.lblAttempts.Text = "尝试次数: ";
             // 
             // txtAttempts
             // 
-            this.txtAttempts.Location = new System.Drawing.Point(80, 80);
+            this.txtAttempts.Location = new System.Drawing.Point(80, 74);
             this.txtAttempts.Name = "txtAttempts";
-            this.txtAttempts.Size = new System.Drawing.Size(158, 20);
+            this.txtAttempts.Size = new System.Drawing.Size(158, 21);
             this.txtAttempts.TabIndex = 14;
             this.txtAttempts.Text = "3";
             // 
@@ -111,7 +111,7 @@
             this.cbxPortName.FormattingEnabled = true;
             this.cbxPortName.Location = new System.Drawing.Point(79, 6);
             this.cbxPortName.Name = "cbxPortName";
-            this.cbxPortName.Size = new System.Drawing.Size(159, 21);
+            this.cbxPortName.Size = new System.Drawing.Size(159, 20);
             this.cbxPortName.TabIndex = 10;
             // 
             // cbxBaydRate
@@ -131,16 +131,16 @@
             "56000",
             "57600",
             "115200"});
-            this.cbxBaydRate.Location = new System.Drawing.Point(79, 42);
+            this.cbxBaydRate.Location = new System.Drawing.Point(79, 39);
             this.cbxBaydRate.Name = "cbxBaydRate";
-            this.cbxBaydRate.Size = new System.Drawing.Size(159, 21);
+            this.cbxBaydRate.Size = new System.Drawing.Size(159, 20);
             this.cbxBaydRate.TabIndex = 12;
             // 
             // frmBasicSetting
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 178);
+            this.ClientSize = new System.Drawing.Size(250, 164);
             this.Controls.Add(this.lblPortName);
             this.Controls.Add(this.lblBaudRate);
             this.Controls.Add(this.lblAttemptsDescribe);
