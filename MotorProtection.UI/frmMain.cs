@@ -293,6 +293,31 @@ namespace MotorProtection.UI
             ReloadDeviceTree();
         }
 
+        private void tsmiRightLineEdit_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            Device device;
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+            }
+
+            frmLineSetting lineSetting = new frmLineSetting(OperationKey.Edit, device);
+            lineSetting.ShowDialog();
+
+            if (lineSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
+                lineSetting.Close();
+            }
+            else if (lineSetting.DialogResult == System.Windows.Forms.DialogResult.OK || lineSetting.DialogResult == System.Windows.Forms.DialogResult.Yes)
+            {
+                CacheController.UpdateAllCacheGroupTimestamp();
+                ReloadDeviceTree();
+                lineSetting.Close();
+            }
+        }
+
         #region private
 
         private void ReloadDeviceTree()

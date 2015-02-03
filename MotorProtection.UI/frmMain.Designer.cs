@@ -307,20 +307,21 @@
             // tsmiRightAddProtector
             // 
             this.tsmiRightAddProtector.Name = "tsmiRightAddProtector";
-            this.tsmiRightAddProtector.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightAddProtector.Size = new System.Drawing.Size(152, 22);
             this.tsmiRightAddProtector.Text = "添加保护器";
             this.tsmiRightAddProtector.Click += new System.EventHandler(this.tsmiRightAddProtector_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // tsmiRightLineEdit
             // 
             this.tsmiRightLineEdit.Name = "tsmiRightLineEdit";
-            this.tsmiRightLineEdit.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightLineEdit.Size = new System.Drawing.Size(152, 22);
             this.tsmiRightLineEdit.Text = "编辑";
+            this.tsmiRightLineEdit.Click += new System.EventHandler(this.tsmiRightLineEdit_Click);
             // 
             // tsmiRightDeactive
             // 
@@ -340,14 +341,14 @@
             // tsmiRightEditProtector
             // 
             this.tsmiRightEditProtector.Name = "tsmiRightEditProtector";
-            this.tsmiRightEditProtector.Size = new System.Drawing.Size(152, 22);
+            this.tsmiRightEditProtector.Size = new System.Drawing.Size(100, 22);
             this.tsmiRightEditProtector.Text = "编辑";
             this.tsmiRightEditProtector.Click += new System.EventHandler(this.tsmiRightEditProtector_Click);
             // 
             // tsmiRightDeactiveProtector
             // 
             this.tsmiRightDeactiveProtector.Name = "tsmiRightDeactiveProtector";
-            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(152, 22);
+            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(100, 22);
             this.tsmiRightDeactiveProtector.Text = "禁用";
             this.tsmiRightDeactiveProtector.Click += new System.EventHandler(this.tsmiRightDeactiveProtector_Click);
             // 

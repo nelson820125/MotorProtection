@@ -33,9 +33,14 @@ namespace MotorProtection.UI
         private void InitializeComp()
         {
             if (_oper == OperationKey.Add)
+            {
                 this.Text = "添加生产线信息";
+            }
             else if (_oper == OperationKey.Edit)
+            { 
                 this.Text = "编辑生产线信息";
+                BindData();
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -119,12 +124,26 @@ namespace MotorProtection.UI
                 else
                 {
                     line.Name = lineName;
+                    line.IsActive = rbtnActive.Checked;
                     line.UpdateTime = DateTime.Now;
                     ctt.SaveChanges();
 
                     LogController.LogEvent(AuditingLevel.High).Add("Description", string.Format("User ID: {0} edit the device, ID is {1} and updated at {2}.", "1", line.DeviceID.ToString(), line.UpdateTime.ToString())).Write();
                     this.DialogResult = System.Windows.Forms.DialogResult.OK;
                 }
+            }
+        }
+
+        private void BindData()
+        {
+            if (_device != null)
+            {
+                txtLineName.Text = _device.Name;
+
+                if (_device.IsActive)
+                    rbtnActive.Checked = true;
+                else
+                    rbtnDeactive.Checked = true;
             }
         }
 
