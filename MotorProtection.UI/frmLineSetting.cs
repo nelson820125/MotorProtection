@@ -95,6 +95,7 @@ namespace MotorProtection.UI
                     Device device = new Device() { 
                         Name = lineName,
                         IsActive = rbtnActive.Checked,
+                        IsDisplay = false,
                         CreateTime = DateTime.Now
                     };
                     ctt.Devices.AddObject(device);

@@ -347,6 +347,8 @@ namespace MotorProtection.UI
             message.ShowDialog();
             if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
             {
+                CacheController.UpdateAllCacheGroupTimestamp();
+                ReloadDeviceTree();
                 message.Close();
             }
             else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
@@ -385,6 +387,8 @@ namespace MotorProtection.UI
                 message.ShowDialog();
                 if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
+                    CacheController.UpdateAllCacheGroupTimestamp();
+                    ReloadDeviceTree();
                     message.Close();
                 }
                 else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
@@ -393,6 +397,50 @@ namespace MotorProtection.UI
                     LogController.LogError(LoggingLevel.Error).Add("Description", "Reset protector " + name + " by user id: 1 at " + DateTime.Now.ToString()).Write();
                 }
             }
+        }
+
+        private void tsmiDisplay_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+
+                if (device != null)
+                {
+                    device.IsDisplay = true;
+                    device.UpdateTime = DateTime.Now;
+                }
+
+                ctt.SaveChanges();
+            }
+
+            CacheController.UpdateAllCacheGroupTimestamp();
+            ReloadDeviceTree();
+            ReloadMainPanel();
+        }
+
+        private void tsmiHide_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+
+                if (device != null)
+                {
+                    device.IsDisplay = false;
+                    device.UpdateTime = DateTime.Now;
+                }
+
+                ctt.SaveChanges();
+            }
+
+            CacheController.UpdateAllCacheGroupTimestamp();
+            ReloadDeviceTree();
+            ReloadMainPanel();
         }
 
         #region private
@@ -449,11 +497,55 @@ namespace MotorProtection.UI
                                 cNode.SelectedImageIndex = 1;
                                 cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = true;
                             }
+
+                            if (child.IsDisplay)
+                            {
+                                cmsChild.Items["tsmiDisplay"].Enabled = false;
+                                cmsChild.Items["tsmiHide"].Enabled = true;
+                            }
+                            else
+                            {
+                                cmsChild.Items["tsmiDisplay"].Enabled = true;
+                                cmsChild.Items["tsmiHide"].Enabled = false;
+                            }
+
                             pNode.Nodes.Add(cNode);
                         }
                     }
                 }
                 tvProtectors.ExpandAll();
+            }
+        }
+
+        private void ReloadMainPanel()
+        {
+            List<Device> devices = null;
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                devices = ctt.Devices.Where(d => d.IsActive).ToList();
+            }
+
+            var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
+
+            if (parents.Count > 0)
+            {
+                foreach (Device parent in parents)
+                {
+                    var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive && d.IsDisplay).ToList();
+                    if (children.Count > 0)
+                    {
+                        GroupBox parentBox = new GroupBox();
+                        //parentBox.Anchor = AnchorStyles.Bottom;
+                        //parentBox.Anchor = AnchorStyles.Top;
+                        //parentBox.Anchor = AnchorStyles.Left;
+                        //parentBox.Anchor = AnchorStyles.Right;
+                        //parentBox.Top = 10;
+                        //parentBox.Left = 5;
+                        parentBox.Text = parent.Name;
+                        pnlMainShow.Controls.Add(parentBox);
+                    }
+                }
             }
         }
 

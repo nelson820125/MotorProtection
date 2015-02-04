@@ -119,6 +119,7 @@
           <Property Name="SecondRMStatus" Type="bit" />
           <Property Name="Status" Type="int" />
           <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="IsDisplay" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Logging">
           <Key>
@@ -259,6 +260,7 @@
           <NavigationProperty Name="Devices1" Relationship="Self.FK_Devices_Devices" FromRole="Devices" ToRole="Devices1" />
           <NavigationProperty Name="Device1" Relationship="Self.FK_Devices_Devices" FromRole="Devices1" ToRole="Devices" />
           <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="IsDisplay" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Logging">
           <Key>
@@ -433,6 +435,7 @@
           <EntitySetMapping Name="Devices">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Device">
               <MappingFragment StoreEntitySet="Devices">
+                <ScalarProperty Name="IsDisplay" ColumnName="IsDisplay" />
                 <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
                 <ScalarProperty Name="DeviceID" ColumnName="DeviceID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

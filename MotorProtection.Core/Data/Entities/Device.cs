@@ -59,6 +59,8 @@ namespace MotorProtection.Core.Data.Entities
 
         public virtual DateTime? UpdateTime { get; set; }
 
+        public virtual bool IsDisplay { get; set; }
+
         #endregion
 
         #region Navigation Properties

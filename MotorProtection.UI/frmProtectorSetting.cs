@@ -214,7 +214,8 @@ namespace MotorProtection.UI
                             Address = address,
                             ParentID = parentId,
                             CreateTime = DateTime.Now,
-                            IsActive = rbtnActive.Checked
+                            IsActive = rbtnActive.Checked,
+                            IsDisplay = false
                         };
                         ctt.Devices.AddObject(device);
 

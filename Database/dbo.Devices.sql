@@ -22,7 +22,8 @@
     [FirstRMStatus]  BIT            NULL,
     [SecondRMStatus] BIT            NULL,
     [Status]         INT            NULL,
-    [UpdateTime] DATETIME NULL, 
+    [UpdateTime]     DATETIME       NULL,
+    [IsDisplay]      BIT            NOT NULL,
     PRIMARY KEY CLUSTERED ([DeviceID] ASC),
     CONSTRAINT [FK_Devices_Devices] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Devices] ([DeviceID])
 );
