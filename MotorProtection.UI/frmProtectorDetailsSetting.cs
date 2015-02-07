@@ -156,15 +156,15 @@ namespace MotorProtection.UI
                     rbtnStopClose.Checked = true;
                 else if (_config.FirstRMMode.Value == 4)
                     rbtnStopOpen.Checked = true;
-
-                if (_config.SecondRMMode.Value == 1)
-                    rbtnAlarmClose1.Checked = true;
+                
+                if (_config.SecondRMMode == null || _config.SecondRMMode.Value == 4)
+                    rbtnStopOpen1.Checked = true;
                 else if (_config.SecondRMMode.Value == 2)
                     rbtnAlarmOpen1.Checked = true;
                 else if (_config.SecondRMMode.Value == 3)
                     rbtnStopClose1.Checked = true;
-                else if (_config.SecondRMMode == null || _config.SecondRMMode.Value == 4)
-                    rbtnStopOpen1.Checked = true;
+                else if (_config.SecondRMMode.Value == 1)
+                    rbtnAlarmClose1.Checked = true;                   
             }
         }
 

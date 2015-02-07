@@ -363,7 +363,7 @@ namespace MotorProtection.UI
             string name = tvProtectors.SelectedNode.Text;
             int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
             DeviceConfigurationPool pool = new DeviceConfigurationPool();
-            DialogResult result = MessageBox.Show("确认要复位保护器 "+name+" 吗?", "系统提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("确认要复位保护器 " + name + " 吗?", "系统提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 using (MotorProtectorEntities ctt = new MotorProtectorEntities())
@@ -528,6 +528,8 @@ namespace MotorProtection.UI
 
             var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
 
+            pnlMainShow.Controls.Clear();
+
             if (parents.Count > 0)
             {
                 foreach (Device parent in parents)
@@ -535,18 +537,379 @@ namespace MotorProtection.UI
                     var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive && d.IsDisplay).ToList();
                     if (children.Count > 0)
                     {
-                        GroupBox parentBox = new GroupBox();
-                        //parentBox.Anchor = AnchorStyles.Bottom;
-                        //parentBox.Anchor = AnchorStyles.Top;
-                        //parentBox.Anchor = AnchorStyles.Left;
-                        //parentBox.Anchor = AnchorStyles.Right;
-                        //parentBox.Top = 10;
-                        //parentBox.Left = 5;
-                        parentBox.Text = parent.Name;
-                        pnlMainShow.Controls.Add(parentBox);
+                        //GroupBox parentBox = new GroupBox();
+                        //parentBox.AutoSize = true;
+                        //parentBox.Text = parent.Name;
+                        //parentBox.Padding = new Padding(20, 15, 20, 15);
+
+                        foreach (Device child in children)
+                        {
+                            Panel childPanel = new Panel();
+
+                            CreateMonitorPanel(childPanel, child);
+                            
+                            if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
+                            {
+                                childPanel.BackColor = Color.MediumSpringGreen;
+                            }
+                            else if (child.Status.Value == ProtectorStatus.Stopped)
+                            {
+                                childPanel.BackColor = Color.Red;
+                            }
+                            else if (child.Status.Value == ProtectorStatus.Alarm)
+                            {
+                                childPanel.BackColor = Color.Gold;
+                            }
+
+                            pnlMainShow.Controls.Add(childPanel);
+
+                            //parentBox.Controls.Add(childPanel);
+                        }
+
+                        //pnlMainShow.Controls.Add(parentBox);
                     }
                 }
             }
+        }
+
+        private void CreateMonitorPanel(Panel parent, Device device)
+        {
+            parent.ResumeLayout(false);
+            parent.SuspendLayout();
+
+            Button btnAlarmClear = new Button();
+            Button btnReset = new Button();
+            Button btnStart = new Button();
+            Button btnHide = new Button();
+
+            // Alarm Clear button
+            btnAlarmClear.Location = new System.Drawing.Point(7, 201);
+            btnAlarmClear.Name = "btnAlarmClear";
+            btnAlarmClear.Size = new System.Drawing.Size(75, 30);
+            btnAlarmClear.TabIndex = 16;
+            btnAlarmClear.Text = "消除报警";
+            btnAlarmClear.UseVisualStyleBackColor = true;
+
+            // reset button
+            btnReset.Location = new System.Drawing.Point(88, 201);
+            btnReset.Name = "btnReset";
+            btnReset.Size = new System.Drawing.Size(75, 30);
+            btnReset.TabIndex = 17;
+            btnReset.Text = "重置";
+            btnReset.UseVisualStyleBackColor = true;
+
+            // start button
+            btnStart.Location = new System.Drawing.Point(169, 201);
+            btnStart.Name = "btnStart";
+            btnStart.Size = new System.Drawing.Size(75, 30);
+            btnStart.TabIndex = 18;
+            btnStart.Text = "停机启动";
+            btnStart.UseVisualStyleBackColor = true;
+
+            // hide button
+            btnHide.Location = new System.Drawing.Point(250, 201);
+            btnHide.Name = "btnHide";
+            btnHide.Size = new System.Drawing.Size(75, 30);
+            btnHide.TabIndex = 19;
+            btnHide.Text = "隐藏";
+            btnHide.UseVisualStyleBackColor = true;
+
+            if (device.Status == null || device.Status.Value == ProtectorStatus.Normal)
+            {
+                btnStart.Enabled = false;
+                btnAlarmClear.Enabled = false;
+            }
+            else if (device.Status.Value == ProtectorStatus.Stopped)
+            {
+                btnStart.Enabled = true;
+                btnAlarmClear.Enabled = false;
+            }
+            else if (device.Status.Value == ProtectorStatus.Alarm)
+            {
+                btnStart.Enabled = false;
+                btnAlarmClear.Enabled = true;
+            }
+
+            // title
+            Label lblProtectorNameValue = new Label();
+            Label lblProtectorNameKey = new Label();
+
+            lblProtectorNameKey.AutoSize = true;
+            lblProtectorNameKey.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            lblProtectorNameKey.Location = new System.Drawing.Point(4, 7);
+            lblProtectorNameKey.Name = "lblProtectorNameKey";
+            lblProtectorNameKey.Size = new System.Drawing.Size(84, 12);
+            lblProtectorNameKey.TabIndex = 0;
+            lblProtectorNameKey.Text = "保护器名称: ";
+
+            lblProtectorNameValue.AutoSize = true;
+            lblProtectorNameValue.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            lblProtectorNameValue.Location = new System.Drawing.Point(74, 6);
+            lblProtectorNameValue.Name = "lblProtectorNameValue";
+            lblProtectorNameValue.Size = new System.Drawing.Size(26, 12);
+            lblProtectorNameValue.TabIndex = 1;
+
+            // current A B C
+            Label lblCurrentCKey = new Label();
+            Label lblCurrentBKey = new Label();
+            Label lblCurrentAKey = new Label();
+            Label lblCurrentCValue = new Label();
+            Label lblCurrentBValue = new Label();
+            Label lblCurrentAValue = new Label();
+
+            lblCurrentAKey.AutoSize = true;
+            lblCurrentAKey.Location = new System.Drawing.Point(6, 30);
+            lblCurrentAKey.Name = "lblCurrentAKey";
+            lblCurrentAKey.Size = new System.Drawing.Size(65, 12);
+            lblCurrentAKey.TabIndex = 2;
+            lblCurrentAKey.Text = "电流 - A: ";
+
+            lblCurrentBKey.AutoSize = true;
+            lblCurrentBKey.Location = new System.Drawing.Point(112, 30);
+            lblCurrentBKey.Name = "label4";
+            lblCurrentBKey.Size = new System.Drawing.Size(65, 12);
+            lblCurrentBKey.TabIndex = 3;
+            lblCurrentBKey.Text = "电流 - B: ";
+
+            lblCurrentCKey.AutoSize = true;
+            lblCurrentCKey.Location = new System.Drawing.Point(227, 30);
+            lblCurrentCKey.Name = "label5";
+            lblCurrentCKey.Size = new System.Drawing.Size(65, 12);
+            lblCurrentCKey.TabIndex = 4;
+            lblCurrentCKey.Text = "电流 - C: ";
+
+            lblCurrentAValue.AutoSize = true;
+            lblCurrentAValue.Location = new System.Drawing.Point(63, 30);
+            lblCurrentAValue.Name = "lblCurrentAValue";
+            lblCurrentAValue.Size = new System.Drawing.Size(47, 12);
+            lblCurrentAValue.TabIndex = 20;
+
+            lblCurrentBValue.AutoSize = true;
+            lblCurrentBValue.Location = new System.Drawing.Point(169, 30);
+            lblCurrentBValue.Name = "lblCurrentAValue";
+            lblCurrentBValue.Size = new System.Drawing.Size(47, 12);
+            lblCurrentBValue.TabIndex = 21;
+
+            lblCurrentCValue.AutoSize = true;
+            lblCurrentCValue.Location = new System.Drawing.Point(284, 30);
+            lblCurrentCValue.Name = "lblCurrentCValue";
+            lblCurrentCValue.Size = new System.Drawing.Size(47, 12);
+            lblCurrentCValue.TabIndex = 22;
+
+            // Vol A B C
+            Label lblVolCKey = new Label();
+            Label lblVolBKey = new Label();
+            Label lblVolAKey = new Label();
+            Label lblVolCValue = new Label();
+            Label lblVolBValue = new Label();
+            Label lblVolAValue = new Label();
+
+            lblVolAKey.AutoSize = true;
+            lblVolAKey.Location = new System.Drawing.Point(6, 53);
+            lblVolAKey.Name = "lblVolAKey";
+            lblVolAKey.Size = new System.Drawing.Size(65, 12);
+            lblVolAKey.TabIndex = 5;
+            lblVolAKey.Text = "电压 - A: ";
+
+            lblVolBKey.AutoSize = true;
+            lblVolBKey.Location = new System.Drawing.Point(112, 53);
+            lblVolBKey.Name = "lblVolBKey";
+            lblVolBKey.Size = new System.Drawing.Size(65, 12);
+            lblVolBKey.TabIndex = 6;
+            lblVolBKey.Text = "电压 - B: ";
+
+            lblVolCKey.AutoSize = true;
+            lblVolCKey.Location = new System.Drawing.Point(227, 53);
+            lblVolCKey.Name = "lblVolCKey";
+            lblVolCKey.Size = new System.Drawing.Size(65, 12);
+            lblVolCKey.TabIndex = 7;
+            lblVolCKey.Text = "电压 - C: ";
+
+            lblVolAValue.AutoSize = true;
+            lblVolAValue.Location = new System.Drawing.Point(63, 53);
+            lblVolAValue.Name = "lblVolAValue";
+            lblVolAValue.Size = new System.Drawing.Size(47, 12);
+            lblVolAValue.TabIndex = 23;
+
+            lblVolBValue.AutoSize = true;
+            lblVolBValue.Location = new System.Drawing.Point(169, 53);
+            lblVolBValue.Name = "lblVolBValue";
+            lblVolBValue.Size = new System.Drawing.Size(47, 12);
+            lblVolBValue.TabIndex = 24;
+
+            lblVolCValue.AutoSize = true;
+            lblVolCValue.Location = new System.Drawing.Point(284, 53);
+            lblVolCValue.Name = "lblVolCValue";
+            lblVolCValue.Size = new System.Drawing.Size(47, 12);
+            lblVolCValue.TabIndex = 25;
+
+            // Power
+            Label lblPowerKey = new Label();
+            Label lblPowerValue = new Label();
+
+            lblPowerKey.AutoSize = true;
+            lblPowerKey.Location = new System.Drawing.Point(6, 78);
+            lblPowerKey.Name = "lblPowerKey";
+            lblPowerKey.Size = new System.Drawing.Size(41, 12);
+            lblPowerKey.TabIndex = 8;
+            lblPowerKey.Text = "功率: ";
+
+            lblPowerValue.AutoSize = true;
+            lblPowerValue.Location = new System.Drawing.Point(41, 78);
+            lblPowerValue.Name = "lblPowerValue";
+            lblPowerValue.Size = new System.Drawing.Size(47, 12);
+            lblPowerValue.TabIndex = 26;
+
+            // Alarm time
+            Label lblAlarmTimeKey = new Label();
+            Label lblAlarmTimeValue = new Label();
+
+            lblAlarmTimeKey.AutoSize = true;
+            lblAlarmTimeKey.Location = new System.Drawing.Point(6, 102);
+            lblAlarmTimeKey.Name = "lblAlarmTimeKey";
+            lblAlarmTimeKey.Size = new System.Drawing.Size(65, 12);
+            lblAlarmTimeKey.TabIndex = 9;
+            lblAlarmTimeKey.Text = "报警时间: ";
+
+            lblAlarmTimeValue.AutoSize = true;
+            lblAlarmTimeValue.Location = new System.Drawing.Point(63, 102);
+            lblAlarmTimeValue.Name = "lblAlarmTimeValue";
+            lblAlarmTimeValue.Size = new System.Drawing.Size(47, 12);
+            lblAlarmTimeValue.TabIndex = 27;
+
+            // Stop time
+            Label lblStopTimeKey = new Label();
+            Label lblStopTimeValue = new Label();
+
+            lblStopTimeKey.AutoSize = true;
+            lblStopTimeKey.Location = new System.Drawing.Point(6, 125);
+            lblStopTimeKey.Name = "lblStopTimeKey";
+            lblStopTimeKey.Size = new System.Drawing.Size(65, 12);
+            lblStopTimeKey.TabIndex = 10;
+            lblStopTimeKey.Text = "停机时间: ";
+
+            lblStopTimeValue.AutoSize = true;
+            lblStopTimeValue.Location = new System.Drawing.Point(63, 125);
+            lblStopTimeValue.Name = "lblStopTimeValue";
+            lblStopTimeValue.Size = new System.Drawing.Size(47, 12);
+            lblStopTimeValue.TabIndex = 28;
+
+            // Temp A B C
+            Label lblTemCKey = new Label();
+            Label lblTemBKey = new Label();
+            Label lblTemAKey = new Label();
+            Label lblTemCValue = new Label();
+            Label lblTemBValue = new Label();
+            Label lblTemAValue = new Label();
+
+            lblTemCKey.AutoSize = true;
+            lblTemCKey.Location = new System.Drawing.Point(227, 148);
+            lblTemCKey.Name = "lblTemCKey";
+            lblTemCKey.Size = new System.Drawing.Size(65, 12);
+            lblTemCKey.TabIndex = 13;
+            lblTemCKey.Text = "温度 - C: ";
+
+            lblTemBKey.AutoSize = true;
+            lblTemBKey.Location = new System.Drawing.Point(112, 148);
+            lblTemBKey.Name = "lblTemBKey";
+            lblTemBKey.Size = new System.Drawing.Size(65, 12);
+            lblTemBKey.TabIndex = 12;
+            lblTemBKey.Text = "温度 - B: ";
+
+            lblTemAKey.AutoSize = true;
+            lblTemAKey.Location = new System.Drawing.Point(6, 148);
+            lblTemAKey.Name = "lblTemAKey";
+            lblTemAKey.Size = new System.Drawing.Size(65, 12);
+            lblTemAKey.TabIndex = 11;
+            lblTemAKey.Text = "温度 - A: ";
+
+            lblTemCValue.AutoSize = true;
+            lblTemCValue.Location = new System.Drawing.Point(282, 148);
+            lblTemCValue.Name = "lblTemCValue";
+            lblTemCValue.Size = new System.Drawing.Size(47, 12);
+            lblTemCValue.TabIndex = 31;
+            
+            lblTemBValue.AutoSize = true;
+            lblTemBValue.Location = new System.Drawing.Point(167, 148);
+            lblTemBValue.Name = "lblTemBValue";
+            lblTemBValue.Size = new System.Drawing.Size(47, 12);
+            lblTemBValue.TabIndex = 30;
+            
+            lblTemAValue.AutoSize = true;
+            lblTemAValue.Location = new System.Drawing.Point(61, 148);
+            lblTemAValue.Name = "lblTemAValue";
+            lblTemAValue.Size = new System.Drawing.Size(47, 12);
+            lblTemAValue.TabIndex = 29;
+
+            // RM#1 2 status
+            Label lblRM2Key = new Label();
+            Label lblRM1Key = new Label();
+            Label lblRM2Value = new Label();
+            Label lblRM1Value = new Label();
+
+            lblRM2Key.AutoSize = true;
+            lblRM2Key.Location = new System.Drawing.Point(112, 175);
+            lblRM2Key.Name = "lblRM2Key";
+            lblRM2Key.Size = new System.Drawing.Size(59, 12);
+            lblRM2Key.TabIndex = 15;
+            lblRM2Key.Text = "继电器#2:";
+             
+            lblRM1Key.AutoSize = true;
+            lblRM1Key.Location = new System.Drawing.Point(6, 175);
+            lblRM1Key.Name = "lblRM1Key";
+            lblRM1Key.Size = new System.Drawing.Size(65, 12);
+            lblRM1Key.TabIndex = 14;
+            lblRM1Key.Text = "继电器#1: ";
+
+            lblRM2Value.AutoSize = true;
+            lblRM2Value.Location = new System.Drawing.Point(169, 175);
+            lblRM2Value.Name = "lblRM2Value";
+            lblRM2Value.Size = new System.Drawing.Size(47, 12);
+            lblRM2Value.TabIndex = 33;
+            
+            lblRM1Value.AutoSize = true;
+            lblRM1Value.Location = new System.Drawing.Point(63, 175);
+            lblRM1Value.Name = "lblRM1Value";
+            lblRM1Value.Size = new System.Drawing.Size(47, 12);
+            lblRM1Value.TabIndex = 32;
+
+            parent.Controls.Add(lblRM1Value);
+            parent.Controls.Add(lblRM2Value);
+            parent.Controls.Add(lblRM1Key);
+            parent.Controls.Add(lblRM2Key);
+            parent.Controls.Add(lblTemAValue);
+            parent.Controls.Add(lblTemBValue);
+            parent.Controls.Add(lblTemCValue);
+            parent.Controls.Add(lblTemAKey);
+            parent.Controls.Add(lblTemBKey);
+            parent.Controls.Add(lblTemCKey);
+            parent.Controls.Add(lblStopTimeValue);
+            parent.Controls.Add(lblStopTimeKey);
+            parent.Controls.Add(lblAlarmTimeValue);
+            parent.Controls.Add(lblAlarmTimeKey);
+            parent.Controls.Add(lblPowerValue);
+            parent.Controls.Add(lblPowerKey);
+            parent.Controls.Add(lblVolAValue);
+            parent.Controls.Add(lblVolBValue);
+            parent.Controls.Add(lblVolCValue);
+            parent.Controls.Add(lblVolAKey);
+            parent.Controls.Add(lblVolBKey);
+            parent.Controls.Add(lblVolCKey);
+            parent.Controls.Add(lblCurrentAValue);
+            parent.Controls.Add(lblCurrentBValue);
+            parent.Controls.Add(lblCurrentCValue);
+            parent.Controls.Add(lblCurrentAKey);
+            parent.Controls.Add(lblCurrentBKey);
+            parent.Controls.Add(lblCurrentCKey);
+            parent.Controls.Add(lblProtectorNameKey);
+            parent.Controls.Add(lblProtectorNameValue);
+            parent.Controls.Add(btnAlarmClear);
+            parent.Controls.Add(btnReset);
+            parent.Controls.Add(btnStart);
+            parent.Controls.Add(btnHide);
+            parent.Name = "parent";
+            parent.Size = new System.Drawing.Size(334, 239);
+            parent.TabIndex = 0;
         }
 
         private string ParsingClearProtectorAlarmCommands()

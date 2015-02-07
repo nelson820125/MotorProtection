@@ -86,7 +86,7 @@
             this.tsmiAbout});
             this.menuSystem.Location = new System.Drawing.Point(0, 0);
             this.menuSystem.Name = "menuSystem";
-            this.menuSystem.Size = new System.Drawing.Size(1370, 24);
+            this.menuSystem.Size = new System.Drawing.Size(1370, 25);
             this.menuSystem.TabIndex = 0;
             this.menuSystem.Text = "menuStrip1";
             // 
@@ -98,14 +98,14 @@
             this.toolStripSeparator1,
             this.tmsiSignOut});
             this.tmsiSystem.Name = "tmsiSystem";
-            this.tmsiSystem.Size = new System.Drawing.Size(45, 20);
+            this.tmsiSystem.Size = new System.Drawing.Size(44, 21);
             this.tmsiSystem.Text = "系统";
             // 
             // tsmiStart
             // 
             this.tsmiStart.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStart.Image")));
             this.tsmiStart.Name = "tsmiStart";
-            this.tsmiStart.Size = new System.Drawing.Size(126, 22);
+            this.tsmiStart.Size = new System.Drawing.Size(124, 22);
             this.tsmiStart.Text = "启动系统";
             this.tsmiStart.Click += new System.EventHandler(this.tsmiStart_Click);
             // 
@@ -113,18 +113,18 @@
             // 
             this.tsmiStop.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStop.Image")));
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(126, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(124, 22);
             this.tsmiStop.Text = "停止系统";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(123, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
             // tmsiSignOut
             // 
             this.tmsiSignOut.Name = "tmsiSignOut";
-            this.tmsiSignOut.Size = new System.Drawing.Size(126, 22);
+            this.tmsiSignOut.Size = new System.Drawing.Size(124, 22);
             this.tmsiSignOut.Text = "退出";
             this.tmsiSignOut.Click += new System.EventHandler(this.tmsiSignOut_Click);
             // 
@@ -136,27 +136,27 @@
             this.toolStripSeparator2,
             this.tsmiAddNodes});
             this.tsmiEdit.Name = "tsmiEdit";
-            this.tsmiEdit.Size = new System.Drawing.Size(45, 20);
+            this.tsmiEdit.Size = new System.Drawing.Size(44, 21);
             this.tsmiEdit.Text = "设置";
             // 
             // tsmiBasicParameterSetting
             // 
             this.tsmiBasicParameterSetting.Name = "tsmiBasicParameterSetting";
-            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(126, 22);
+            this.tsmiBasicParameterSetting.Size = new System.Drawing.Size(124, 22);
             this.tsmiBasicParameterSetting.Text = "通讯设置";
             this.tsmiBasicParameterSetting.Click += new System.EventHandler(this.tsmiBasicParameterSetting_Click);
             // 
             // tsmiAlarmSetting
             // 
             this.tsmiAlarmSetting.Name = "tsmiAlarmSetting";
-            this.tsmiAlarmSetting.Size = new System.Drawing.Size(126, 22);
+            this.tsmiAlarmSetting.Size = new System.Drawing.Size(124, 22);
             this.tsmiAlarmSetting.Text = "系统设置";
             this.tsmiAlarmSetting.Click += new System.EventHandler(this.tsmiAlarmSetting_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(123, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(121, 6);
             // 
             // tsmiAddNodes
             // 
@@ -164,20 +164,20 @@
             this.tsmiAddLines,
             this.tsmiAddProtectors});
             this.tsmiAddNodes.Name = "tsmiAddNodes";
-            this.tsmiAddNodes.Size = new System.Drawing.Size(126, 22);
+            this.tsmiAddNodes.Size = new System.Drawing.Size(124, 22);
             this.tsmiAddNodes.Text = "添加节点";
             // 
             // tsmiAddLines
             // 
             this.tsmiAddLines.Name = "tsmiAddLines";
-            this.tsmiAddLines.Size = new System.Drawing.Size(139, 22);
+            this.tsmiAddLines.Size = new System.Drawing.Size(136, 22);
             this.tsmiAddLines.Text = "添加生产线";
             this.tsmiAddLines.Click += new System.EventHandler(this.tsmiAddLines_Click);
             // 
             // tsmiAddProtectors
             // 
             this.tsmiAddProtectors.Name = "tsmiAddProtectors";
-            this.tsmiAddProtectors.Size = new System.Drawing.Size(139, 22);
+            this.tsmiAddProtectors.Size = new System.Drawing.Size(136, 22);
             this.tsmiAddProtectors.Text = "添加保护器";
             this.tsmiAddProtectors.Click += new System.EventHandler(this.tsmiAddProtectors_Click);
             // 
@@ -187,13 +187,13 @@
             this.menuFullScreen,
             this.menuExitFullScreen});
             this.menuView.Name = "menuView";
-            this.menuView.Size = new System.Drawing.Size(45, 20);
+            this.menuView.Size = new System.Drawing.Size(44, 21);
             this.menuView.Text = "视图";
             // 
             // menuFullScreen
             // 
             this.menuFullScreen.Name = "menuFullScreen";
-            this.menuFullScreen.Size = new System.Drawing.Size(126, 22);
+            this.menuFullScreen.Size = new System.Drawing.Size(124, 22);
             this.menuFullScreen.Text = "全屏";
             this.menuFullScreen.Click += new System.EventHandler(this.menuFullScreen_Click);
             // 
@@ -201,7 +201,7 @@
             // 
             this.menuExitFullScreen.Enabled = false;
             this.menuExitFullScreen.Name = "menuExitFullScreen";
-            this.menuExitFullScreen.Size = new System.Drawing.Size(126, 22);
+            this.menuExitFullScreen.Size = new System.Drawing.Size(124, 22);
             this.menuExitFullScreen.Text = "退出全屏";
             this.menuExitFullScreen.Click += new System.EventHandler(this.menuExitFullScreen_Click);
             // 
@@ -210,13 +210,13 @@
             this.tsmiAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiAboutSystem});
             this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(45, 20);
+            this.tsmiAbout.Size = new System.Drawing.Size(44, 21);
             this.tsmiAbout.Text = "关于";
             // 
             // tsmiAboutSystem
             // 
             this.tsmiAboutSystem.Name = "tsmiAboutSystem";
-            this.tsmiAboutSystem.Size = new System.Drawing.Size(222, 22);
+            this.tsmiAboutSystem.Size = new System.Drawing.Size(218, 22);
             this.tsmiAboutSystem.Text = "电机保护器控制软件V1.0...";
             this.tsmiAboutSystem.Click += new System.EventHandler(this.tsmiAboutSystem_Click);
             // 
@@ -226,7 +226,7 @@
             this.toolStripStatusLabel1,
             this.tsslSystemStatus});
             this.stsBottom.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.stsBottom.Location = new System.Drawing.Point(0, 628);
+            this.stsBottom.Location = new System.Drawing.Point(0, 578);
             this.stsBottom.Name = "stsBottom";
             this.stsBottom.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.stsBottom.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -254,9 +254,9 @@
             this.pnlNodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlNodes.Controls.Add(this.tvProtectors);
             this.pnlNodes.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlNodes.Location = new System.Drawing.Point(0, 24);
+            this.pnlNodes.Location = new System.Drawing.Point(0, 25);
             this.pnlNodes.Name = "pnlNodes";
-            this.pnlNodes.Size = new System.Drawing.Size(200, 604);
+            this.pnlNodes.Size = new System.Drawing.Size(200, 553);
             this.pnlNodes.TabIndex = 2;
             // 
             // tvProtectors
@@ -270,7 +270,7 @@
             this.tvProtectors.Location = new System.Drawing.Point(0, 0);
             this.tvProtectors.Name = "tvProtectors";
             this.tvProtectors.SelectedImageIndex = 0;
-            this.tvProtectors.Size = new System.Drawing.Size(196, 600);
+            this.tvProtectors.Size = new System.Drawing.Size(196, 549);
             this.tvProtectors.TabIndex = 0;
             this.tvProtectors.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvProtectors_MouseDown);
             // 
@@ -285,9 +285,9 @@
             // 
             // sprMain
             // 
-            this.sprMain.Location = new System.Drawing.Point(200, 24);
+            this.sprMain.Location = new System.Drawing.Point(200, 25);
             this.sprMain.Name = "sprMain";
-            this.sprMain.Size = new System.Drawing.Size(3, 604);
+            this.sprMain.Size = new System.Drawing.Size(3, 553);
             this.sprMain.TabIndex = 3;
             this.sprMain.TabStop = false;
             // 
@@ -295,9 +295,9 @@
             // 
             this.pnlMainShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlMainShow.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMainShow.Location = new System.Drawing.Point(203, 24);
+            this.pnlMainShow.Location = new System.Drawing.Point(203, 25);
             this.pnlMainShow.Name = "pnlMainShow";
-            this.pnlMainShow.Size = new System.Drawing.Size(1167, 604);
+            this.pnlMainShow.Size = new System.Drawing.Size(1167, 553);
             this.pnlMainShow.TabIndex = 4;
             // 
             // cmsParent
@@ -308,31 +308,31 @@
             this.tsmiRightLineEdit,
             this.tsmiRightDeactive});
             this.cmsParent.Name = "cmsParent";
-            this.cmsParent.Size = new System.Drawing.Size(140, 76);
+            this.cmsParent.Size = new System.Drawing.Size(137, 76);
             // 
             // tsmiRightAddProtector
             // 
             this.tsmiRightAddProtector.Name = "tsmiRightAddProtector";
-            this.tsmiRightAddProtector.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightAddProtector.Size = new System.Drawing.Size(136, 22);
             this.tsmiRightAddProtector.Text = "添加保护器";
             this.tsmiRightAddProtector.Click += new System.EventHandler(this.tsmiRightAddProtector_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(136, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(133, 6);
             // 
             // tsmiRightLineEdit
             // 
             this.tsmiRightLineEdit.Name = "tsmiRightLineEdit";
-            this.tsmiRightLineEdit.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightLineEdit.Size = new System.Drawing.Size(136, 22);
             this.tsmiRightLineEdit.Text = "编辑";
             this.tsmiRightLineEdit.Click += new System.EventHandler(this.tsmiRightLineEdit_Click);
             // 
             // tsmiRightDeactive
             // 
             this.tsmiRightDeactive.Name = "tsmiRightDeactive";
-            this.tsmiRightDeactive.Size = new System.Drawing.Size(139, 22);
+            this.tsmiRightDeactive.Size = new System.Drawing.Size(136, 22);
             this.tsmiRightDeactive.Text = "禁用";
             this.tsmiRightDeactive.Click += new System.EventHandler(this.tsmiRightDeactive_Click);
             // 
@@ -348,65 +348,65 @@
             this.tsmiDisplay,
             this.tsmiHide});
             this.cmsChild.Name = "cmsChild";
-            this.cmsChild.Size = new System.Drawing.Size(166, 148);
+            this.cmsChild.Size = new System.Drawing.Size(161, 148);
             // 
             // tsmiRightEditProtector
             // 
             this.tsmiRightEditProtector.Name = "tsmiRightEditProtector";
-            this.tsmiRightEditProtector.Size = new System.Drawing.Size(165, 22);
+            this.tsmiRightEditProtector.Size = new System.Drawing.Size(160, 22);
             this.tsmiRightEditProtector.Text = "编辑";
             this.tsmiRightEditProtector.Click += new System.EventHandler(this.tsmiRightEditProtector_Click);
             // 
             // tsmiRightDeactiveProtector
             // 
             this.tsmiRightDeactiveProtector.Name = "tsmiRightDeactiveProtector";
-            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(165, 22);
+            this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(160, 22);
             this.tsmiRightDeactiveProtector.Text = "禁用";
             this.tsmiRightDeactiveProtector.Click += new System.EventHandler(this.tsmiRightDeactiveProtector_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(157, 6);
             // 
             // tsmiClearProtectorAlarm
             // 
             this.tsmiClearProtectorAlarm.Name = "tsmiClearProtectorAlarm";
-            this.tsmiClearProtectorAlarm.Size = new System.Drawing.Size(165, 22);
+            this.tsmiClearProtectorAlarm.Size = new System.Drawing.Size(160, 22);
             this.tsmiClearProtectorAlarm.Text = "解除警报";
             this.tsmiClearProtectorAlarm.Click += new System.EventHandler(this.tsmiClearProtectorAlarm_Click);
             // 
             // tsmiProtectorReset
             // 
             this.tsmiProtectorReset.Name = "tsmiProtectorReset";
-            this.tsmiProtectorReset.Size = new System.Drawing.Size(165, 22);
+            this.tsmiProtectorReset.Size = new System.Drawing.Size(160, 22);
             this.tsmiProtectorReset.Text = "复位";
             this.tsmiProtectorReset.Click += new System.EventHandler(this.tsmiProtectorReset_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(162, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(157, 6);
             // 
             // tsmiDisplay
             // 
             this.tsmiDisplay.Name = "tsmiDisplay";
-            this.tsmiDisplay.Size = new System.Drawing.Size(165, 22);
+            this.tsmiDisplay.Size = new System.Drawing.Size(160, 22);
             this.tsmiDisplay.Text = "在主显示区显示";
             this.tsmiDisplay.Click += new System.EventHandler(this.tsmiDisplay_Click);
             // 
             // tsmiHide
             // 
             this.tsmiHide.Name = "tsmiHide";
-            this.tsmiHide.Size = new System.Drawing.Size(165, 22);
+            this.tsmiHide.Size = new System.Drawing.Size(160, 22);
             this.tsmiHide.Text = "在主显示区隐藏";
             this.tsmiHide.Click += new System.EventHandler(this.tsmiHide_Click);
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 650);
+            this.ClientSize = new System.Drawing.Size(1370, 600);
             this.Controls.Add(this.pnlMainShow);
             this.Controls.Add(this.sprMain);
             this.Controls.Add(this.pnlNodes);
