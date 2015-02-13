@@ -537,10 +537,20 @@ namespace MotorProtection.UI
                     var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive && d.IsDisplay).ToList();
                     if (children.Count > 0)
                     {
-                        //GroupBox parentBox = new GroupBox();
-                        //parentBox.AutoSize = true;
-                        //parentBox.Text = parent.Name;
-                        //parentBox.Padding = new Padding(20, 15, 20, 15);
+                        // calculate table layout, view panel's width is 334 and height is 239
+                        //int mainWidth = pnlMainShow.Size.Width;
+                        //int columnCount = mainWidth / 334; // Main Panel Width / View Panel Width = Column count
+                        //int rowCount = (children.Count % columnCount != 0) ? (children.Count / columnCount) + 1 : children.Count / columnCount;
+                        //TableLayoutPanel childTablePanel = new TableLayoutPanel();
+                        //childTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+                        //childTablePanel.ColumnCount = columnCount;
+                        //childTablePanel.RowCount = rowCount;
+                        //int columnNum = 0;
+                        //int rowNum = 0;
+                        FlowLayoutPanel childPanels = new FlowLayoutPanel();
+                        childPanels.BorderStyle = BorderStyle.None;
+                        childPanels.FlowDirection = FlowDirection.TopDown;
+                        childPanels.AutoSize = true;
 
                         foreach (Device child in children)
                         {
@@ -561,12 +571,15 @@ namespace MotorProtection.UI
                                 childPanel.BackColor = Color.Gold;
                             }
 
-                            pnlMainShow.Controls.Add(childPanel);
+                            //childTablePanel.Controls.Add(childPanel, columnNum, rowNum);
 
-                            //parentBox.Controls.Add(childPanel);
+                            //columnNum++;
+                            //if (columnNum >= columnCount) rowNum++;
+                            childPanels.Controls.Add(childPanel);
+                            
                         }
 
-                        //pnlMainShow.Controls.Add(parentBox);
+                        pnlMainShow.Controls.Add(childPanels);
                     }
                 }
             }
