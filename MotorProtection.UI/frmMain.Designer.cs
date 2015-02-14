@@ -295,6 +295,7 @@
             // 
             this.pnlMainShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlMainShow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMainShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pnlMainShow.Location = new System.Drawing.Point(203, 24);
             this.pnlMainShow.Name = "pnlMainShow";
             this.pnlMainShow.Size = new System.Drawing.Size(1167, 604);

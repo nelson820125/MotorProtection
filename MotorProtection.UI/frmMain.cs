@@ -153,7 +153,44 @@ namespace MotorProtection.UI
                 Point clickPoint = new Point(e.X, e.Y);
                 TreeNode mySelect = tvProtectors.GetNodeAt(clickPoint);
                 if (mySelect != null)
+                {
                     tvProtectors.SelectedNode = mySelect;
+                    int deviceId = Convert.ToInt32(mySelect.ToolTipText);
+                    using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                    {
+                        var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+
+                        if (device != null)
+                        {
+                            if (device.ParentID != null && device.ParentID.Value != 0) // is sub tree node
+                            {
+                                if (device.Status == null || device.Status.Value == ProtectorStatus.Normal)
+                                {
+                                    cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = false;
+                                }
+                                else if (device.Status.Value == ProtectorStatus.Stopped)
+                                {
+                                    cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = false;
+                                }
+                                else if (device.Status.Value == ProtectorStatus.Alarm)
+                                {
+                                    cmsChild.Items["tsmiClearProtectorAlarm"].Enabled = true;
+                                }
+
+                                if (device.IsDisplay)
+                                {
+                                    cmsChild.Items["tsmiDisplay"].Enabled = false;
+                                    cmsChild.Items["tsmiHide"].Enabled = true;
+                                }
+                                else
+                                {
+                                    cmsChild.Items["tsmiDisplay"].Enabled = true;
+                                    cmsChild.Items["tsmiHide"].Enabled = false;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -530,6 +567,13 @@ namespace MotorProtection.UI
 
             pnlMainShow.Controls.Clear();
 
+            FlowLayoutPanel mainPanels = new FlowLayoutPanel();
+            mainPanels.BorderStyle = BorderStyle.None;
+            mainPanels.FlowDirection = FlowDirection.TopDown;
+            mainPanels.AutoSize = true;
+
+            pnlMainShow.Controls.Add(mainPanels);
+
             if (parents.Count > 0)
             {
                 foreach (Device parent in parents)
@@ -537,19 +581,21 @@ namespace MotorProtection.UI
                     var children = devices.Where(d => d.ParentID == parent.DeviceID && d.IsActive && d.IsDisplay).ToList();
                     if (children.Count > 0)
                     {
-                        // calculate table layout, view panel's width is 334 and height is 239
-                        //int mainWidth = pnlMainShow.Size.Width;
-                        //int columnCount = mainWidth / 334; // Main Panel Width / View Panel Width = Column count
-                        //int rowCount = (children.Count % columnCount != 0) ? (children.Count / columnCount) + 1 : children.Count / columnCount;
-                        //TableLayoutPanel childTablePanel = new TableLayoutPanel();
-                        //childTablePanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
-                        //childTablePanel.ColumnCount = columnCount;
-                        //childTablePanel.RowCount = rowCount;
-                        //int columnNum = 0;
-                        //int rowNum = 0;
+                        Label lineName = new Label();
+                        lineName.Text = "生产线: " + parent.Name;
+                        lineName.Font = new System.Drawing.Font(new FontFamily("宋体"), 9f, FontStyle.Bold | FontStyle.Underline);
+                        lineName.Width = pnlMainShow.Width;
+                        lineName.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
+                        lineName.Padding = new System.Windows.Forms.Padding(5);
+                        lineName.BorderStyle = BorderStyle.None;
+                        lineName.BackColor = Color.LightGray;
+                        lineName.TextAlign = ContentAlignment.MiddleLeft;
+
+                        mainPanels.Controls.Add(lineName);
+
                         FlowLayoutPanel childPanels = new FlowLayoutPanel();
                         childPanels.BorderStyle = BorderStyle.None;
-                        childPanels.FlowDirection = FlowDirection.TopDown;
+                        childPanels.FlowDirection = FlowDirection.LeftToRight;
                         childPanels.AutoSize = true;
 
                         foreach (Device child in children)
@@ -560,7 +606,7 @@ namespace MotorProtection.UI
                             
                             if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
                             {
-                                childPanel.BackColor = Color.MediumSpringGreen;
+                                childPanel.BackColor = Color.PaleGreen;
                             }
                             else if (child.Status.Value == ProtectorStatus.Stopped)
                             {
@@ -568,18 +614,14 @@ namespace MotorProtection.UI
                             }
                             else if (child.Status.Value == ProtectorStatus.Alarm)
                             {
-                                childPanel.BackColor = Color.Gold;
+                                childPanel.BackColor = Color.Khaki;
                             }
 
-                            //childTablePanel.Controls.Add(childPanel, columnNum, rowNum);
-
-                            //columnNum++;
-                            //if (columnNum >= columnCount) rowNum++;
                             childPanels.Controls.Add(childPanel);
                             
                         }
 
-                        pnlMainShow.Controls.Add(childPanels);
+                        mainPanels.Controls.Add(childPanels);                        
                     }
                 }
             }
