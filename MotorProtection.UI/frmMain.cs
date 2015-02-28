@@ -359,9 +359,8 @@ namespace MotorProtection.UI
             }
         }
 
-        private void tsmiClearProtectorAlarm_Click(object sender, EventArgs e)
+        private void ClearProtectorAlarm(int deviceId)
         {
-            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
             DeviceConfigurationPool pool = new DeviceConfigurationPool();
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
@@ -395,10 +394,20 @@ namespace MotorProtection.UI
             }
         }
 
-        private void tsmiProtectorReset_Click(object sender, EventArgs e)
+        private void tsmiClearProtectorAlarm_Click(object sender, EventArgs e)
         {
-            string name = tvProtectors.SelectedNode.Text;
             int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            ClearProtectorAlarm(deviceId);
+        }
+
+        private void mainButtonClearAlarm_Click(object sender, EventArgs e)
+        {
+            Label lblDeviceID = (Label)((Button)sender).Parent.Controls["lblDeviceID"];
+            ClearProtectorAlarm(Convert.ToInt32(lblDeviceID.Text.Trim()));
+        }
+
+        private void ResetProtector(string name, int deviceId)
+        {
             DeviceConfigurationPool pool = new DeviceConfigurationPool();
             DialogResult result = MessageBox.Show("确认要复位保护器 " + name + " 吗?", "系统提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == System.Windows.Forms.DialogResult.OK)
@@ -436,6 +445,20 @@ namespace MotorProtection.UI
             }
         }
 
+        private void tsmiProtectorReset_Click(object sender, EventArgs e)
+        {
+            string name = tvProtectors.SelectedNode.Text;
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            ResetProtector(name, deviceId);
+        }
+
+        private void mainButtonReset_Click(object sender, EventArgs e)
+        {
+            Label lblProtectorNameValue = (Label)((Button)sender).Parent.Controls["lblProtectorNameValue"];
+            Label lblDeviceID = (Label)((Button)sender).Parent.Controls["lblDeviceID"];
+            ResetProtector(lblProtectorNameValue.Text.Trim(), Convert.ToInt32(lblDeviceID.Text.Trim()));
+        }
+
         private void tsmiDisplay_Click(object sender, EventArgs e)
         {
             int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
@@ -458,10 +481,8 @@ namespace MotorProtection.UI
             ReloadMainPanel();
         }
 
-        private void tsmiHide_Click(object sender, EventArgs e)
+        private void HideProtectorPanel(int deviceId)
         {
-            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
-
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
                 var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
@@ -478,6 +499,21 @@ namespace MotorProtection.UI
             CacheController.UpdateAllCacheGroupTimestamp();
             ReloadDeviceTree();
             ReloadMainPanel();
+        }
+
+        private void tsmiHide_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+
+            HideProtectorPanel(deviceId);
+        }
+
+        private void mainButtonHide_Click(object sender, EventArgs e)
+        {
+            Label lblDeviceID = (Label)((Button)sender).Parent.Controls["lblDeviceID"];
+            int deviceId = Convert.ToInt32(lblDeviceID.Text.Trim());
+
+            HideProtectorPanel(deviceId);
         }
 
         #region private
@@ -644,14 +680,16 @@ namespace MotorProtection.UI
             btnAlarmClear.TabIndex = 16;
             btnAlarmClear.Text = "消除报警";
             btnAlarmClear.UseVisualStyleBackColor = true;
+            btnAlarmClear.Click += mainButtonClearAlarm_Click;
 
             // reset button
             btnReset.Location = new System.Drawing.Point(88, 201);
             btnReset.Name = "btnReset";
             btnReset.Size = new System.Drawing.Size(75, 30);
             btnReset.TabIndex = 17;
-            btnReset.Text = "重置";
+            btnReset.Text = "复位";
             btnReset.UseVisualStyleBackColor = true;
+            btnReset.Click += mainButtonReset_Click;
 
             // start button
             btnStart.Location = new System.Drawing.Point(169, 201);
@@ -668,6 +706,7 @@ namespace MotorProtection.UI
             btnHide.TabIndex = 19;
             btnHide.Text = "隐藏";
             btnHide.UseVisualStyleBackColor = true;
+            btnHide.Click += mainButtonHide_Click;
 
             if (device.Status == null || device.Status.Value == ProtectorStatus.Normal)
             {
@@ -688,6 +727,7 @@ namespace MotorProtection.UI
             // title
             Label lblProtectorNameValue = new Label();
             Label lblProtectorNameKey = new Label();
+            Label lblDeviceID = new Label();
 
             lblProtectorNameKey.AutoSize = true;
             lblProtectorNameKey.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -699,10 +739,14 @@ namespace MotorProtection.UI
 
             lblProtectorNameValue.AutoSize = true;
             lblProtectorNameValue.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            lblProtectorNameValue.Location = new System.Drawing.Point(74, 6);
+            lblProtectorNameValue.Location = new System.Drawing.Point(90, 6);
             lblProtectorNameValue.Name = "lblProtectorNameValue";
-            lblProtectorNameValue.Size = new System.Drawing.Size(26, 12);
             lblProtectorNameValue.TabIndex = 1;
+            lblProtectorNameValue.Text = device.Name;
+
+            lblDeviceID.Visible = false;
+            lblDeviceID.Name = "lblDeviceID";
+            lblDeviceID.Text = device.DeviceID.ToString();
 
             // current A B C
             Label lblCurrentCKey = new Label();
@@ -738,18 +782,21 @@ namespace MotorProtection.UI
             lblCurrentAValue.Name = "lblCurrentAValue";
             lblCurrentAValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentAValue.TabIndex = 20;
+            lblCurrentAValue.Text = device.CurrentA == null ? "--" : device.CurrentA.Value.ToString("X2") + "A";
 
             lblCurrentBValue.AutoSize = true;
             lblCurrentBValue.Location = new System.Drawing.Point(169, 30);
             lblCurrentBValue.Name = "lblCurrentAValue";
             lblCurrentBValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentBValue.TabIndex = 21;
+            lblCurrentBValue.Text = device.CurrentB == null ? "--" : device.CurrentB.Value.ToString("X2") + "A";
 
             lblCurrentCValue.AutoSize = true;
             lblCurrentCValue.Location = new System.Drawing.Point(284, 30);
             lblCurrentCValue.Name = "lblCurrentCValue";
             lblCurrentCValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentCValue.TabIndex = 22;
+            lblCurrentCValue.Text = device.CurrentC == null ? "--" : device.CurrentC.Value.ToString("X2") + "A";
 
             // Vol A B C
             Label lblVolCKey = new Label();
@@ -785,18 +832,21 @@ namespace MotorProtection.UI
             lblVolAValue.Name = "lblVolAValue";
             lblVolAValue.Size = new System.Drawing.Size(47, 12);
             lblVolAValue.TabIndex = 23;
+            lblVolAValue.Text = device.VoltageA == null ? "--" : device.VoltageA.Value.ToString("X2") + "V";
 
             lblVolBValue.AutoSize = true;
             lblVolBValue.Location = new System.Drawing.Point(169, 53);
             lblVolBValue.Name = "lblVolBValue";
             lblVolBValue.Size = new System.Drawing.Size(47, 12);
             lblVolBValue.TabIndex = 24;
+            lblVolBValue.Text = device.VoltageB == null ? "--" : device.VoltageB.Value.ToString("X2") + "V";
 
             lblVolCValue.AutoSize = true;
             lblVolCValue.Location = new System.Drawing.Point(284, 53);
             lblVolCValue.Name = "lblVolCValue";
             lblVolCValue.Size = new System.Drawing.Size(47, 12);
             lblVolCValue.TabIndex = 25;
+            lblVolCValue.Text = device.VoltageC == null ? "--" : device.VoltageC.Value.ToString("X2") + "V";
 
             // Power
             Label lblPowerKey = new Label();
@@ -814,6 +864,7 @@ namespace MotorProtection.UI
             lblPowerValue.Name = "lblPowerValue";
             lblPowerValue.Size = new System.Drawing.Size(47, 12);
             lblPowerValue.TabIndex = 26;
+            lblPowerValue.Text = device.Power == null ? "--" : device.Power.Value.ToString("X2") + "KW";
 
             // Alarm time
             Label lblAlarmTimeKey = new Label();
@@ -831,6 +882,7 @@ namespace MotorProtection.UI
             lblAlarmTimeValue.Name = "lblAlarmTimeValue";
             lblAlarmTimeValue.Size = new System.Drawing.Size(47, 12);
             lblAlarmTimeValue.TabIndex = 27;
+            lblAlarmTimeValue.Text = device.AlarmAt == null ? "--" : device.AlarmAt.Value.ToString("yyyy-MM-dd hh:mm:ss");
 
             // Stop time
             Label lblStopTimeKey = new Label();
@@ -848,6 +900,7 @@ namespace MotorProtection.UI
             lblStopTimeValue.Name = "lblStopTimeValue";
             lblStopTimeValue.Size = new System.Drawing.Size(47, 12);
             lblStopTimeValue.TabIndex = 28;
+            lblStopTimeValue.Text = device.StopAt == null ? "--" : device.StopAt.Value.ToString("yyyy-MM-dd hh:mm:ss");
 
             // Temp A B C
             Label lblTemCKey = new Label();
@@ -883,18 +936,21 @@ namespace MotorProtection.UI
             lblTemCValue.Name = "lblTemCValue";
             lblTemCValue.Size = new System.Drawing.Size(47, 12);
             lblTemCValue.TabIndex = 31;
+            lblTemCValue.Text = device.TemperatureC == null ? "--" : device.TemperatureC.Value.ToString("X2");
             
             lblTemBValue.AutoSize = true;
             lblTemBValue.Location = new System.Drawing.Point(167, 148);
             lblTemBValue.Name = "lblTemBValue";
             lblTemBValue.Size = new System.Drawing.Size(47, 12);
             lblTemBValue.TabIndex = 30;
+            lblTemBValue.Text = device.TemperatureB == null ? "--" : device.TemperatureB.Value.ToString("X2");
             
             lblTemAValue.AutoSize = true;
             lblTemAValue.Location = new System.Drawing.Point(61, 148);
             lblTemAValue.Name = "lblTemAValue";
             lblTemAValue.Size = new System.Drawing.Size(47, 12);
             lblTemAValue.TabIndex = 29;
+            lblTemAValue.Text = device.TemperatureA == null ? "--" : device.TemperatureA.Value.ToString("X2");
 
             // RM#1 2 status
             Label lblRM2Key = new Label();
@@ -921,12 +977,24 @@ namespace MotorProtection.UI
             lblRM2Value.Name = "lblRM2Value";
             lblRM2Value.Size = new System.Drawing.Size(47, 12);
             lblRM2Value.TabIndex = 33;
+            if (device.SecondRMStatus == null)
+                lblRM2Value.Text = "--";
+            else if (device.SecondRMStatus.Value)
+                lblRM2Value.Text = "打开";
+            else
+                lblRM2Value.Text = "关闭";
             
             lblRM1Value.AutoSize = true;
             lblRM1Value.Location = new System.Drawing.Point(63, 175);
             lblRM1Value.Name = "lblRM1Value";
             lblRM1Value.Size = new System.Drawing.Size(47, 12);
             lblRM1Value.TabIndex = 32;
+            if (device.FirstRMStatus == null)
+                lblRM1Value.Text = "--";
+            else if (device.FirstRMStatus.Value)
+                lblRM1Value.Text = "打开";
+            else
+                lblRM1Value.Text = "关闭";
 
             parent.Controls.Add(lblRM1Value);
             parent.Controls.Add(lblRM2Value);
@@ -958,6 +1026,7 @@ namespace MotorProtection.UI
             parent.Controls.Add(lblCurrentCKey);
             parent.Controls.Add(lblProtectorNameKey);
             parent.Controls.Add(lblProtectorNameValue);
+            parent.Controls.Add(lblDeviceID);
             parent.Controls.Add(btnAlarmClear);
             parent.Controls.Add(btnReset);
             parent.Controls.Add(btnStart);
