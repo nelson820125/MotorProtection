@@ -38,12 +38,15 @@ namespace MotorProtection.UI
         {
             Microsoft.VisualBasic.Devices.Computer cmbCOM = new Microsoft.VisualBasic.Devices.Computer();
 
-            foreach (string s in cmbCOM.Ports.SerialPortNames)
+            if (cmbCOM.Ports.SerialPortNames.Count > 0)
             {
-                cbxPortName.Items.Add(s);
-            }
+                foreach (string s in cmbCOM.Ports.SerialPortNames)
+                {
+                    cbxPortName.Items.Add(s);
+                }
 
-            cbxPortName.SelectedIndex = 0;
+                cbxPortName.SelectedIndex = 0;
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)

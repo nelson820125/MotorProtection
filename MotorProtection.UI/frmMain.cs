@@ -618,7 +618,7 @@ namespace MotorProtection.UI
                     if (children.Count > 0)
                     {
                         Label lineName = new Label();
-                        lineName.Text = "生产线: " + parent.Name;
+                        lineName.Text = parent.Name;
                         lineName.Font = new System.Drawing.Font(new FontFamily("宋体"), 9f, FontStyle.Bold | FontStyle.Underline);
                         lineName.Width = pnlMainShow.Width;
                         lineName.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
@@ -726,23 +726,23 @@ namespace MotorProtection.UI
 
             // title
             Label lblProtectorNameValue = new Label();
-            Label lblProtectorNameKey = new Label();
+            //Label lblProtectorNameKey = new Label();
             Label lblDeviceID = new Label();
 
-            lblProtectorNameKey.AutoSize = true;
-            lblProtectorNameKey.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            lblProtectorNameKey.Location = new System.Drawing.Point(4, 7);
-            lblProtectorNameKey.Name = "lblProtectorNameKey";
-            lblProtectorNameKey.Size = new System.Drawing.Size(84, 12);
-            lblProtectorNameKey.TabIndex = 0;
-            lblProtectorNameKey.Text = "保护器名称: ";
+            //lblProtectorNameKey.AutoSize = true;
+            //lblProtectorNameKey.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            //lblProtectorNameKey.Location = new System.Drawing.Point(4, 7);
+            //lblProtectorNameKey.Name = "lblProtectorNameKey";
+            //lblProtectorNameKey.Size = new System.Drawing.Size(84, 12);
+            //lblProtectorNameKey.TabIndex = 0;
+            //lblProtectorNameKey.Text = "保护器名称: ";
 
             lblProtectorNameValue.AutoSize = true;
             lblProtectorNameValue.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             lblProtectorNameValue.Location = new System.Drawing.Point(90, 6);
             lblProtectorNameValue.Name = "lblProtectorNameValue";
             lblProtectorNameValue.TabIndex = 1;
-            lblProtectorNameValue.Text = device.Name;
+            lblProtectorNameValue.Text = device.Name + " - 保护器";
 
             lblDeviceID.Visible = false;
             lblDeviceID.Name = "lblDeviceID";
@@ -1024,7 +1024,7 @@ namespace MotorProtection.UI
             parent.Controls.Add(lblCurrentAKey);
             parent.Controls.Add(lblCurrentBKey);
             parent.Controls.Add(lblCurrentCKey);
-            parent.Controls.Add(lblProtectorNameKey);
+            //parent.Controls.Add(lblProtectorNameKey);
             parent.Controls.Add(lblProtectorNameValue);
             parent.Controls.Add(lblDeviceID);
             parent.Controls.Add(btnAlarmClear);
