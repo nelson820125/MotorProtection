@@ -283,6 +283,7 @@ namespace MotorProtection.UI
             {
                 CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                ReloadMainPanel();
                 protectorSetting.Close();
             }
         }
@@ -304,6 +305,7 @@ namespace MotorProtection.UI
             }
 
             ReloadDeviceTree();
+            ReloadMainPanel();
         }
 
         private void tsmiRightDeactive_Click(object sender, EventArgs e)
@@ -332,6 +334,7 @@ namespace MotorProtection.UI
             }
 
             ReloadDeviceTree();
+            ReloadMainPanel();
         }
 
         private void tsmiRightLineEdit_Click(object sender, EventArgs e)
@@ -355,6 +358,7 @@ namespace MotorProtection.UI
             {
                 CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                ReloadMainPanel();
                 lineSetting.Close();
             }
         }
@@ -385,6 +389,7 @@ namespace MotorProtection.UI
             {
                 CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
+                ReloadMainPanel();
                 message.Close();
             }
             else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
@@ -435,6 +440,7 @@ namespace MotorProtection.UI
                 {
                     CacheController.UpdateAllCacheGroupTimestamp();
                     ReloadDeviceTree();
+                    ReloadMainPanel();
                     message.Close();
                 }
                 else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
@@ -527,7 +533,7 @@ namespace MotorProtection.UI
                 devices = ctt.Devices.Where(d => d.IsActive).ToList();
             }
 
-            var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
+            var parents = devices.Where(d => d.ParentID == null && d.IsActive).OrderBy(d => d.Name).ToList();
 
             tvProtectors.Nodes.Clear();
 
@@ -599,13 +605,14 @@ namespace MotorProtection.UI
                 devices = ctt.Devices.Where(d => d.IsActive).ToList();
             }
 
-            var parents = devices.Where(d => d.ParentID == null && d.IsActive).ToList();
+            var parents = devices.Where(d => d.ParentID == null && d.IsActive).OrderBy(d => d.Name).ToList();
 
             pnlMainShow.Controls.Clear();
 
             FlowLayoutPanel mainPanels = new FlowLayoutPanel();
             mainPanels.BorderStyle = BorderStyle.None;
             mainPanels.FlowDirection = FlowDirection.TopDown;
+            mainPanels.Dock = DockStyle.Fill;
             mainPanels.AutoSize = true;
 
             pnlMainShow.Controls.Add(mainPanels);

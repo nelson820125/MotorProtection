@@ -258,7 +258,7 @@
             this.pnlNodes.Controls.Add(this.tvProtectors);
             this.pnlNodes.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlNodes.Location = new System.Drawing.Point(0, 28);
-            this.pnlNodes.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlNodes.Margin = new System.Windows.Forms.Padding(4);
             this.pnlNodes.Name = "pnlNodes";
             this.pnlNodes.Size = new System.Drawing.Size(265, 747);
             this.pnlNodes.TabIndex = 2;
@@ -272,7 +272,7 @@
             this.tvProtectors.Indent = 19;
             this.tvProtectors.ItemHeight = 20;
             this.tvProtectors.Location = new System.Drawing.Point(0, 0);
-            this.tvProtectors.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tvProtectors.Margin = new System.Windows.Forms.Padding(4);
             this.tvProtectors.Name = "tvProtectors";
             this.tvProtectors.SelectedImageIndex = 0;
             this.tvProtectors.Size = new System.Drawing.Size(261, 743);
@@ -291,7 +291,7 @@
             // sprMain
             // 
             this.sprMain.Location = new System.Drawing.Point(265, 28);
-            this.sprMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sprMain.Margin = new System.Windows.Forms.Padding(4);
             this.sprMain.Name = "sprMain";
             this.sprMain.Size = new System.Drawing.Size(4, 747);
             this.sprMain.TabIndex = 3;
@@ -303,7 +303,7 @@
             this.pnlMainShow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMainShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.pnlMainShow.Location = new System.Drawing.Point(269, 28);
-            this.pnlMainShow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlMainShow.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMainShow.Name = "pnlMainShow";
             this.pnlMainShow.Size = new System.Drawing.Size(1558, 747);
             this.pnlMainShow.TabIndex = 4;
@@ -427,7 +427,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuSystem;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "保护器监控系统 v1.0";
