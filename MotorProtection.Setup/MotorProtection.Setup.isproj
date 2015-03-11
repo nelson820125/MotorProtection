@@ -28,4 +28,10 @@
 		</TaggedOutputs> -->
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
+	<ItemGroup>
+		<ProjectReference Include="..\MotorProtection.JobManager\MotorProtection.JobManager.csproj">
+			<Name>MotorProtection.JobManager</Name>
+			<Project>{C90A6A02-2849-418E-9427-D41FE2C4F424}</Project>
+		</ProjectReference>
+	</ItemGroup>
 </Project>

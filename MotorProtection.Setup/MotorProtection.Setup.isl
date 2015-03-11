@@ -52,7 +52,7 @@
 	<summary>
 		<codepage>1252</codepage>
 		<title>Installation Database</title>
-		<subject>MotorProtection</subject>
+		<subject>Motor Protector Monitor</subject>
 		<author>##ID_STRING3##</author>
 		<keywords>Installer,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
@@ -225,7 +225,6 @@
 	<table name="AppSearch">
 		<col key="yes" def="s72">Property</col>
 		<col key="yes" def="s72">Signature_</col>
-		<row><td>DOTNETVERSION40FULL</td><td>DotNet40Full</td></row>
 	</table>
 
 	<table name="BBControl">
@@ -252,6 +251,8 @@
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<row><td>ISExpHlp.dll</td><td/><td>&lt;ISRedistPlatformDependentFolder&gt;\ISExpHlp.dll</td></row>
+		<row><td>ISSELFREG.DLL</td><td/><td>&lt;ISRedistPlatformDependentFolder&gt;\isregsvr.dll</td></row>
+		<row><td>ISSetupFilesHelper</td><td/><td>&lt;ISRedistPlatformDependentFolder&gt;\SFHelper.dll</td></row>
 		<row><td>NewBinary1</td><td/><td>&lt;ISProductFolder&gt;\Support\Themes\InstallShield Blue Theme\banner.jpg</td></row>
 		<row><td>NewBinary10</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CompleteSetupIco.ibd</td></row>
 		<row><td>NewBinary11</td><td/><td>&lt;ISProductFolder&gt;\Redist\Language Independent\OS Independent\CustomSetupIco.ibd</td></row>
@@ -339,6 +340,22 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AlphaProtocal.dll</td><td>{2D198866-CC09-45D6-9220-6AB7047E1DCD}</td><td>INSTALLDIR</td><td>2</td><td/><td>alphaprotocal.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>EntityFramework.SqlServer.dll</td><td>{BF9F14CD-C0EF-4B8C-B795-B53D39912906}</td><td>INSTALLDIR</td><td>2</td><td/><td>entityframework.sqlserver.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>EntityFramework.dll</td><td>{F99C0A0B-0652-4146-9C05-F924967509D1}</td><td>INSTALLDIR</td><td>2</td><td/><td>entityframework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td>{CA6E5204-267E-46D1-A498-18FF3F0F5F44}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{309F25D0-E03B-401C-B06E-FD1C2B09EAA8}</td><td>DATA</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{3ACD507C-B885-4318-811F-659FAC57F60D}</td><td>IMAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{44F2AE8E-772E-435D-B463-746B460DAE49}</td><td>ICON</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{8B91D235-9039-4066-8A77-68344A9352E8}</td><td>_6X16</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{FE76FC23-97A2-4588-B9CE-3BD04D034935}</td><td>_2X32</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{AB2D9EE4-70D9-467F-B40F-17BE194284B3}</td><td>_4X64</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.Constant.dll</td><td>{C39B4629-6168-4AD4-BE0D-1110E1523CC1}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.constant.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.Core.dll</td><td>{AFEDA0D3-9D1F-4144-B3E0-0A298FC36F39}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.JobManager.Primary_output</td><td>{A61AECF9-914A-43FC-9BC2-C7CE1E641F1D}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.jobmanager.p</td><td>81</td><td/><td>motorprotection.jobmanager.e</td><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.JobManager.exe</td><td>{C0A7B768-6D04-4E11-ABC1-FFF71FB769C7}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.jobmanager.e</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.UI.exe</td><td>{27CE021D-C4CE-4957-8D36-6A9159F4D139}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.ui.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MotorProtection.UI.vshost.exe</td><td>{77ADECC0-1EBC-4442-B534-4734FBA113E6}</td><td>INSTALLDIR</td><td>2</td><td/><td>motorprotection.ui.vshost.ex</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -896,6 +913,7 @@
 		<row><td>AdminWelcome</td><td>Next</td><td>NewDialog</td><td>AdminNetworkLocation</td><td>1</td><td>0</td></row>
 		<row><td>CancelSetup</td><td>No</td><td>EndDialog</td><td>Return</td><td>1</td><td>0</td></row>
 		<row><td>CancelSetup</td><td>Yes</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>CancelSetup</td><td>Yes</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>CancelSetup</td><td>Yes</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>CustomSetup</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>CustomSetup</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed</td><td>0</td></row>
@@ -1005,9 +1023,11 @@
 		<row><td>SetupCompleteError</td><td>Cancel</td><td>EndDialog</td><td>Return</td><td>1</td><td>2</td></row>
 		<row><td>SetupCompleteError</td><td>Cancel</td><td>[Suspend]</td><td>1</td><td>1</td><td>1</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>6</td></row>
 		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupError</td><td>A</td><td>EndDialog</td><td>ErrorAbort</td><td>1</td><td>0</td></row>
@@ -1023,6 +1043,7 @@
 		<row><td>SetupInterrupted</td><td>Cancel</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupInterrupted</td><td>Cancel</td><td>[Suspend]</td><td>1</td><td>1</td><td>1</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
+		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>ISSetupFilesCleanup</td><td>1</td><td>200</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupInterrupted</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
 		<row><td>SetupProgress</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
@@ -1047,6 +1068,8 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>ICON</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>IMAGES</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1059,6 +1082,12 @@
 		<row><td>ISPreventDowngrade</td><td>19</td><td/><td>[IS_PREVENT_DOWNGRADE_EXIT]</td><td/><td>Exits install when a newer version of this product is found</td></row>
 		<row><td>ISPrint</td><td>1</td><td>SetAllUsers.dll</td><td>PrintScrollableText</td><td/><td>Prints the contents of a ScrollableText control on a dialog.</td></row>
 		<row><td>ISRunSetupTypeAddLocalEvent</td><td>1</td><td>ISExpHlp.dll</td><td>RunSetupTypeAddLocalEvent</td><td/><td>Run the AddLocal events associated with the Next button on the Setup Type dialog.</td></row>
+		<row><td>ISSelfRegisterCosting</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterCosting</td><td/><td/></row>
+		<row><td>ISSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFiles</td><td/><td/></row>
+		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>257</td><td>ISSetupFilesHelper</td><td>SFCleanupEx</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td>257</td><td>ISSetupFilesHelper</td><td>SFStartupEx</td><td/><td/></row>
+		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
 		<row><td>SetAllUsersProfileNT</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%SystemRoot]\Profiles\All Users</td><td/><td/></row>
 		<row><td>ShowMsiLog</td><td>226</td><td>SystemFolder</td><td>[SystemFolder]notepad.exe "[MsiLogFileLocation]"</td><td/><td>Shows Property-driven MSI Log</td></row>
@@ -1127,11 +1156,14 @@
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFiles64Folder</td><td>TARGETDIR</td><td>.:Common64</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
+		<row><td>DATA</td><td>INSTALLDIR</td><td>Data</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
+		<row><td>ICON</td><td>IMAGES</td><td>icon</td><td/><td>0</td><td/></row>
+		<row><td>IMAGES</td><td>INSTALLDIR</td><td>images</td><td/><td>0</td><td/></row>
 		<row><td>INSTALLDIR</td><td>MOTORPROTECTION1</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
@@ -1163,6 +1195,12 @@
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
+		<row><td>_2X32</td><td>ICON</td><td>32x32</td><td/><td>0</td><td/></row>
+		<row><td>_4X64</td><td>ICON</td><td>64x64</td><td/><td>0</td><td/></row>
+		<row><td>_6X16</td><td>ICON</td><td>16x16</td><td/><td>0</td><td/></row>
+		<row><td>huanyu_1_huanyujidian</td><td>ProgramMenuFolder</td><td>HUANYU~1|HuanYuJiDian</td><td/><td>1</td><td/></row>
+		<row><td>motor_protector_monitor</td><td>huanyu_1_huanyujidian</td><td>MOTORP~1|motor protector monitor</td><td/><td>1</td><td/></row>
+		<row><td>motorp_1.set_motorprotection.setup</td><td>huanyu_1_huanyujidian</td><td>MOTORP~1.SET|MotorProtection.Setup</td><td/><td>1</td><td/></row>
 	</table>
 
 	<table name="DrLocator">
@@ -1854,6 +1892,22 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AlphaProtocal.dll</td></row>
+		<row><td>AlwaysInstall</td><td>EntityFramework.SqlServer.dll</td></row>
+		<row><td>AlwaysInstall</td><td>EntityFramework.dll</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.Constant.dll</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.Core.dll</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.JobManager.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.JobManager.exe</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.UI.exe</td></row>
+		<row><td>AlwaysInstall</td><td>MotorProtection.UI.vshost.exe</td></row>
 	</table>
 
 	<table name="File">
@@ -1868,6 +1922,44 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>alarm.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>alarm.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\alarm.png</td><td>1</td><td/></row>
+		<row><td>alphaprotocal.dll</td><td>AlphaProtocal.dll</td><td>ALPHAP~1.DLL|AlphaProtocal.dll</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\AlphaProtocal.dll</td><td>1</td><td/></row>
+		<row><td>alphaprotocal.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>ALPHAP~1.PDB|AlphaProtocal.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\AlphaProtocal.pdb</td><td>1</td><td/></row>
+		<row><td>attention.gif</td><td>ISX_DEFAULTCOMPONENT5</td><td>ATTENT~1.GIF|attention.gif</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\attention.gif</td><td>1</td><td/></row>
+		<row><td>connect.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>connect.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\connect.png</td><td>1</td><td/></row>
+		<row><td>disconnect.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>DISCON~1.PNG|disconnect.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\disconnect.png</td><td>1</td><td/></row>
+		<row><td>edit.ico</td><td>ISX_DEFAULTCOMPONENT5</td><td>edit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\edit.ico</td><td>1</td><td/></row>
+		<row><td>entityframework.dll</td><td>EntityFramework.dll</td><td>ENTITY~1.DLL|EntityFramework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\EntityFramework.dll</td><td>1</td><td/></row>
+		<row><td>entityframework.sqlserver.dl</td><td>EntityFramework.SqlServer.dll</td><td>ENTITY~1.DLL|EntityFramework.SqlServer.dll</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\EntityFramework.SqlServer.dll</td><td>1</td><td/></row>
+		<row><td>entityframework.sqlserver.xm</td><td>ISX_DEFAULTCOMPONENT</td><td>ENTITY~1.XML|EntityFramework.SqlServer.xml</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\EntityFramework.SqlServer.xml</td><td>1</td><td/></row>
+		<row><td>entityframework.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>ENTITY~1.XML|EntityFramework.xml</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\EntityFramework.xml</td><td>1</td><td/></row>
+		<row><td>loading.gif</td><td>ISX_DEFAULTCOMPONENT5</td><td>loading.gif</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\loading.gif</td><td>1</td><td/></row>
+		<row><td>login.ico</td><td>ISX_DEFAULTCOMPONENT5</td><td>login.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\login.ico</td><td>1</td><td/></row>
+		<row><td>login.ico1</td><td>ISX_DEFAULTCOMPONENT6</td><td>login.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\64x64\login.ico</td><td>1</td><td/></row>
+		<row><td>main.ico</td><td>ISX_DEFAULTCOMPONENT5</td><td>main.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\main.ico</td><td>1</td><td/></row>
+		<row><td>main.ico1</td><td>ISX_DEFAULTCOMPONENT6</td><td>main.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\64x64\main.ico</td><td>1</td><td/></row>
+		<row><td>motorprotection.constant.dll</td><td>MotorProtection.Constant.dll</td><td>MOTORP~1.DLL|MotorProtection.Constant.dll</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.Constant.dll</td><td>1</td><td/></row>
+		<row><td>motorprotection.constant.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.PDB|MotorProtection.Constant.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.Constant.pdb</td><td>1</td><td/></row>
+		<row><td>motorprotection.core.dll</td><td>MotorProtection.Core.dll</td><td>MOTORP~1.DLL|MotorProtection.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.Core.dll</td><td>1</td><td/></row>
+		<row><td>motorprotection.core.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.PDB|MotorProtection.Core.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.Core.pdb</td><td>1</td><td/></row>
+		<row><td>motorprotection.jobmanager.e</td><td>MotorProtection.JobManager.exe</td><td>MOTORP~1.EXE|MotorProtection.JobManager.exe</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.JobManager\bin\Release\MotorProtection.JobManager.exe</td><td>1</td><td/></row>
+		<row><td>motorprotection.jobmanager.e1</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.CON|MotorProtection.JobManager.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.JobManager\bin\Release\MotorProtection.JobManager.exe.config</td><td>1</td><td/></row>
+		<row><td>motorprotection.jobmanager.p</td><td>MotorProtection.JobManager.Primary_output</td><td>MotorProtection.JobManager.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;MotorProtection.JobManager&gt;|Built</td><td>3</td><td/></row>
+		<row><td>motorprotection.jobmanager.p1</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.PDB|MotorProtection.JobManager.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.JobManager\bin\Release\MotorProtection.JobManager.pdb</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.exe</td><td>MotorProtection.UI.exe</td><td>MOTORP~1.EXE|MotorProtection.UI.exe</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.exe</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.exe.confi</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.CON|MotorProtection.UI.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.exe.config</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.PDB|MotorProtection.UI.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.pdb</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.vshost.ex</td><td>MotorProtection.UI.vshost.exe</td><td>MOTORP~1.EXE|MotorProtection.UI.vshost.exe</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.vshost.exe</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.vshost.ex1</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.CON|MotorProtection.UI.vshost.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.vshost.exe.config</td><td>1</td><td/></row>
+		<row><td>motorprotection.ui.vshost.ex2</td><td>ISX_DEFAULTCOMPONENT</td><td>MOTORP~1.MAN|MotorProtection.UI.vshost.exe.manifest</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\MotorProtection.UI.vshost.exe.manifest</td><td>1</td><td/></row>
+		<row><td>motorprotector.mdf</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOTORP~1.MDF|MotorProtector.mdf</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\Data\MotorProtector.mdf</td><td>1</td><td/></row>
+		<row><td>motorprotector_log.ldf</td><td>ISX_DEFAULTCOMPONENT1</td><td>MOTORP~1.LDF|MotorProtector_log.ldf</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\Data\MotorProtector_log.ldf</td><td>1</td><td/></row>
+		<row><td>password.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>password.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\password.png</td><td>1</td><td/></row>
+		<row><td>running.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>running.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\running.png</td><td>1</td><td/></row>
+		<row><td>server.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>server.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\server.png</td><td>1</td><td/></row>
+		<row><td>setting.ico</td><td>ISX_DEFAULTCOMPONENT5</td><td>setting.ico</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\32x32\setting.ico</td><td>1</td><td/></row>
+		<row><td>stop.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>stop.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\stop.png</td><td>1</td><td/></row>
+		<row><td>username.png</td><td>ISX_DEFAULTCOMPONENT4</td><td>username.png</td><td>0</td><td/><td/><td/><td>1</td><td>E:\Personal\MotorProtector\MotorProtection.UI\bin\Release\images\icon\16x16\username.png</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -1883,8 +1975,10 @@
 	<table name="ISAssistantTag">
 		<col key="yes" def="s72">Tag</col>
 		<col def="S255">Data</col>
+		<row><td>MotorProtection.UI.exe</td><td/></row>
 		<row><td>PROJECT_ASSISTANT_DEFAULT_FEATURE</td><td>AlwaysInstall</td></row>
 		<row><td>PROJECT_ASSISTANT_FEATURES</td><td>NonSelectable</td></row>
+		<row><td>RegistryPageEnabled</td><td>Yes</td></row>
 	</table>
 
 	<table name="ISBillBoard">
@@ -2011,6 +2105,22 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AlphaProtocal.dll</td><td/><td/><td>_DC6DD6FE_F082_4456_AC97_FDC9C8DE1345_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>EntityFramework.SqlServer.dll</td><td/><td/><td>_CF840003_3299_480E_B737_7F31E01C35DF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>EntityFramework.dll</td><td/><td/><td>_4640E478_E8D8_454C_9215_418828A456DD_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_E0C5CFD5_28A9_4A5F_8DEB_E990A9C76344_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_EB42A77B_EB4B_4A5E_87B8_2C822AA7086B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_2E7B19F6_7749_4D47_921E_28CDCCBE4268_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_37BC181F_BCC8_4D35_96B0_0E292BE3C4CB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_BE237D6B_F522_4ACD_AFB7_BD487188F897_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_0A8A1CF4_E025_4719_BEB4_891A4EB35F46_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_3B637A45_D52E_41BB_B4C9_B5DFF1D214C4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.Constant.dll</td><td/><td/><td>_72C12CEF_0F35_49B9_B96B_73B37D148F8F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.Core.dll</td><td/><td/><td>_E7630AD9_005A_425D_B561_DA7C6F532EE4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.JobManager.Primary_output</td><td/><td/><td>_D633BBB2_F810_469E_8F87_4866544FE8AF_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.JobManager.exe</td><td/><td/><td>_9CCB4AF8_5BA1_48A7_9154_19ED55E77711_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.UI.exe</td><td/><td/><td>_658FD389_2D9B_467A_AB41_A354B78DD13D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.UI.vshost.exe</td><td/><td/><td>_E348539C_D7C9_42EF_9047_5044BD9D796D_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2316,6 +2426,7 @@
 		<row><td>ISProductFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISProjectDataFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISProjectFolder</td><td/><td/><td>1</td></row>
+		<row><td>MotorProtection.JobManager</td><td>MotorProtection.JobManager\MotorProtection.JobManager.csproj</td><td/><td>2</td></row>
 		<row><td>ProgramFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
 		<row><td>WindowsFolder</td><td/><td/><td>1</td></row>
@@ -2586,6 +2697,7 @@
 		<col def="S50">Language</col>
 		<col def="I2">Splash</col>
 		<col def="S0">Path</col>
+		<row><td>_isconfig.xml</td><td>_isconfig.xml</td><td/><td>0</td><td>0</td><td>&lt;ISProjectDataFolder&gt;\_isconfig.xml</td></row>
 	</table>
 
 	<table name="ISSetupPrerequisites">
@@ -2627,7 +2739,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>HuanYuJiDian</td><td>0</td><td/><td>-517743696</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>HuanYuJiDian</td><td>0</td><td/><td>1503888143</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-517780656</td></row>
@@ -3441,6 +3553,10 @@
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>-517746000</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Motor Protector Monitor.exe</td><td>0</td><td/><td>1503871792</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch MotorProtection.UI.vshost.exe</td><td>0</td><td/><td>1503872367</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>LAUNCH~1.EXE|Launch MotorProtection.JobManager.exe</td><td>0</td><td/><td>1503901167</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>LAUNCH~1.EXE|Launch MotorProtection.JobManager.exe</td><td>0</td><td/><td>1503859344</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-517746000</td></row>
@@ -3730,8 +3846,9 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-517746000</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-517743952</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>http://www.HuanYuJiDian.com</td><td>0</td><td/><td>-517743696</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>HuanYuJiDian</td><td>0</td><td/><td>-517743696</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>http://www.HuanYuJiDian.com</td><td>0</td><td/><td>1503888143</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>HuanYuJiDian</td><td>0</td><td/><td>1503888143</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>LAUNCH~1.EXE|Launch MotorProtection.UI.exe</td><td>0</td><td/><td>1503913455</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-517746000</td></row>
 	</table>
 
@@ -3840,6 +3957,11 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
+		<row><td>MotorProtection.Jo_E54114CDCBF74DA68D73E93701B51B31.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>MotorProtection.Jo_F6404398DE3D4AA696B3039CEE45868B.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>MotorProtection.UI_375AD30E21BA435F9F92F51C4CAF860E.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>MotorProtection.UI_6EE1448659BB492B9DF7EF3440E8CED6.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Resources\images\desktop.ico</td><td>0</td></row>
+		<row><td>MotorProtection.UI_E1A99420CEFF4752A841C7940494AC93.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Resources\images\desktop.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -3882,6 +4004,12 @@
 		<row><td>FindRelatedProducts</td><td>NOT ISSETUPDRIVEN</td><td>420</td><td>FindRelatedProducts</td><td/></row>
 		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
 		<row><td>ISRunSetupTypeAddLocalEvent</td><td>Not Installed And Not ISRUNSETUPTYPEADDLOCALEVENT</td><td>1050</td><td>ISRunSetupTypeAddLocalEvent</td><td/></row>
+		<row><td>ISSelfRegisterCosting</td><td/><td>2201</td><td/><td/></row>
+		<row><td>ISSelfRegisterFiles</td><td/><td>5601</td><td/><td/></row>
+		<row><td>ISSelfRegisterFinalize</td><td/><td>6601</td><td/><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>UILevel &lt; 5</td><td>6602</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td/><td>3</td><td/><td/></row>
+		<row><td>ISUnSelfRegisterFiles</td><td/><td>2202</td><td/><td/></row>
 		<row><td>InstallFiles</td><td/><td>4000</td><td>InstallFiles</td><td/></row>
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
 		<row><td>InstallInitialize</td><td/><td>1501</td><td>InstallInitialize</td><td/></row>
@@ -3968,7 +4096,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{0F6383A1-7330-4F4F-82CC-77C0372657E2}</td></row>
 		<row><td>ISUSSignature</td><td>{582B7DBF-00BF-41B8-A7E4-3A1F49EC1550}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -3998,6 +4126,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FileCost</td><td/><td>900</td><td>FileCost</td><td/></row>
 		<row><td>FindRelatedProducts</td><td/><td>430</td><td>FindRelatedProducts</td><td/></row>
 		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
+		<row><td>ISSetupFilesCleanup</td><td>UILevel &lt; 5</td><td>1301</td><td/><td/></row>
+		<row><td>ISSetupFilesExtract</td><td/><td>3</td><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Not Installed</td><td>1210</td><td>InstallWelcome</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
 		<row><td>LaunchConditions</td><td>Not Installed</td><td>410</td><td>LaunchConditions</td><td/></row>
@@ -4026,7 +4156,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 	<table name="LaunchCondition">
 		<col key="yes" def="s255">Condition</col>
 		<col def="l255">Description</col>
-		<row><td>DOTNETVERSION40FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40FULL##</td></row>
 	</table>
 
 	<table name="ListBox">
@@ -4342,7 +4471,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{7C3D4254-84A7-40B6-BC64-1C439A0B097A}</td><td/></row>
-		<row><td>ProductName</td><td>MotorProtection</td><td/></row>
+		<row><td>ProductName</td><td>Motor Protector Monitor</td><td/></row>
 		<row><td>ProductVersion</td><td>1.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
@@ -4355,7 +4484,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>RestartManagerOption</td><td>CloseRestart</td><td/></row>
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION40FULL</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{ABD6F996-8B1C-46C7-82B2-961FF2EAFA76}</td><td/></row>
@@ -4400,7 +4529,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s255">Key</col>
 		<col def="S255">Name</col>
 		<col def="I2">Type</col>
-		<row><td>DotNet40Full</td><td>2</td><td>SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full</td><td>Install</td><td>2</td></row>
 	</table>
 
 	<table name="Registry">
@@ -4419,6 +4547,11 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
+		<row><td>FileKey1</td><td>MotorProtection.UI.exe</td><td/><td>huanyu_1_huanyujidian</td><td>2</td></row>
+		<row><td>FileKey2</td><td>MotorProtection.UI.exe</td><td/><td>motorp_1.set_motorprotection.setup</td><td>2</td></row>
+		<row><td>MotorProtection.JobManager.exe</td><td>MotorProtection.JobManager.exe</td><td/><td>motorp_1.set_motorprotection.setup</td><td>2</td></row>
+		<row><td>MotorProtection.UI.exe</td><td>MotorProtection.UI.exe</td><td/><td>motorp_1.set_motorprotection.setup</td><td>2</td></row>
+		<row><td>MotorProtection.UI.vshost.exe</td><td>MotorProtection.UI.vshost.exe</td><td/><td>motorp_1.set_motorprotection.setup</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4504,6 +4637,10 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>MotorProtection.JobManager.exe</td><td>motorp_1.set_motorprotection.setup</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>MotorProtection.JobManager.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MotorProtection.Jo_E54114CDCBF74DA68D73E93701B51B31.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.UI.exe</td><td>motorp_1.set_motorprotection.setup</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>MotorProtection.UI.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MotorProtection.UI_E1A99420CEFF4752A841C7940494AC93.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.UI.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>MotorProtection.UI.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MotorProtection.UI_6EE1448659BB492B9DF7EF3440E8CED6.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>MotorProtection.UI.vshost.exe</td><td>motorp_1.set_motorprotection.setup</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>MotorProtection.UI.vshost.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>MotorProtection.UI_375AD30E21BA435F9F92F51C4CAF860E.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

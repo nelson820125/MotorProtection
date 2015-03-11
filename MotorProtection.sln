@@ -38,6 +38,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorProtection.UnitTest", "MotorProtection.UnitTest\MotorProtection.UnitTest.csproj", "{AC9FF9AF-E8D7-4655-ABBA-43DC78B6130A}"
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "MotorProtection.Setup", "MotorProtection.Setup\MotorProtection.Setup.isproj", "{7FC3A6E0-B9CC-476D-ABE7-D628093697E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C90A6A02-2849-418E-9427-D41FE2C4F424} = {C90A6A02-2849-418E-9427-D41FE2C4F424}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
