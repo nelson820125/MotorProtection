@@ -18,7 +18,7 @@ namespace MotorProtection.JobManager.Controller
             _comm.serialPort.PortName = AppConfig.SerialComm_PortName;
             _comm.serialPort.BaudRate = string.IsNullOrEmpty(AppConfig.SerialComm_BaudRate) ? 9600 : Convert.ToInt32(AppConfig.SerialComm_BaudRate);
             _comm.serialPort.DataBits = 8;
-            _comm.serialPort.StopBits = System.IO.Ports.StopBits.None;
+            //_comm.serialPort.StopBits = System.IO.Ports.StopBits.None;
             _comm.serialPort.Parity = System.IO.Ports.Parity.None;
             _comm.DataReceived += serialPort_DataReceived;
 

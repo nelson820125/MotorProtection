@@ -1,6 +1,7 @@
 ﻿using MotorProtection.Constant;
 using MotorProtection.Core.Controller;
 using MotorProtection.Core.Data.Entities;
+using MotorProtection.Core.Log;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace MotorProtection.UI
         private ServiceController _service = null;
         private JobOperation _operation;
         private bool _hasOperation = false;
+        //private bool _isStartOrStopService = false;
         private DeviceConfigurationPool _pool = null;
 
         public frmMessage()
@@ -32,6 +34,7 @@ namespace MotorProtection.UI
             InitializeComponent();
             lblMsg.Text = msg;
             _hasOperation = false;
+            //_isStartOrStopService = false;
         }
 
         public frmMessage(string msg, ServiceController servive, JobOperation oper)
@@ -41,6 +44,7 @@ namespace MotorProtection.UI
             _service = servive;
             _operation = oper;
             _hasOperation = true;
+            //_isStartOrStopService = true;
         }
 
         public frmMessage(string msg, DeviceConfigurationPool pool)
@@ -50,87 +54,150 @@ namespace MotorProtection.UI
             _pool = pool;
             _operation = JobOperation.None;
             _hasOperation = true;
+            //_isStartOrStopService = false;
         }
 
-        private void VerifyStatus()
+        //private void StartOrStopService()
+        //{
+            
+        //}
+
+        private void VerifyStatus(object thisForm)
         {
-            if (_operation == JobOperation.Start)
-            {
-                if (_service == null)
+            frmMessage form = (frmMessage)thisForm;
+            try
+            {                
+                if (_operation == JobOperation.Start)
                 {
-                    this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-                }
-                else
-                {
-                    while (true)
+                    if (_service == null)
                     {
-                        if (_service.Status == ServiceControllerStatus.Running)
-                        {
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            break;
-                        }
+                        form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
                     }
-                }
-            }
-            else if (_operation == JobOperation.Stop)
-            {
-                if (_service == null)
-                {
-                    this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-                }
-                else
-                {
-                    while (true)
+                    else
                     {
                         if (_service.Status == ServiceControllerStatus.Stopped)
                         {
-                            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                            break;
-                        }                            
-                    }
-                }
-            }
-            else if (_operation == JobOperation.None && _pool != null) // deal the operation from high level
-            {
-                bool isSuccess = false;
-                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
-                {
-                    while (true)
-                    {
-                        var pool = ctt.DeviceConfigurationPools.Where(dcp =>dcp.ID == _pool.ID).FirstOrDefault();
-                        if (pool.Status == ConfigurationStatus.PROCESSING)
+                            _service.Start();
+                           _service.WaitForStatus(ServiceControllerStatus.StartPending);
+                            while (true)
+                            {
+                                if (_service.Status == ServiceControllerStatus.StartPending)
+                                {
+                                    _service.Refresh();
+                                    continue;
+                                }
+                                else if (_service.Status == ServiceControllerStatus.Running)
+                                {
+                                    form.DialogResult = System.Windows.Forms.DialogResult.OK;
+                                    break;
+                                }
+                                else
+                                {
+                                    form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                                    break;
+                                }
+                            }
+                        }
+                        else
                         {
-                            Thread.Sleep(1000);
-                            continue;
-                        }
-                        else {
-                            if (pool.Status == ConfigurationStatus.SUCCESS)
-                                isSuccess = true;
-                            else if (pool.Status == ConfigurationStatus.ERROR)
-                                isSuccess = false;
-                            break;
+                            form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
                         }
                     }
                 }
+                else if (_operation == JobOperation.Stop)
+                {
+                    if (_service == null)
+                    {
+                        form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                    }
+                    else
+                    {
+                        if (_service.CanStop)
+                        {
+                            _service.Stop();
+                            _service.WaitForStatus(ServiceControllerStatus.StopPending);
+                            while (true)
+                            {
+                                if (_service.Status == ServiceControllerStatus.StopPending)
+                                {
+                                    _service.Refresh();
+                                    continue;
+                                }
+                                else if (_service.Status == ServiceControllerStatus.Stopped)
+                                {
+                                    form.DialogResult = System.Windows.Forms.DialogResult.OK;
+                                    break;
+                                }
+                                else
+                                {
+                                    form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                        }
+                    }
+                }
+                else if (_operation == JobOperation.None && _pool != null) // deal the operation from high level
+                {
+                    bool isSuccess = false;
+                    using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                    {
+                        while (true)
+                        {
+                            var pool = ctt.DeviceConfigurationPools.Where(dcp => dcp.ID == _pool.ID).FirstOrDefault();
+                            if (pool.Status == ConfigurationStatus.PROCESSING)
+                            {
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                            else
+                            {
+                                if (pool.Status == ConfigurationStatus.SUCCESS)
+                                    isSuccess = true;
+                                else if (pool.Status == ConfigurationStatus.ERROR)
+                                    isSuccess = false;
+                                break;
+                            }
+                        }
+                    }
 
-                DeviceConfigsController ctrl = new DeviceConfigsController();
-                ctrl.UpdatePoolAfterSuccess(_pool.ID);
+                    DeviceConfigsController ctrl = new DeviceConfigsController();
+                    ctrl.UpdatePoolAfterSuccess(_pool.ID);
 
-                if (isSuccess)
-                    this.DialogResult = System.Windows.Forms.DialogResult.OK;
-                else
-                    this.DialogResult = System.Windows.Forms.DialogResult.No;
+                    if (isSuccess)
+                        form.DialogResult = System.Windows.Forms.DialogResult.OK;
+                    else
+                        form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                }
             }
-
-            Thread.CurrentThread.Abort();
+            catch (Exception ex)
+            {
+                form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                LogController.LogError(LoggingLevel.Error).Add("Description", ex.Message).Write();
+            }
+            finally
+            {
+                Thread.CurrentThread.Abort(); 
+            }           
         }
 
         private void frmMessage_Load(object sender, EventArgs e)
         {
             if (_hasOperation)
             {
-                Thread verifyThread = new Thread(new ThreadStart(VerifyStatus));
-                verifyThread.Start();
+                Thread verifyThread = new Thread(new ParameterizedThreadStart(VerifyStatus));
+                verifyThread.Start(this);
+                //if (_isStartOrStopService)
+                //    StartOrStopService();
+                //else
+                //{
+                //    Thread verifyThread = new Thread(new ThreadStart(VerifyStatus));
+                //    verifyThread.Start();
+                //}
             }
             else
             {

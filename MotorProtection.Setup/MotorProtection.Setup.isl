@@ -1169,7 +1169,7 @@
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
 		<row><td>MICROSOFT</td><td>ProgramFilesFolder</td><td>MICROS~1|Microsoft</td><td/><td>0</td><td/></row>
 		<row><td>MOTORPROTECTION</td><td>MICROSOFT</td><td>MOTORP~1|MotorProtection</td><td/><td>0</td><td/></row>
-		<row><td>MOTORPROTECTION1</td><td>ProgramFilesFolder</td><td>MOTORP~1|MotorProtection</td><td/><td>0</td><td/></row>
+		<row><td>MOTORPROTECTION1</td><td>AppDataFolder</td><td>MOTORP~1|MotorProtection</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>MICROSOFT</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>

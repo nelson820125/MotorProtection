@@ -106,13 +106,39 @@ namespace MotorProtection.UI
         {
             if (_serviceCtrl != null && (_serviceCtrl.Status == ServiceControllerStatus.Stopped || _serviceCtrl.Status == ServiceControllerStatus.Paused))
             {
-                _serviceCtrl.Start();
                 frmMessage frmMsg = new frmMessage("系统服务正在启动，请稍后...", _serviceCtrl, JobOperation.Start);
                 frmMsg.ShowDialog();
                 if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
-                    tsmiStart.Enabled = false;
-                    tsmiStop.Enabled = true;
+                    InitializeComponentStatus();
+                    frmMsg.Close();
+                }
+                else if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    frmMsg.Close();
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Motor Protection Manager start failed.").Write();
+
+                    frmMessage frmMsg1 = new frmMessage("操作失败，请重试或联系管理员");
+                    frmMsg1.ShowDialog();
+                    if (frmMsg1.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                        frmMsg1.Close();
+                }
+                else
+                {
+                    frmMsg.Close();
+                }
+            }
+        }
+
+        private void tsmiStop_Click(object sender, EventArgs e)
+        {
+            if (_serviceCtrl != null && _serviceCtrl.Status == ServiceControllerStatus.Running && _serviceCtrl.CanStop)
+            {
+                frmMessage frmMsg = new frmMessage("系统服务正在启动，请稍后...", _serviceCtrl, JobOperation.Stop);
+                frmMsg.ShowDialog();
+                if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    InitializeComponentStatus();
                     frmMsg.Close();
                 }
                 else if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.Cancel)

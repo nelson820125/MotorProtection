@@ -58,37 +58,37 @@ namespace MotorProtection.UI
                 var portName = systemConfigs.Where(sc => sc.Name == "SerialComm_PortName").FirstOrDefault();
                 if (portName != null)
                 {
-                    portName.Value = cbxPortName.SelectedText;
+                    portName.Value = cbxPortName.Text;
                 }
                 else
                 {
                     SystemConfig config = new SystemConfig()
                     {
                         Name = "SerialComm_PortName",
-                        Value = cbxPortName.SelectedText
+                        Value = cbxPortName.Text
                     };
                     ctt.SystemConfigs.AddObject(config);
                 }
 
                 var braudRate = systemConfigs.Where(sc => sc.Name == "SerialComm_BaudRate").FirstOrDefault();
-                if (portName != null)
+                if (braudRate != null)
                 {
-                    portName.Value = cbxBaydRate.SelectedText;
+                    braudRate.Value = cbxBaydRate.Text;
                 }
                 else
                 {
                     SystemConfig config = new SystemConfig()
                     {
                         Name = "SerialComm_BaudRate",
-                        Value = cbxBaydRate.SelectedText
+                        Value = cbxBaydRate.Text
                     };
                     ctt.SystemConfigs.AddObject(config);
                 }
 
                 var attempts = systemConfigs.Where(sc => sc.Name == "SerialComm_Attempts").FirstOrDefault();
-                if (portName != null)
+                if (attempts != null)
                 {
-                    portName.Value = txtAttempts.Text.Trim();
+                    attempts.Value = txtAttempts.Text.Trim();
                 }
                 else
                 {
