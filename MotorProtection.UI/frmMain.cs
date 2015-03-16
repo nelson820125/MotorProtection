@@ -759,16 +759,7 @@ namespace MotorProtection.UI
 
             // title
             Label lblProtectorNameValue = new Label();
-            //Label lblProtectorNameKey = new Label();
             Label lblDeviceID = new Label();
-
-            //lblProtectorNameKey.AutoSize = true;
-            //lblProtectorNameKey.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            //lblProtectorNameKey.Location = new System.Drawing.Point(4, 7);
-            //lblProtectorNameKey.Name = "lblProtectorNameKey";
-            //lblProtectorNameKey.Size = new System.Drawing.Size(84, 12);
-            //lblProtectorNameKey.TabIndex = 0;
-            //lblProtectorNameKey.Text = "保护器名称: ";
 
             lblProtectorNameValue.AutoSize = true;
             lblProtectorNameValue.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -815,21 +806,21 @@ namespace MotorProtection.UI
             lblCurrentAValue.Name = "lblCurrentAValue";
             lblCurrentAValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentAValue.TabIndex = 20;
-            lblCurrentAValue.Text = device.CurrentA == null ? "--" : device.CurrentA.Value.ToString("X2") + "A";
+            lblCurrentAValue.Text = device.CurrentA == null ? "--" : device.CurrentA.Value.ToString() + "A";
 
             lblCurrentBValue.AutoSize = true;
             lblCurrentBValue.Location = new System.Drawing.Point(169, 30);
             lblCurrentBValue.Name = "lblCurrentAValue";
             lblCurrentBValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentBValue.TabIndex = 21;
-            lblCurrentBValue.Text = device.CurrentB == null ? "--" : device.CurrentB.Value.ToString("X2") + "A";
+            lblCurrentBValue.Text = device.CurrentB == null ? "--" : device.CurrentB.Value.ToString() + "A";
 
             lblCurrentCValue.AutoSize = true;
             lblCurrentCValue.Location = new System.Drawing.Point(284, 30);
             lblCurrentCValue.Name = "lblCurrentCValue";
             lblCurrentCValue.Size = new System.Drawing.Size(47, 12);
             lblCurrentCValue.TabIndex = 22;
-            lblCurrentCValue.Text = device.CurrentC == null ? "--" : device.CurrentC.Value.ToString("X2") + "A";
+            lblCurrentCValue.Text = device.CurrentC == null ? "--" : device.CurrentC.Value.ToString() + "A";
 
             // Vol A B C
             Label lblVolCKey = new Label();
@@ -865,21 +856,21 @@ namespace MotorProtection.UI
             lblVolAValue.Name = "lblVolAValue";
             lblVolAValue.Size = new System.Drawing.Size(47, 12);
             lblVolAValue.TabIndex = 23;
-            lblVolAValue.Text = device.VoltageA == null ? "--" : device.VoltageA.Value.ToString("X2") + "V";
+            lblVolAValue.Text = device.VoltageA == null ? "--" : device.VoltageA.Value.ToString() + "V";
 
             lblVolBValue.AutoSize = true;
             lblVolBValue.Location = new System.Drawing.Point(169, 53);
             lblVolBValue.Name = "lblVolBValue";
             lblVolBValue.Size = new System.Drawing.Size(47, 12);
             lblVolBValue.TabIndex = 24;
-            lblVolBValue.Text = device.VoltageB == null ? "--" : device.VoltageB.Value.ToString("X2") + "V";
+            lblVolBValue.Text = device.VoltageB == null ? "--" : device.VoltageB.Value.ToString() + "V";
 
             lblVolCValue.AutoSize = true;
             lblVolCValue.Location = new System.Drawing.Point(284, 53);
             lblVolCValue.Name = "lblVolCValue";
             lblVolCValue.Size = new System.Drawing.Size(47, 12);
             lblVolCValue.TabIndex = 25;
-            lblVolCValue.Text = device.VoltageC == null ? "--" : device.VoltageC.Value.ToString("X2") + "V";
+            lblVolCValue.Text = device.VoltageC == null ? "--" : device.VoltageC.Value.ToString() + "V";
 
             // Power
             Label lblPowerKey = new Label();
@@ -897,7 +888,7 @@ namespace MotorProtection.UI
             lblPowerValue.Name = "lblPowerValue";
             lblPowerValue.Size = new System.Drawing.Size(47, 12);
             lblPowerValue.TabIndex = 26;
-            lblPowerValue.Text = device.Power == null ? "--" : device.Power.Value.ToString("X2") + "KW";
+            lblPowerValue.Text = device.Power == null ? "--" : device.Power.Value.ToString() + "KW";
 
             // Alarm time
             Label lblAlarmTimeKey = new Label();
@@ -969,21 +960,21 @@ namespace MotorProtection.UI
             lblTemCValue.Name = "lblTemCValue";
             lblTemCValue.Size = new System.Drawing.Size(47, 12);
             lblTemCValue.TabIndex = 31;
-            lblTemCValue.Text = device.TemperatureC == null ? "--" : device.TemperatureC.Value.ToString("X2");
+            lblTemCValue.Text = device.TemperatureC == null ? "--" : device.TemperatureC.Value.ToString();
             
             lblTemBValue.AutoSize = true;
             lblTemBValue.Location = new System.Drawing.Point(167, 148);
             lblTemBValue.Name = "lblTemBValue";
             lblTemBValue.Size = new System.Drawing.Size(47, 12);
             lblTemBValue.TabIndex = 30;
-            lblTemBValue.Text = device.TemperatureB == null ? "--" : device.TemperatureB.Value.ToString("X2");
+            lblTemBValue.Text = device.TemperatureB == null ? "--" : device.TemperatureB.Value.ToString();
             
             lblTemAValue.AutoSize = true;
             lblTemAValue.Location = new System.Drawing.Point(61, 148);
             lblTemAValue.Name = "lblTemAValue";
             lblTemAValue.Size = new System.Drawing.Size(47, 12);
             lblTemAValue.TabIndex = 29;
-            lblTemAValue.Text = device.TemperatureA == null ? "--" : device.TemperatureA.Value.ToString("X2");
+            lblTemAValue.Text = device.TemperatureA == null ? "--" : device.TemperatureA.Value.ToString();
 
             // RM#1 2 status
             Label lblRM2Key = new Label();
@@ -1057,7 +1048,6 @@ namespace MotorProtection.UI
             parent.Controls.Add(lblCurrentAKey);
             parent.Controls.Add(lblCurrentBKey);
             parent.Controls.Add(lblCurrentCKey);
-            //parent.Controls.Add(lblProtectorNameKey);
             parent.Controls.Add(lblProtectorNameValue);
             parent.Controls.Add(lblDeviceID);
             parent.Controls.Add(btnAlarmClear);

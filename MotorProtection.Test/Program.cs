@@ -50,11 +50,14 @@ namespace MotorProtection.Test
             //byte[] s = BitConverter.GetBytes((float)Convert.ToDecimal(str));
             //Console.WriteLine(command);
 
-            CacheController.Initialize();
+            //CacheController.Initialize();
 
-            StartPort();
+            //StartPort();
 
-            LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
+            //LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
+
+            decimal test = 32.01m;
+            Console.WriteLine(test.ToString());
 
             Console.ReadLine();
 
