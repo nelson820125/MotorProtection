@@ -98,7 +98,7 @@ namespace MotorProtection.Core
                 {
                     try
                     {
-                        List<Device> devices = DeviceCache.GetAllDevices();
+                        List<Device> devices = DeviceCache.GetAllDevices().Where(d => d.ParentID != null).ToList();
                         if (devices.Count > 0)
                         {
                             foreach (Device device in devices)
@@ -126,7 +126,9 @@ namespace MotorProtection.Core
                                         // caculate CRC
                                         byte[] data = readBuffer.Take(43).ToArray();
                                         Int16 crc = _protocalCtr.CalculateCRC(data);
-                                        if (crc == readBuffer.Last()) // CRC is correct
+                                        byte[] readBufferCRC = readBuffer.Skip(43).Take(2).ToArray();
+                                        Array.Reverse(readBufferCRC);
+                                        if (crc == BitConverter.ToInt16(readBufferCRC, 0)) // CRC is correct
                                         {
                                             if (DataReceived != null)
                                                 DataReceived(readBuffer.Skip(3).Take(40).ToArray(), device.Address.Value); // just parsing values area
