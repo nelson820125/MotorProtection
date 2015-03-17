@@ -198,7 +198,9 @@
     <Content Include="images\icon\16x16\alarm.png" />
     <Content Include="images\icon\16x16\connect.png" />
     <Content Include="images\icon\16x16\disconnect.png" />
+    <Content Include="images\icon\16x16\down.png" />
     <Content Include="images\icon\16x16\password.png" />
+    <Content Include="images\icon\16x16\right.png" />
     <Content Include="images\icon\16x16\running.png" />
     <Content Include="images\icon\16x16\server.png" />
     <Content Include="images\icon\16x16\stop.png" />

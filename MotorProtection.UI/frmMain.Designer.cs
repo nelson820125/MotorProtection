@@ -71,11 +71,17 @@
             this.tsmiDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHide = new System.Windows.Forms.ToolStripMenuItem();
             this.timFresh = new System.Windows.Forms.Timer(this.components);
+            this.pnlShowOrHideNode = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblNodesTitle = new System.Windows.Forms.Label();
+            this.btnFixedOrHide = new System.Windows.Forms.Button();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.pnlNodes.SuspendLayout();
             this.cmsParent.SuspendLayout();
             this.cmsChild.SuspendLayout();
+            this.pnlShowOrHideNode.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuSystem
@@ -107,7 +113,7 @@
             // 
             this.tsmiStart.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStart.Image")));
             this.tsmiStart.Name = "tsmiStart";
-            this.tsmiStart.Size = new System.Drawing.Size(175, 24);
+            this.tsmiStart.Size = new System.Drawing.Size(142, 24);
             this.tsmiStart.Text = "启动系统";
             this.tsmiStart.Click += new System.EventHandler(this.tsmiStart_Click);
             // 
@@ -115,19 +121,19 @@
             // 
             this.tsmiStop.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStop.Image")));
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(175, 24);
+            this.tsmiStop.Size = new System.Drawing.Size(142, 24);
             this.tsmiStop.Text = "停止系统";
             this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(172, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(139, 6);
             // 
             // tmsiSignOut
             // 
             this.tmsiSignOut.Name = "tmsiSignOut";
-            this.tmsiSignOut.Size = new System.Drawing.Size(175, 24);
+            this.tmsiSignOut.Size = new System.Drawing.Size(142, 24);
             this.tmsiSignOut.Text = "退出";
             this.tmsiSignOut.Click += new System.EventHandler(this.tmsiSignOut_Click);
             // 
@@ -256,7 +262,8 @@
             // pnlNodes
             // 
             this.pnlNodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlNodes.Controls.Add(this.tvProtectors);
+            this.pnlNodes.Controls.Add(this.panel1);
+            this.pnlNodes.Controls.Add(this.pnlShowOrHideNode);
             this.pnlNodes.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlNodes.Location = new System.Drawing.Point(0, 28);
             this.pnlNodes.Margin = new System.Windows.Forms.Padding(4);
@@ -272,12 +279,13 @@
             this.tvProtectors.ImageList = this.imgListStatus;
             this.tvProtectors.Indent = 19;
             this.tvProtectors.ItemHeight = 20;
+            this.tvProtectors.LineColor = System.Drawing.Color.White;
             this.tvProtectors.Location = new System.Drawing.Point(0, 0);
             this.tvProtectors.Margin = new System.Windows.Forms.Padding(4);
             this.tvProtectors.Name = "tvProtectors";
             this.tvProtectors.SelectedImageIndex = 0;
-            this.tvProtectors.Size = new System.Drawing.Size(261, 743);
-            this.tvProtectors.TabIndex = 0;
+            this.tvProtectors.Size = new System.Drawing.Size(261, 717);
+            this.tvProtectors.TabIndex = 1;
             this.tvProtectors.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvProtectors_MouseDown);
             // 
             // imgListStatus
@@ -415,6 +423,51 @@
             // 
             this.timFresh.Interval = 5000;
             // 
+            // pnlShowOrHideNode
+            // 
+            this.pnlShowOrHideNode.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.pnlShowOrHideNode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlShowOrHideNode.Controls.Add(this.btnFixedOrHide);
+            this.pnlShowOrHideNode.Controls.Add(this.lblNodesTitle);
+            this.pnlShowOrHideNode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlShowOrHideNode.Location = new System.Drawing.Point(0, 0);
+            this.pnlShowOrHideNode.Name = "pnlShowOrHideNode";
+            this.pnlShowOrHideNode.Size = new System.Drawing.Size(261, 26);
+            this.pnlShowOrHideNode.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tvProtectors);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 26);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(261, 717);
+            this.panel1.TabIndex = 2;
+            // 
+            // lblNodesTitle
+            // 
+            this.lblNodesTitle.AutoSize = true;
+            this.lblNodesTitle.ForeColor = System.Drawing.Color.White;
+            this.lblNodesTitle.Location = new System.Drawing.Point(3, 3);
+            this.lblNodesTitle.Name = "lblNodesTitle";
+            this.lblNodesTitle.Size = new System.Drawing.Size(78, 17);
+            this.lblNodesTitle.TabIndex = 0;
+            this.lblNodesTitle.Text = "树型导航栏";
+            // 
+            // btnFixedOrHide
+            // 
+            this.btnFixedOrHide.AutoSize = true;
+            this.btnFixedOrHide.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnFixedOrHide.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFixedOrHide.BackgroundImage")));
+            this.btnFixedOrHide.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnFixedOrHide.FlatAppearance.BorderSize = 0;
+            this.btnFixedOrHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFixedOrHide.Location = new System.Drawing.Point(235, 3);
+            this.btnFixedOrHide.Name = "btnFixedOrHide";
+            this.btnFixedOrHide.Size = new System.Drawing.Size(20, 20);
+            this.btnFixedOrHide.TabIndex = 1;
+            this.btnFixedOrHide.UseVisualStyleBackColor = false;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -442,6 +495,9 @@
             this.pnlNodes.ResumeLayout(false);
             this.cmsParent.ResumeLayout(false);
             this.cmsChild.ResumeLayout(false);
+            this.pnlShowOrHideNode.ResumeLayout(false);
+            this.pnlShowOrHideNode.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,6 +546,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiDisplay;
         private System.Windows.Forms.ToolStripMenuItem tsmiHide;
         private System.Windows.Forms.Timer timFresh;
+        private System.Windows.Forms.Panel pnlShowOrHideNode;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblNodesTitle;
+        private System.Windows.Forms.Button btnFixedOrHide;
     }
 }
 

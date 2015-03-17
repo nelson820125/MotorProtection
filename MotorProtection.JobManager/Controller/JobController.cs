@@ -18,7 +18,7 @@ namespace MotorProtection.JobManager.Controller
             _comm.serialPort.PortName = AppConfig.SerialComm_PortName;
             _comm.serialPort.BaudRate = string.IsNullOrEmpty(AppConfig.SerialComm_BaudRate) ? 9600 : Convert.ToInt32(AppConfig.SerialComm_BaudRate);
             _comm.serialPort.DataBits = 8;
-            //_comm.serialPort.StopBits = System.IO.Ports.StopBits.None;
+            _comm.serialPort.StopBits = System.IO.Ports.StopBits.One;
             _comm.serialPort.Parity = System.IO.Ports.Parity.None;
             _comm.DataReceived += serialPort_DataReceived;
 
@@ -170,8 +170,9 @@ namespace MotorProtection.JobManager.Controller
 
                     // set alarm and stop time to device object
                     int currentYear = DateTime.Now.Year;
-                    alarmYear = (alarmYear + 2000) > currentYear ? alarmYear + 1900 : alarmYear + 2000;
-                    stopYear = (stopYear + 2000) > currentYear ? stopYear + 1900 : stopYear + 2000;
+                    int yearPrefix = currentYear / 100;
+                    alarmYear = (alarmYear + yearPrefix * 100) > currentYear ? alarmYear + (yearPrefix - 1) * 100 : alarmYear + yearPrefix * 100;
+                    stopYear = (stopYear + yearPrefix * 100) > currentYear ? stopYear + (yearPrefix - 1) * 100 : stopYear + yearPrefix * 100;
 
                     device.AlarmAt = new DateTime(alarmYear, alarmMon, alarmDay, alarmHr, alarmMin, alarmSec);
                     device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);

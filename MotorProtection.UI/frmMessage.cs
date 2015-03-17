@@ -20,7 +20,6 @@ namespace MotorProtection.UI
         private ServiceController _service = null;
         private JobOperation _operation;
         private bool _hasOperation = false;
-        //private bool _isStartOrStopService = false;
         private DeviceConfigurationPool _pool = null;
 
         public frmMessage()
@@ -34,7 +33,6 @@ namespace MotorProtection.UI
             InitializeComponent();
             lblMsg.Text = msg;
             _hasOperation = false;
-            //_isStartOrStopService = false;
         }
 
         public frmMessage(string msg, ServiceController servive, JobOperation oper)
@@ -44,7 +42,6 @@ namespace MotorProtection.UI
             _service = servive;
             _operation = oper;
             _hasOperation = true;
-            //_isStartOrStopService = true;
         }
 
         public frmMessage(string msg, DeviceConfigurationPool pool)
@@ -54,13 +51,7 @@ namespace MotorProtection.UI
             _pool = pool;
             _operation = JobOperation.None;
             _hasOperation = true;
-            //_isStartOrStopService = false;
         }
-
-        //private void StartOrStopService()
-        //{
-            
-        //}
 
         private void VerifyStatus(object thisForm)
         {
@@ -191,13 +182,6 @@ namespace MotorProtection.UI
             {
                 Thread verifyThread = new Thread(new ParameterizedThreadStart(VerifyStatus));
                 verifyThread.Start(this);
-                //if (_isStartOrStopService)
-                //    StartOrStopService();
-                //else
-                //{
-                //    Thread verifyThread = new Thread(new ThreadStart(VerifyStatus));
-                //    verifyThread.Start();
-                //}
             }
             else
             {
