@@ -39,7 +39,8 @@ namespace MotorProtection.Core
 
         public bool IsOpen
         {
-            get {
+            get
+            {
                 return serialPort.IsOpen;
             }
         }
@@ -69,7 +70,7 @@ namespace MotorProtection.Core
             List<DeviceConfigurationPool> pools = new List<DeviceConfigurationPool>();
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
             {
-                pools = ctt.DeviceConfigurationPools.ToList();                
+                pools = ctt.DeviceConfigurationPools.Where(p => p.Status == ConfigurationStatus.PROCESSING).ToList();
             }
 
             if (pools != null && pools.Count > 0)
@@ -85,7 +86,8 @@ namespace MotorProtection.Core
                     byte[] readBuffer = new byte[count];
                     serialPort.Read(readBuffer, 0, count);
 
-                    configCtrl.SyncSilverFinalize(pool, readBuffer);
+                    if (DataReceived != null)
+                        configCtrl.SyncSilverFinalize(pool, readBuffer);
                 }
             }
         }
@@ -154,12 +156,12 @@ namespace MotorProtection.Core
 
                                         continue;
                                     }
-                                }                                
+                                }
                             }
 
                             // get status of protector every 5 seconds.
                             Thread.Sleep(5000);
-                        }                        
+                        }
                     }
                     catch (TimeoutException)
                     {
@@ -168,7 +170,7 @@ namespace MotorProtection.Core
                     catch (Exception ex)
                     {
                         throw ex;
-                    }                    
+                    }
                 }
             }
         }

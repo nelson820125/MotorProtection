@@ -16,6 +16,7 @@ namespace MotorProtection.Test
     class Program
     {
         private static SerialComm _comm = new SerialComm();
+        private static ProtocalController _protocalCtrl = new ProtocalController();
 
         static void Main(string[] args)
         {
@@ -56,13 +57,99 @@ namespace MotorProtection.Test
 
             //LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
 
-            decimal test = 32.01m;
-            Console.WriteLine(test.ToString());
+            //decimal test = 32.01m;
+            //Console.WriteLine(test.ToString());
+            //byte addr = 0x01;
+            //byte func = 0x03;
+            byte[] data = new byte[] { 0x01, 0x03, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE4, 0x59 };
+            ReadSliverConfig(data);
+            //MODBUSRTU modubus = new MODBUSRTU();
+            //byte[] result = modubus.PresetMultiRegisters(addr, data, data.Length);
 
             Console.ReadLine();
 
             //ProtocalController ctrl = new ProtocalController();
             //byte[] result = ctrl.ReadRegistersRequest(1, 0x75, 0x30, 20);
+        }
+
+        private static void ReadSliverConfig(byte[] receivedData)
+        {
+            byte errorCode = (byte)(AlphaProtocal.Constant.MODBUSFunCodes.RTU_ERROR_CODE_PRE + AlphaProtocal.Constant.MODBUSFunCodes.RTU_READ_HOLDING_REGISTERS);
+            bool isSuccess = true;
+            if (receivedData.Length > 0)
+            {
+                if (receivedData[1] == errorCode) // return errors. and log exception code.
+                {
+                    LogController.LogError(LoggingLevel.Error).Add("Description", "Reading sliver's configuration is failed! the exception code: " + Convert.ToString(receivedData[2], 16)).Write();
+                    //InvalidResponse(config);
+                    isSuccess = false;
+                }
+                else
+                {
+                    byte[] data = receivedData.Take(19).ToArray();
+                    Int16 crc = _protocalCtrl.CalculateCRC(data);
+                    byte[] receivedDataCRC = receivedData.Skip(19).Take(2).ToArray();
+                    Array.Reverse(receivedDataCRC);
+                    if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
+                    {
+                        var newConfig = ConvertSilverDataToDeviceConfigsLog(receivedData);
+                        isSuccess = UpdateDeviceConfigsLog(1, newConfig);
+                    }
+                }
+            }
+        }
+
+        private static bool UpdateDeviceConfigsLog(int address, DeviceConfigsLog newConfig)
+        {
+            bool isSuccess = false;
+            if (newConfig != null)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == address).FirstOrDefault();
+                    if (configLog != null)
+                    {
+                        configLog.Status = newConfig.Status;
+                        configLog.ProtectPower = newConfig.ProtectPower;
+                        configLog.ProtectMode = newConfig.ProtectMode;
+                        configLog.MIRatio = newConfig.MIRatio;
+                        configLog.AlarmThreshold = newConfig.AlarmThreshold;
+                        configLog.StopThreshold = newConfig.StopThreshold;
+                        configLog.FirstRMMode = newConfig.FirstRMMode;
+                        configLog.SecondRMMode = newConfig.SecondRMMode;
+                    }
+                    else
+                    {
+                        newConfig.ID = address;
+                        ctt.DeviceConfigsLogs.AddObject(newConfig);
+                    }
+
+                    ctt.SaveChanges();
+
+                    isSuccess = true;
+                }
+            }
+
+            return isSuccess;
+        }
+
+        private static DeviceConfigsLog ConvertSilverDataToDeviceConfigsLog(byte[] receivedData)
+        {
+            byte[] dataBuffer = receivedData.Skip(3).Take(16).ToArray();
+            Array.Reverse(dataBuffer);
+
+            DeviceConfigsLog config = new DeviceConfigsLog()
+            {
+                SecondRMMode = BitConverter.ToUInt16(dataBuffer.Take(2).ToArray(), 0),
+                FirstRMMode = BitConverter.ToUInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
+                StopThreshold = BitConverter.ToUInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
+                AlarmThreshold = BitConverter.ToUInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
+                MIRatio = BitConverter.ToUInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
+                ProtectMode = BitConverter.ToUInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
+                ProtectPower = (decimal)((double)BitConverter.ToUInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100),
+                Status = BitConverter.ToUInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
+            };
+            return config;
         }
 
         private static void StartPort()
@@ -224,7 +311,7 @@ namespace MotorProtection.Test
                     int currentYear = DateTime.Now.Year;
                     alarmYear = (alarmYear + 2000) > currentYear ? alarmYear + 1900 : alarmYear + 2000;
                     stopYear = (stopYear + 2000) > currentYear ? stopYear + 1900 : stopYear + 2000;
-                    
+
                     device.AlarmAt = new DateTime(alarmYear, alarmMon, alarmDay, alarmHr, alarmMin, alarmSec);
                     device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);
 

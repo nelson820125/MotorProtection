@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace MotorProtection.Core.Data.Entities
     {
         #region Primitive Properties
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public virtual int ID { get; set; }
 
         public virtual decimal? ProtectPower { get; set; }

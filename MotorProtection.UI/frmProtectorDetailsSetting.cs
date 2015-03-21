@@ -14,8 +14,8 @@ namespace MotorProtection.UI
 {
     public partial class frmProtectorDetailsSetting : Form
     {
-        private byte[] READ_START_ADDRESS = new byte[] { RegisterAddresses.ProtectorSettingHi, RegisterAddresses.ProtectorPowerSettingLo };
-        private byte[] READ_REGISTER_NUM = new byte[] { 0x00, 0x07 };
+        private byte[] READ_START_ADDRESS = new byte[] { RegisterAddresses.ProtectorSettingHi, RegisterAddresses.ProtectorStatusResetLo };
+        private byte[] READ_REGISTER_NUM = new byte[] { 0x00, 0x08 };
 
         private DeviceConfig _config = new DeviceConfig();
         private ServiceController _serviceCtrl = null;

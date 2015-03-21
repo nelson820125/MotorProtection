@@ -52,7 +52,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
           <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
           <Property Name="ProtectMode" Type="int" />
           <Property Name="MIRatio" Type="int" />
@@ -386,7 +386,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="ProtectPower" Type="Decimal" Precision="8" Scale="2" />
           <Property Name="ProtectMode" Type="Int32" />
           <Property Name="MIRatio" Type="Int32" />

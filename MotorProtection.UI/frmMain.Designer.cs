@@ -52,8 +52,12 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSystemStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlNodes = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tvProtectors = new System.Windows.Forms.TreeView();
             this.imgListStatus = new System.Windows.Forms.ImageList(this.components);
+            this.pnlShowOrHideNode = new System.Windows.Forms.Panel();
+            this.btnFixedOrHide = new System.Windows.Forms.Button();
+            this.lblNodesTitle = new System.Windows.Forms.Label();
             this.sprMain = new System.Windows.Forms.Splitter();
             this.pnlMainShow = new System.Windows.Forms.Panel();
             this.cmsParent = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -71,17 +75,13 @@
             this.tsmiDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHide = new System.Windows.Forms.ToolStripMenuItem();
             this.timFresh = new System.Windows.Forms.Timer(this.components);
-            this.pnlShowOrHideNode = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.lblNodesTitle = new System.Windows.Forms.Label();
-            this.btnFixedOrHide = new System.Windows.Forms.Button();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.pnlNodes.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.pnlShowOrHideNode.SuspendLayout();
             this.cmsParent.SuspendLayout();
             this.cmsChild.SuspendLayout();
-            this.pnlShowOrHideNode.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuSystem
@@ -271,6 +271,15 @@
             this.pnlNodes.Size = new System.Drawing.Size(265, 747);
             this.pnlNodes.TabIndex = 2;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tvProtectors);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 26);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(261, 717);
+            this.panel1.TabIndex = 2;
+            // 
             // tvProtectors
             // 
             this.tvProtectors.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -296,6 +305,43 @@
             this.imgListStatus.Images.SetKeyName(1, "alarm.png");
             this.imgListStatus.Images.SetKeyName(2, "stop.png");
             this.imgListStatus.Images.SetKeyName(3, "server.png");
+            // 
+            // pnlShowOrHideNode
+            // 
+            this.pnlShowOrHideNode.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.pnlShowOrHideNode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlShowOrHideNode.Controls.Add(this.btnFixedOrHide);
+            this.pnlShowOrHideNode.Controls.Add(this.lblNodesTitle);
+            this.pnlShowOrHideNode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlShowOrHideNode.Location = new System.Drawing.Point(0, 0);
+            this.pnlShowOrHideNode.Name = "pnlShowOrHideNode";
+            this.pnlShowOrHideNode.Size = new System.Drawing.Size(261, 26);
+            this.pnlShowOrHideNode.TabIndex = 0;
+            // 
+            // btnFixedOrHide
+            // 
+            this.btnFixedOrHide.AutoSize = true;
+            this.btnFixedOrHide.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources.release;
+            this.btnFixedOrHide.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnFixedOrHide.FlatAppearance.BorderSize = 0;
+            this.btnFixedOrHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFixedOrHide.Location = new System.Drawing.Point(235, 2);
+            this.btnFixedOrHide.Name = "btnFixedOrHide";
+            this.btnFixedOrHide.Size = new System.Drawing.Size(20, 20);
+            this.btnFixedOrHide.TabIndex = 1;
+            this.btnFixedOrHide.UseVisualStyleBackColor = false;
+            this.btnFixedOrHide.Click += new System.EventHandler(this.btnFixedOrHide_Click);
+            // 
+            // lblNodesTitle
+            // 
+            this.lblNodesTitle.AutoSize = true;
+            this.lblNodesTitle.ForeColor = System.Drawing.Color.White;
+            this.lblNodesTitle.Location = new System.Drawing.Point(3, 3);
+            this.lblNodesTitle.Name = "lblNodesTitle";
+            this.lblNodesTitle.Size = new System.Drawing.Size(78, 17);
+            this.lblNodesTitle.TabIndex = 0;
+            this.lblNodesTitle.Text = "树型导航栏";
             // 
             // sprMain
             // 
@@ -423,51 +469,6 @@
             // 
             this.timFresh.Interval = 5000;
             // 
-            // pnlShowOrHideNode
-            // 
-            this.pnlShowOrHideNode.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.pnlShowOrHideNode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlShowOrHideNode.Controls.Add(this.btnFixedOrHide);
-            this.pnlShowOrHideNode.Controls.Add(this.lblNodesTitle);
-            this.pnlShowOrHideNode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlShowOrHideNode.Location = new System.Drawing.Point(0, 0);
-            this.pnlShowOrHideNode.Name = "pnlShowOrHideNode";
-            this.pnlShowOrHideNode.Size = new System.Drawing.Size(261, 26);
-            this.pnlShowOrHideNode.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.tvProtectors);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 26);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(261, 717);
-            this.panel1.TabIndex = 2;
-            // 
-            // lblNodesTitle
-            // 
-            this.lblNodesTitle.AutoSize = true;
-            this.lblNodesTitle.ForeColor = System.Drawing.Color.White;
-            this.lblNodesTitle.Location = new System.Drawing.Point(3, 3);
-            this.lblNodesTitle.Name = "lblNodesTitle";
-            this.lblNodesTitle.Size = new System.Drawing.Size(78, 17);
-            this.lblNodesTitle.TabIndex = 0;
-            this.lblNodesTitle.Text = "树型导航栏";
-            // 
-            // btnFixedOrHide
-            // 
-            this.btnFixedOrHide.AutoSize = true;
-            this.btnFixedOrHide.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnFixedOrHide.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFixedOrHide.BackgroundImage")));
-            this.btnFixedOrHide.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.btnFixedOrHide.FlatAppearance.BorderSize = 0;
-            this.btnFixedOrHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFixedOrHide.Location = new System.Drawing.Point(235, 3);
-            this.btnFixedOrHide.Name = "btnFixedOrHide";
-            this.btnFixedOrHide.Size = new System.Drawing.Size(20, 20);
-            this.btnFixedOrHide.TabIndex = 1;
-            this.btnFixedOrHide.UseVisualStyleBackColor = false;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -493,11 +494,11 @@
             this.stsBottom.ResumeLayout(false);
             this.stsBottom.PerformLayout();
             this.pnlNodes.ResumeLayout(false);
-            this.cmsParent.ResumeLayout(false);
-            this.cmsChild.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.pnlShowOrHideNode.ResumeLayout(false);
             this.pnlShowOrHideNode.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.cmsParent.ResumeLayout(false);
+            this.cmsChild.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -146,12 +146,21 @@
     <EmbeddedResource Include="frmSystemSetting.resx">
       <DependentUpon>frmSystemSetting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -199,7 +208,9 @@
     <Content Include="images\icon\16x16\connect.png" />
     <Content Include="images\icon\16x16\disconnect.png" />
     <Content Include="images\icon\16x16\down.png" />
+    <Content Include="images\icon\16x16\fixed.png" />
     <Content Include="images\icon\16x16\password.png" />
+    <Content Include="images\icon\16x16\release.png" />
     <Content Include="images\icon\16x16\right.png" />
     <Content Include="images\icon\16x16\running.png" />
     <Content Include="images\icon\16x16\server.png" />

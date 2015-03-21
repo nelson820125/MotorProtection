@@ -217,8 +217,15 @@ namespace MotorProtection.Core.Controller
                     Status = config.Status,
                 };
 
-                AddDeviceConfigurationLog(log);
-                DeleteDeviceConfigurationFromPool(config.ID);
+                if (config.JobRemovable)
+                {
+                    AddDeviceConfigurationLog(log);
+                    DeleteDeviceConfigurationFromPool(config.ID);
+                }
+                else
+                {
+                    UpdatePoolStatus(config.ID, config.Status.Value);
+                }
             }
         }
 
@@ -248,14 +255,14 @@ namespace MotorProtection.Core.Controller
 
             DeviceConfigsLog config = new DeviceConfigsLog()
             {
-                SecondRMMode = BitConverter.ToInt16(dataBuffer.Take(2).ToArray(), 0),
-                FirstRMMode = BitConverter.ToInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
-                StopThreshold = BitConverter.ToInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
-                AlarmThreshold = BitConverter.ToInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
-                MIRatio = BitConverter.ToInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
-                ProtectMode = BitConverter.ToInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
-                ProtectPower = (decimal)BitConverter.ToInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100,
-                Status = BitConverter.ToInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
+                SecondRMMode = BitConverter.ToUInt16(dataBuffer.Take(2).ToArray(), 0),
+                FirstRMMode = BitConverter.ToUInt16(dataBuffer.Skip(2).Take(2).ToArray(), 0),
+                StopThreshold = BitConverter.ToUInt16(dataBuffer.Skip(4).Take(2).ToArray(), 0),
+                AlarmThreshold = BitConverter.ToUInt16(dataBuffer.Skip(6).Take(2).ToArray(), 0),
+                MIRatio = BitConverter.ToUInt16(dataBuffer.Skip(8).Take(2).ToArray(), 0),
+                ProtectMode = BitConverter.ToUInt16(dataBuffer.Skip(10).Take(2).ToArray(), 0),
+                ProtectPower = (decimal)((double)BitConverter.ToUInt16(dataBuffer.Skip(12).Take(2).ToArray(), 0) / 100),
+                Status = BitConverter.ToUInt16(dataBuffer.Skip(14).Take(2).ToArray(), 0)
             };
             return config;
         }
@@ -313,10 +320,11 @@ namespace MotorProtection.Core.Controller
                         configLog.AlarmThreshold = newConfig.AlarmThreshold;
                         configLog.StopThreshold = newConfig.StopThreshold;
                         configLog.FirstRMMode = newConfig.FirstRMMode;
-                        configLog.SecondRMMode = newConfig.SecondRMMode;                        
+                        configLog.SecondRMMode = newConfig.SecondRMMode;
                     }
                     else
                     {
+                        newConfig.ID = address;
                         ctt.DeviceConfigsLogs.AddObject(newConfig);
                     }
 
@@ -389,7 +397,8 @@ namespace MotorProtection.Core.Controller
                         if (!isSuccess)
                         {
                             LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
-                            DeleteDeviceConfigurationFromPool(config.ID);
+                            //DeleteDeviceConfigurationFromPool(config.ID);
+                            InvalidResponse(config);
                         }
                     }
                     else
@@ -412,7 +421,7 @@ namespace MotorProtection.Core.Controller
                 if (config.JobRemovable)
                     UpdatePoolAfterSuccess(config.ID);
                 else
-                    UpdatePoolStatus(config.ID, config.Status.Value);
+                    UpdatePoolStatus(config.ID, ConfigurationStatus.SUCCESS);
             }
         }
 

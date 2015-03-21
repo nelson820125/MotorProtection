@@ -22,12 +22,14 @@ namespace MotorProtection.UI
         private byte[] RESET_REGISTER_ADDRESS = new byte[] { RegisterAddresses.ProtectorSettingHi, RegisterAddresses.ProtectorStatusResetLo };
         private byte[] CLEAR_ALARM = new byte[] { 0xa5, 0xa5 };
         private byte[] RESET = new byte[] { 0xaa, 0x55 };
+        private bool _isTreeNavigationFixed = false;
 
         public frmMain()
         {
             InitializeComponent();
             _serviceCtrl = Controller.WinServiceController.GetServiceByName(JobManagerKey.JOB_NAME);
             InitializeComponentStatus();
+            _isTreeNavigationFixed = false;
         }
 
         private void tsmiAboutSystem_Click(object sender, EventArgs e)
@@ -546,6 +548,20 @@ namespace MotorProtection.UI
             int deviceId = Convert.ToInt32(lblDeviceID.Text.Trim());
 
             HideProtectorPanel(deviceId);
+        }
+
+        private void btnFixedOrHide_Click(object sender, EventArgs e)
+        {
+            if (_isTreeNavigationFixed)
+            {
+                _isTreeNavigationFixed = false;
+                btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources.release;
+            }
+            else
+            {
+                _isTreeNavigationFixed = true;
+                btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources._fixed;
+            }
         }
 
         #region private
