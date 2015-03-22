@@ -6,12 +6,130 @@ using MotorProtection.Core;
 using MotorProtection.Core.Log;
 using MotorProtection.Core.Data.Entities;
 using MotorProtection.Constant;
+using System.Threading;
+using MotorProtection.Core.Cache;
+using MotorProtection.Core.Controller;
 
 namespace MotorProtection.JobManager.Controller
 {
     public static class JobController
     {
         private static SerialComm _comm = new SerialComm();
+        private static ProtocalController _protocalCtr = new ProtocalController();
+        private static DeviceController _deviceCtr = new DeviceController();
+        volatile static bool _keepReading;
+        static Thread thread;
+
+        private static void StartReading()
+        {
+            if (!_keepReading)
+            {
+                _keepReading = true;
+                thread = new Thread(new ThreadStart(ReadPort));
+                thread.Start();
+            }
+        }
+
+        private static void StopReading()
+        {
+            if (_keepReading)
+            {
+                _keepReading = false;
+                thread.Join();
+                thread = null;
+            }
+        }
+
+        private static void WriteRequests()
+        {
+            List<DeviceConfigurationPool> pools = new List<DeviceConfigurationPool>();
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                pools = ctt.DeviceConfigurationPools.Where(p => p.Status == ConfigurationStatus.PROCESSING).ToList();
+            }
+
+            if (pools != null && pools.Count > 0)
+            {
+                DeviceConfigsController configCtrl = new DeviceConfigsController();
+                foreach (DeviceConfigurationPool pool in pools)
+                {
+                    byte[] command = configCtrl.SyncSilverCommand(pool);
+                    _comm.WritePort(command, 0, command.Length);
+
+                    Thread.Sleep(500);
+                    // read data from Slave.
+                    byte[] readBuffer = _comm.ReadBuffer;
+                    configCtrl.SyncSilverFinalize(pool, readBuffer);
+                }
+            }
+        }
+
+        private static void ReadPort()
+        {
+            while (_keepReading)
+            {
+                List<Device> devices = DeviceCache.GetAllDevices().Where(d => d.ParentID != null).ToList();
+                if (devices.Count > 0)
+                {
+                    foreach (Device device in devices)
+                    {
+                        //deal with WRITE commands first
+                        WriteRequests();
+
+                        int attempts = 0;
+                        while (true)
+                        {
+                            attempts++;
+
+                            //send read register command.
+                            byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 20);
+                            _comm.WritePort(command, 0, command.Length);
+
+                            Thread.Sleep(500); // wait for response for 500 missecond.
+                            byte[] readBuffer = _comm.ReadBuffer;
+                            int count = readBuffer.Length;
+                            if (count > 0 && count == 45)// response structure is 1*addr | 1*func | 1*charNum | N*2values | 2*CRC, so 45 is the length of the available response data
+                            {
+                                //verify CRC of response data.
+                                // caculate CRC
+                                byte[] data = readBuffer.Take(43).ToArray();
+                                Int16 crc = _protocalCtr.CalculateCRC(data);
+                                byte[] readBufferCRC = readBuffer.Skip(43).Take(2).ToArray();
+                                Array.Reverse(readBufferCRC);
+                                if (crc == BitConverter.ToInt16(readBufferCRC, 0)) // CRC is correct
+                                {
+                                    _deviceCtr.ParsingDeviceStatus(readBuffer.Skip(3).Take(40).ToArray(), device.Address.Value); // just parsing values area
+                                    break;
+                                }
+                                else // CRC is incorrect
+                                {
+                                    if (attempts >= AppConfig.SerialComm_Attempts)
+                                    {
+                                        LogController.LogError(LoggingLevel.Error, new Exception("Bad response")).Write();
+                                        break;
+                                    }
+
+                                    continue;
+                                }
+                            }
+                            else // data length is incorrect
+                            {
+                                if (attempts >= AppConfig.SerialComm_Attempts)
+                                {
+                                    LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
+                                    break;
+                                }
+
+                                continue;
+                            }
+                        }
+                    }
+
+                    // get status of protector every 5 seconds.
+                    Thread.Sleep(5000);
+                }
+            }
+        }
 
         public static void Start()
         {
@@ -20,7 +138,7 @@ namespace MotorProtection.JobManager.Controller
             _comm.serialPort.DataBits = 8;
             _comm.serialPort.StopBits = System.IO.Ports.StopBits.One;
             _comm.serialPort.Parity = System.IO.Ports.Parity.None;
-            _comm.DataReceived += serialPort_DataReceived;
+            _comm.serialPort.ReceivedBytesThreshold = 1;
 
             try
             {
@@ -31,6 +149,16 @@ namespace MotorProtection.JobManager.Controller
                 {
                     LogController.LogError(LoggingLevel.Error).Add("Description", err).Write();
                 }
+                else
+                {
+                    _keepReading = false;
+                    thread = null;
+                    StartReading();
+                }
+            }
+            catch (TimeoutException)
+            {
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Serial Port Reading Timeout！").Write();
             }
             catch (Exception ex)
             {
@@ -41,146 +169,9 @@ namespace MotorProtection.JobManager.Controller
         public static void Stop()
         {
             if (_comm.IsOpen)
-                _comm.Close();
-        }
-
-        /// <summary>
-        /// Get buffer data at the port to parse
-        /// </summary>
-        private static void serialPort_DataReceived(byte[] readBuffer, int address)
-        {
-            if (readBuffer != null)
             {
-                // update device information in DB
-                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
-                {
-                    Device device = ctt.Devices.Where(d => d.Address == address).FirstOrDefault();
-                    int alarmSec = 0, alarmMin = 0, alarmHr = 0, alarmDay = 0, alarmMon = 0, alarmYear = 0, stopSec = 0, stopMin = 0, stopHr = 0, stopDay = 0, stopMon = 0, stopYear = 0;
-                    int count = 0;
-                    for (int i = 0; i < readBuffer.Length; i = i + 2)
-                    {
-                        count++;
-
-                        //parsing received data.
-                        byte[] data = new byte[2];
-                        data[0] = readBuffer[i];
-                        data[1] = readBuffer[i + 1];
-                        switch (count)
-                        {
-                            case 1: // current A value
-                                Array.Reverse(data);
-                                device.CurrentA = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 2: // current B value
-                                Array.Reverse(data);
-                                device.CurrentB = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 3: // current C value
-                                Array.Reverse(data);
-                                device.CurrentC = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 4: // Voltage A value
-                                Array.Reverse(data);
-                                device.VoltageA = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 5: // Voltage B value
-                                Array.Reverse(data);
-                                device.VoltageB = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 6: // Voltage C value
-                                Array.Reverse(data);
-                                device.VoltageC = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 7: // Power value
-                                Array.Reverse(data);
-                                device.Power = (decimal)((double)BitConverter.ToUInt16(data, 0) / 100);
-                                break;
-                            case 8: // alarm second and minute value
-                                byte[] secBytes = new byte[] { data[0], 0x00 };
-                                byte[] minBytes = new byte[] { data[1], 0x00 };
-                                alarmSec = BitConverter.ToInt16(secBytes, 0);
-                                alarmMin = BitConverter.ToInt16(minBytes, 0);
-                                break;
-                            case 9: // alarm hour and day value
-                                byte[] hrBytes = new byte[] { data[0], 0x00 };
-                                byte[] dayBytes = new byte[] { data[1], 0x00 };
-                                alarmHr = BitConverter.ToInt16(hrBytes, 0);
-                                alarmDay = BitConverter.ToInt16(dayBytes, 0);
-                                break;
-                            case 10: // alarm month and year value
-                                byte[] monBytes = new byte[] { data[0], 0x00 };
-                                byte[] yearBytes = new byte[] { data[1], 0x00 };
-                                alarmMon = BitConverter.ToInt16(monBytes, 0);
-                                alarmYear = BitConverter.ToInt16(yearBytes, 0);
-                                break;
-                            case 11: // stop second and minute value
-                                byte[] stopSecBytes = new byte[] { data[0], 0x00 };
-                                byte[] stopMinBytes = new byte[] { data[1], 0x00 };
-                                stopSec = BitConverter.ToInt16(stopSecBytes, 0);
-                                stopMin = BitConverter.ToInt16(stopMinBytes, 0);
-                                break;
-                            case 12: // stop hour and day value
-                                byte[] stopHrBytes = new byte[] { data[0], 0x00 };
-                                byte[] stopDayBytes = new byte[] { data[1], 0x00 };
-                                stopHr = BitConverter.ToInt16(stopHrBytes, 0);
-                                stopDay = BitConverter.ToInt16(stopDayBytes, 0);
-                                break;
-                            case 13: // stop month and year value
-                                byte[] stopMonBytes = new byte[] { data[0], 0x00 };
-                                byte[] stopYearBytes = new byte[] { data[1], 0x00 };
-                                stopMon = BitConverter.ToInt16(stopMonBytes, 0);
-                                stopYear = BitConverter.ToInt16(stopYearBytes, 0);
-                                break;
-                            case 14: // Temperature A value
-                                Array.Reverse(data);
-                                device.TemperatureA = (decimal)((double)BitConverter.ToInt16(data, 0) / 100);
-                                break;
-                            case 15: // Temperature B value
-                                Array.Reverse(data);
-                                device.TemperatureB = (decimal)((double)BitConverter.ToInt16(data, 0) / 100);
-                                break;
-                            case 16: // Temperature C value
-                                Array.Reverse(data);
-                                device.TemperatureC = (decimal)((double)BitConverter.ToInt16(data, 0) / 100);
-                                break;
-                            case 17: // Temperature value
-                                Array.Reverse(data);
-                                device.Temperature = (decimal)((double)BitConverter.ToInt16(data, 0) / 100);
-                                break;
-                            case 18:
-                                Array.Reverse(data);
-                                device.FirstRMStatus = BitConverter.ToInt16(data, 0) == 1 ? true : false;
-                                break;
-                            case 19:
-                                Array.Reverse(data);
-                                device.SecondRMStatus = BitConverter.ToInt16(data, 0) == 1 ? true : false;
-                                break;
-                            case 20:
-                                Array.Reverse(data);
-                                Int16 status = BitConverter.ToInt16(data, 0);
-                                if (status == 0) // 0 - working
-                                    device.Status = ProtectorStatus.Normal;
-                                else if (status == 15) // 0x0f - alarm
-                                    device.Status = ProtectorStatus.Alarm;
-                                else if (status == 255) // 0xff - stopped
-                                    device.Status = ProtectorStatus.Stopped;
-                                break;
-                        }
-                    }
-
-                    // set alarm and stop time to device object
-                    int currentYear = DateTime.Now.Year;
-                    int yearPrefix = currentYear / 100;
-                    alarmYear = (alarmYear + yearPrefix * 100) > currentYear ? alarmYear + (yearPrefix - 1) * 100 : alarmYear + yearPrefix * 100;
-                    stopYear = (stopYear + yearPrefix * 100) > currentYear ? stopYear + (yearPrefix - 1) * 100 : stopYear + yearPrefix * 100;
-
-                    device.AlarmAt = new DateTime(alarmYear, alarmMon, alarmDay, alarmHr, alarmMin, alarmSec);
-                    device.StopAt = new DateTime(stopYear, stopMon, stopDay, stopHr, stopMin, stopSec);
-
-                    device.UpdateTime = DateTime.Now;
-
-                    ctt.SaveChanges();
-                }
+                StopReading();
+                _comm.Close();
             }
         }
     }

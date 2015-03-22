@@ -140,35 +140,51 @@ namespace MotorProtection.UI
                         while (true)
                         {
                             var pool = ctt.DeviceConfigurationPools.Where(dcp => dcp.ID == _pool.ID).FirstOrDefault();
-                            if (pool.Status == ConfigurationStatus.PROCESSING)
+                            if (pool != null)
                             {
-                                Thread.Sleep(1000);
-                                continue;
+                                if (pool.Status == ConfigurationStatus.PROCESSING)
+                                {
+                                    Thread.Sleep(1000);
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (pool.Status == ConfigurationStatus.SUCCESS)
+                                        isSuccess = true;
+                                    else if (pool.Status == ConfigurationStatus.ERROR)
+                                        isSuccess = false;
+                                    break;
+                                }
                             }
                             else
                             {
-                                if (pool.Status == ConfigurationStatus.SUCCESS)
-                                    isSuccess = true;
-                                else if (pool.Status == ConfigurationStatus.ERROR)
-                                    isSuccess = false;
+                                isSuccess = false;
                                 break;
                             }
                         }
                     }
 
                     DeviceConfigsController ctrl = new DeviceConfigsController();
-                    ctrl.UpdatePoolAfterSuccess(_pool.ID);
 
                     if (isSuccess)
+                    {                        
+                        ctrl.UpdatePoolAfterSuccess(_pool.ID);
                         form.DialogResult = System.Windows.Forms.DialogResult.OK;
+                    }
                     else
+                    {
+                        ctrl.UpdatePoolAfterFailure(_pool.ID);
                         form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                DeviceConfigsController ctrl = new DeviceConfigsController();
+                ctrl.UpdatePoolAfterFailure(_pool.ID);
                 LogController.LogError(LoggingLevel.Error).Add("Description", ex.Message).Write();
+                form.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                
             }
             finally
             {

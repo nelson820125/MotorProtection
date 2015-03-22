@@ -86,7 +86,7 @@ namespace MotorProtection.UI
                     }
                     message.Close();
                 }
-                else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
+                else if (message.DialogResult == System.Windows.Forms.DialogResult.Cancel)
                 {
                     MessageBox.Show("读取信息失败，请重试或联系管理员");
                 }

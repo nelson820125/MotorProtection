@@ -98,6 +98,34 @@ namespace MotorProtection.Core.Controller
             }
         }
 
+        /// <summary>
+        /// Move configuration from pool to log table if sync to silver successfully.
+        /// </summary>
+        public void UpdatePoolAfterFailure(int configId)
+        {
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var config = ctt.DeviceConfigurationPools.Where(dc => dc.ID == configId).FirstOrDefault();
+                if (config != null)
+                {
+                    var configLog = new DeviceConfigurationLog()
+                    {
+                        Address = config.Address,
+                        FunCode = config.FunCode,
+                        Commands = config.Commands,
+                        Description = config.Description,
+                        UserID = config.UserID,
+                        Status = ConfigurationStatus.ERROR,
+                        CreateTime = DateTime.Now
+                    };
+
+                    ctt.DeviceConfigurationLogs.AddObject(configLog);
+                    ctt.DeviceConfigurationPools.DeleteObject(config);
+                    ctt.SaveChanges();
+                }
+            }
+        }
+
         public void AddDeviceConfigurationLog(DeviceConfigurationLog log)
         {
             using (MotorProtectorEntities ctt = new MotorProtectorEntities())
@@ -205,20 +233,21 @@ namespace MotorProtection.Core.Controller
             else
             {
                 //move data to log table, and delete from pool table.
-                config.Status = ConfigurationStatus.ERROR;
-                DeviceConfigurationLog log = new DeviceConfigurationLog()
-                {
-                    Address = config.Address,
-                    FunCode = config.FunCode,
-                    Commands = config.Commands,
-                    Description = config.Description,
-                    UserID = config.UserID,
-                    CreateTime = DateTime.Now,
-                    Status = config.Status,
-                };
+                config.Status = ConfigurationStatus.ERROR;                
 
                 if (config.JobRemovable)
                 {
+                    DeviceConfigurationLog log = new DeviceConfigurationLog()
+                    {
+                        Address = config.Address,
+                        FunCode = config.FunCode,
+                        Commands = config.Commands,
+                        Description = config.Description,
+                        UserID = config.UserID,
+                        CreateTime = DateTime.Now,
+                        Status = config.Status,
+                    };
+
                     AddDeviceConfigurationLog(log);
                     DeleteDeviceConfigurationFromPool(config.ID);
                 }
@@ -321,6 +350,7 @@ namespace MotorProtection.Core.Controller
                         configLog.StopThreshold = newConfig.StopThreshold;
                         configLog.FirstRMMode = newConfig.FirstRMMode;
                         configLog.SecondRMMode = newConfig.SecondRMMode;
+                        configLog.UpdateTime = DateTime.Now;
                     }
                     else
                     {
@@ -385,20 +415,28 @@ namespace MotorProtection.Core.Controller
                 }
                 else
                 {
-                    byte[] data = receivedData.Take(19).ToArray();
-                    Int16 crc = _protocalCtrl.CalculateCRC(data);
-                    byte[] receivedDataCRC = receivedData.Skip(19).Take(2).ToArray();
-                    Array.Reverse(receivedDataCRC);
-                    if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
+                    if (receivedData.Length == 21)
                     {
-                        var newConfig = ConvertSilverDataToDeviceConfigsLog(receivedData);
-                        isSuccess = UpdateDeviceConfigsLog(config.Address, newConfig);
-
-                        if (!isSuccess)
+                        byte[] data = receivedData.Take(19).ToArray();
+                        Int16 crc = _protocalCtrl.CalculateCRC(data);
+                        byte[] receivedDataCRC = receivedData.Skip(19).Take(2).ToArray();
+                        Array.Reverse(receivedDataCRC);
+                        if (crc == BitConverter.ToInt16(receivedDataCRC, 0)) // CRC is correct.
                         {
-                            LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
-                            //DeleteDeviceConfigurationFromPool(config.ID);
+                            var newConfig = ConvertSilverDataToDeviceConfigsLog(receivedData);
+                            isSuccess = UpdateDeviceConfigsLog(config.Address, newConfig);
+
+                            if (!isSuccess)
+                            {
+                                LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
+                                InvalidResponse(config);
+                            }
+                        }
+                        else
+                        {
+                            LogController.LogError(LoggingLevel.Error).Add("Description", "Bad response").Write();
                             InvalidResponse(config);
+                            isSuccess = false;
                         }
                     }
                     else

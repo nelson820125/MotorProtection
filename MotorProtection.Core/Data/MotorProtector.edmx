@@ -12,7 +12,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" />
-          <Property Name="Attributs" Type="xml" Nullable="false" />
+          <Property Name="Attributes" Type="xml" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="CacheGroups">
@@ -52,7 +52,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="None" />
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="ProtectPower" Type="decimal" Precision="8" Scale="2" />
           <Property Name="ProtectMode" Type="int" />
           <Property Name="MIRatio" Type="int" />
@@ -128,7 +128,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" />
-          <Property Name="Attributs" Type="xml" Nullable="false" />
+          <Property Name="Attributes" Type="xml" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="SystemConfig">
@@ -208,8 +208,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="Attributs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Attributes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DeviceConfig">
           <Key>
@@ -269,8 +269,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" />
-          <Property Name="Attributs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Attributes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -406,10 +406,10 @@
           <EntitySetMapping Name="Auditings">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Auditing">
               <MappingFragment StoreEntitySet="Auditing">
+                <ScalarProperty Name="Attributes" ColumnName="Attributes" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Attributs" ColumnName="Attributs" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -466,10 +466,10 @@
           <EntitySetMapping Name="Loggings">
             <EntityTypeMapping TypeName="MotorProtection.Core.Data.Entities.Logging">
               <MappingFragment StoreEntitySet="Logging">
+                <ScalarProperty Name="Attributes" ColumnName="Attributes" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Attributs" ColumnName="Attributs" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
               </MappingFragment>
             </EntityTypeMapping>

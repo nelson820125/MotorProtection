@@ -18,23 +18,18 @@ namespace MotorProtection.Core
         public delegate void EventHandle(byte[] readBuffer, int address);
         public event EventHandle DataReceived;
         public ProtocalController _protocalCtr = new ProtocalController();
+        private List<byte> bufferTemp = new List<byte>();
 
         public SerialPort serialPort;
-        Thread thread;
-        volatile bool _keepReading;
 
         public SerialComm()
         {
             serialPort = new SerialPort();
-            thread = null;
-            _keepReading = false;
         }
 
         public SerialComm(string portName, int baudRate, Parity parity, int dataBits, StopBits stopBits)
         {
             serialPort = new SerialPort(portName, baudRate, parity, dataBits, stopBits);
-            thread = null;
-            _keepReading = false;
         }
 
         public bool IsOpen
@@ -45,133 +40,10 @@ namespace MotorProtection.Core
             }
         }
 
-        private void StartReading()
+        public byte[] ReadBuffer
         {
-            if (!_keepReading)
-            {
-                _keepReading = true;
-                thread = new Thread(new ThreadStart(ReadPort));
-                thread.Start();
-            }
-        }
-
-        private void StopReading()
-        {
-            if (_keepReading)
-            {
-                _keepReading = false;
-                thread.Join();
-                thread = null;
-            }
-        }
-
-        private void WriteRequests()
-        {
-            List<DeviceConfigurationPool> pools = new List<DeviceConfigurationPool>();
-            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
-            {
-                pools = ctt.DeviceConfigurationPools.Where(p => p.Status == ConfigurationStatus.PROCESSING).ToList();
-            }
-
-            if (pools != null && pools.Count > 0)
-            {
-                DeviceConfigsController configCtrl = new DeviceConfigsController();
-                foreach (DeviceConfigurationPool pool in pools)
-                {
-                    byte[] command = configCtrl.SyncSilverCommand(pool);
-                    WritePort(command, 0, command.Length);
-
-                    // read data from Slave.
-                    int count = serialPort.BytesToRead;
-                    byte[] readBuffer = new byte[count];
-                    serialPort.Read(readBuffer, 0, count);
-
-                    if (DataReceived != null)
-                        configCtrl.SyncSilverFinalize(pool, readBuffer);
-                }
-            }
-        }
-
-        private void ReadPort()
-        {
-            while (_keepReading)
-            {
-                if (serialPort.IsOpen)
-                {
-                    try
-                    {
-                        List<Device> devices = DeviceCache.GetAllDevices().Where(d => d.ParentID != null).ToList();
-                        if (devices.Count > 0)
-                        {
-                            foreach (Device device in devices)
-                            {
-                                // deal with WRITE commands first
-                                WriteRequests();
-
-                                int attempts = 0;
-                                while (true)
-                                {
-                                    attempts++;
-
-                                    // send read register command.
-                                    byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 20);
-                                    WritePort(command, 0, command.Length);
-
-                                    // read data from Slave.
-                                    int count = serialPort.BytesToRead;
-                                    if (count > 0 && count != 44) // response structure is 1*addr | 1*func | 1*charNum | N*2values | 1*CRC, so 44 is the length of the available response data
-                                    {
-                                        byte[] readBuffer = new byte[count];
-                                        serialPort.Read(readBuffer, 0, count);
-
-                                        // verify CRC of response data.
-                                        // caculate CRC
-                                        byte[] data = readBuffer.Take(43).ToArray();
-                                        Int16 crc = _protocalCtr.CalculateCRC(data);
-                                        byte[] readBufferCRC = readBuffer.Skip(43).Take(2).ToArray();
-                                        Array.Reverse(readBufferCRC);
-                                        if (crc == BitConverter.ToInt16(readBufferCRC, 0)) // CRC is correct
-                                        {
-                                            if (DataReceived != null)
-                                                DataReceived(readBuffer.Skip(3).Take(40).ToArray(), device.Address.Value); // just parsing values area
-                                        }
-                                        else // CRC is incorrect
-                                        {
-                                            if (attempts >= AppConfig.SerialComm_Attempts)
-                                            {
-                                                LogController.LogError(LoggingLevel.Error, new Exception("Bad response")).Write();
-                                                break;
-                                            }
-
-                                            continue;
-                                        }
-                                    }
-                                    else // data length is incorrect
-                                    {
-                                        if (attempts >= AppConfig.SerialComm_Attempts)
-                                        {
-                                            LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
-                                            break;
-                                        }
-
-                                        continue;
-                                    }
-                                }
-                            }
-
-                            // get status of protector every 5 seconds.
-                            Thread.Sleep(5000);
-                        }
-                    }
-                    catch (TimeoutException)
-                    {
-                        throw new Exception("Serial Port Reading Timeout！");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                }
+            get {
+                return bufferTemp.ToArray();
             }
         }
 
@@ -180,26 +52,37 @@ namespace MotorProtection.Core
             Close();
             serialPort.Open();
             err = "";
-            if (serialPort.IsOpen)
-            {
-                StartReading();
-            }
-            else
+            if (!serialPort.IsOpen)
             {
                 err = "Serail Port Openning failed！";
+                return;
+            }
+
+            serialPort.DataReceived += serialPort_DataReceived;
+        }
+        
+        void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            int count = serialPort.BytesToRead;
+            if (count > 0)
+            {
+                byte[] buffer = new byte[count];
+                serialPort.Read(buffer, 0, count);
+                bufferTemp.AddRange(buffer);
             }
         }
 
         public void Close()
         {
-            StopReading();
-            serialPort.Close();
+            if (serialPort.IsOpen)
+                serialPort.Close();
         }
 
         public void WritePort(byte[] send, int offSet, int count)
         {
             if (IsOpen)
             {
+                bufferTemp.Clear();
                 serialPort.Write(send, offSet, count);
             }
         }

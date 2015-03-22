@@ -10,6 +10,7 @@ using MotorProtection.Core.Cache;
 using MotorProtection.Core.Log;
 using MotorProtection.Core;
 using MotorProtection.Core.Controller;
+using System.Threading;
 
 namespace MotorProtection.Test
 {
@@ -17,6 +18,8 @@ namespace MotorProtection.Test
     {
         private static SerialComm _comm = new SerialComm();
         private static ProtocalController _protocalCtrl = new ProtocalController();
+        private static ProtocalController _protocalCtr = new ProtocalController();
+        private static DeviceController _deviceCtr = new DeviceController();
 
         static void Main(string[] args)
         {
@@ -51,18 +54,28 @@ namespace MotorProtection.Test
             //byte[] s = BitConverter.GetBytes((float)Convert.ToDecimal(str));
             //Console.WriteLine(command);
 
-            //CacheController.Initialize();
+            //try
+            //{
 
-            //StartPort();
+            CacheController.Initialize();
+            //}
+            //catch (Exception ex)
+            //{
+            //    string str = ex.Message;
+            //}
+            
+
+            StartPort();
 
             //LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
+            //LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: ")).Write();
 
             //decimal test = 32.01m;
             //Console.WriteLine(test.ToString());
             //byte addr = 0x01;
             //byte func = 0x03;
-            byte[] data = new byte[] { 0x01, 0x03, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE4, 0x59 };
-            ReadSliverConfig(data);
+            //byte[] data = new byte[] { 0x01, 0x03, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE4, 0x59 };
+            //ReadSliverConfig(data);
             //MODBUSRTU modubus = new MODBUSRTU();
             //byte[] result = modubus.PresetMultiRegisters(addr, data, data.Length);
 
@@ -152,6 +165,70 @@ namespace MotorProtection.Test
             return config;
         }
 
+        private static void ReadPort()
+        {
+            while (true)
+            {
+                List<Device> devices = DeviceCache.GetAllDevices().Where(d => d.ParentID != null).ToList();
+                if (devices.Count > 0)
+                {
+                    foreach (Device device in devices)
+                    {
+                        int attempts = 0;
+                        while (true)
+                        {
+                            attempts++;
+
+                            //send read register command.
+                            byte[] command = _protocalCtr.ReadRegistersRequest(Convert.ToInt16(device.Address), RegisterAddresses.ProtectorStatusHi, RegisterAddresses.CurrentALo, 20);
+                            _comm.WritePort(command, 0, command.Length);
+
+                            Thread.Sleep(500); // wait for response for 500 missecond.
+                            byte[] readBuffer = _comm.ReadBuffer;
+                            int count = readBuffer.Length;
+                            if (count > 0 && count == 45)// response structure is 1*addr | 1*func | 1*charNum | N*2values | 2*CRC, so 45 is the length of the available response data
+                            {
+                                //verify CRC of response data.
+                                // caculate CRC
+                                byte[] data = readBuffer.Take(43).ToArray();
+                                Int16 crc = _protocalCtr.CalculateCRC(data);
+                                byte[] readBufferCRC = readBuffer.Skip(43).Take(2).ToArray();
+                                Array.Reverse(readBufferCRC);
+                                if (crc == BitConverter.ToInt16(readBufferCRC, 0)) // CRC is correct
+                                {
+                                    _deviceCtr.ParsingDeviceStatus(readBuffer.Skip(3).Take(40).ToArray(), device.Address.Value); // just parsing values area
+                                    break;
+                                }
+                                else // CRC is incorrect
+                                {
+                                    if (attempts >= AppConfig.SerialComm_Attempts)
+                                    {
+                                        LogController.LogError(LoggingLevel.Error, new Exception("Bad response")).Write();
+                                        break;
+                                    }
+
+                                    continue;
+                                }
+                            }
+                            else // data length is incorrect
+                            {
+                                if (attempts >= AppConfig.SerialComm_Attempts)
+                                {
+                                    LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: " + device.Address.ToString() + " and Name: " + device.Name)).Write();
+                                    break;
+                                }
+
+                                continue;
+                            }
+                        }
+                    }
+
+                    // get status of protector every 5 seconds.
+                    Thread.Sleep(5000);
+                }
+            }
+        }
+
         private static void StartPort()
         {
             _comm.serialPort.PortName = AppConfig.SerialComm_PortName;
@@ -159,7 +236,7 @@ namespace MotorProtection.Test
             _comm.serialPort.DataBits = 8;
             _comm.serialPort.StopBits = System.IO.Ports.StopBits.One;
             _comm.serialPort.Parity = System.IO.Ports.Parity.None;
-            _comm.DataReceived += serialPort_DataReceived;
+            _comm.serialPort.ReceivedBytesThreshold = 1;
 
             try
             {
@@ -170,6 +247,14 @@ namespace MotorProtection.Test
                 {
                     LogController.LogError(LoggingLevel.Error).Add("Description", err).Write();
                 }
+                else
+                {
+                    ReadPort();
+                }
+            }
+            catch (TimeoutException)
+            {
+                LogController.LogError(LoggingLevel.Error).Add("Description", "Serial Port Reading Timeout！").Write();
             }
             catch (Exception ex)
             {
