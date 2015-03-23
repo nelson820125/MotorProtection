@@ -79,7 +79,8 @@ namespace MotorProtection.UI
                 {
                     using (MotorProtectorEntities ctt = new MotorProtectorEntities())
                     {
-                        var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == Convert.ToInt32(_addressID)).FirstOrDefault();
+                        int id = Convert.ToInt32(_addressID);
+                        var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == id).FirstOrDefault();
                         BindFields(configLog);
                         ctt.DeviceConfigsLogs.DeleteObject(configLog);
                         ctt.SaveChanges();

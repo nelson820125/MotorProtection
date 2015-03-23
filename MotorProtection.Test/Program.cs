@@ -57,7 +57,7 @@ namespace MotorProtection.Test
             //try
             //{
 
-            CacheController.Initialize();
+            //CacheController.Initialize();
             //}
             //catch (Exception ex)
             //{
@@ -65,7 +65,24 @@ namespace MotorProtection.Test
             //}
             
 
-            StartPort();
+            //StartPort();
+
+            DeviceConfigurationPool pool = new DeviceConfigurationPool();
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                pool.Address = 1;
+                pool.FunCode = FunctionCodes.READ_REGISTERS;
+                pool.Commands = "9C 40 00 08";
+                pool.Description = "";
+                pool.UserID = 1;
+                pool.CreateTime = DateTime.Now;
+                pool.Attempt = 0;
+                pool.Status = ConfigurationStatus.PROCESSING;
+                pool.JobRemovable = false;
+
+                ctt.DeviceConfigurationPools.AddObject(pool);
+                ctt.SaveChanges();
+            }
 
             //LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
             //LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: ")).Write();

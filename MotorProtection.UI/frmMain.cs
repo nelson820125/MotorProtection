@@ -136,7 +136,7 @@ namespace MotorProtection.UI
         {
             if (_serviceCtrl != null && _serviceCtrl.Status == ServiceControllerStatus.Running && _serviceCtrl.CanStop)
             {
-                frmMessage frmMsg = new frmMessage("系统服务正在启动，请稍后...", _serviceCtrl, JobOperation.Stop);
+                frmMessage frmMsg = new frmMessage("系统服务正在停止，请稍后...", _serviceCtrl, JobOperation.Stop);
                 frmMsg.ShowDialog();
                 if (frmMsg.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {

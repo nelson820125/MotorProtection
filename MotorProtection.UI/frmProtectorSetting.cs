@@ -285,7 +285,7 @@ namespace MotorProtection.UI
                         DeviceConfigurationPool pool = new DeviceConfigurationPool()
                         {
                             Address = address,
-                            FunCode = FunctionCodes.READ_REGISTERS,
+                            FunCode = FunctionCodes.WRITE_MULTI_REGITERS,
                             Commands = ParsingWriteCommands(),
                             Description = "",
                             UserID = 1,

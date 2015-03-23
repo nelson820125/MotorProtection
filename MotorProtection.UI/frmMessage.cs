@@ -135,16 +135,17 @@ namespace MotorProtection.UI
                 else if (_operation == JobOperation.None && _pool != null) // deal the operation from high level
                 {
                     bool isSuccess = false;
-                    using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+
+                    while (true)
                     {
-                        while (true)
+                        using (MotorProtectorEntities ctt = new MotorProtectorEntities())
                         {
+                            Thread.Sleep(1000);
                             var pool = ctt.DeviceConfigurationPools.Where(dcp => dcp.ID == _pool.ID).FirstOrDefault();
                             if (pool != null)
                             {
                                 if (pool.Status == ConfigurationStatus.PROCESSING)
                                 {
-                                    Thread.Sleep(1000);
                                     continue;
                                 }
                                 else
