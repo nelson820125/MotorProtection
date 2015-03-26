@@ -208,6 +208,8 @@ namespace MotorProtection.UI
                     }
                     else
                     {
+                        protector = ctt.Devices.Where(d => d.Name == protectorName && !d.IsActive && d.ParentID == parentId).FirstOrDefault();
+
                         Device device = new Device()
                         {
                             Name = protectorName,
@@ -217,7 +219,20 @@ namespace MotorProtection.UI
                             IsActive = rbtnActive.Checked,
                             IsDisplay = false
                         };
-                        ctt.Devices.AddObject(device);
+
+                        if (protector != null)
+                        {
+                            protector.Name = protectorName;
+                            protector.Address = address;
+                            protector.CreateTime = DateTime.Now;
+                            protector.IsActive = false;
+                            protector.IsDisplay = false;
+                            device.DeviceID = protector.DeviceID;
+                        }
+                        else
+                        {                            
+                            ctt.Devices.AddObject(device);
+                        }
 
                         if (_deviceConfig != null)
                         {
@@ -232,7 +247,7 @@ namespace MotorProtection.UI
                                 CreateTime = DateTime.Now,
                                 Attempt = 0,
                                 Status = ConfigurationStatus.PROCESSING,
-                                JobRemovable = true
+                                JobRemovable = false
                             };
 
                             ctt.DeviceConfigurationPools.AddObject(pool);
@@ -281,24 +296,24 @@ namespace MotorProtection.UI
                         protector.ParentID = parentId;
                         protector.UpdateTime = DateTime.Now;
 
-                        // sync to silver commands
-                        DeviceConfigurationPool pool = new DeviceConfigurationPool()
-                        {
-                            Address = address,
-                            FunCode = FunctionCodes.WRITE_MULTI_REGITERS,
-                            Commands = ParsingWriteCommands(),
-                            Description = "",
-                            UserID = 1,
-                            CreateTime = DateTime.Now,
-                            Attempt = 0,
-                            Status = ConfigurationStatus.PROCESSING,
-                            JobRemovable = true
-                        };
-
-                        ctt.DeviceConfigurationPools.AddObject(pool);
-
                         if (_deviceConfig != null)
                         {
+                            // sync to silver commands
+                            DeviceConfigurationPool pool = new DeviceConfigurationPool()
+                            {
+                                Address = address,
+                                FunCode = FunctionCodes.WRITE_MULTI_REGITERS,
+                                Commands = ParsingWriteCommands(),
+                                Description = "",
+                                UserID = 1,
+                                CreateTime = DateTime.Now,
+                                Attempt = 0,
+                                Status = ConfigurationStatus.PROCESSING,
+                                JobRemovable = false
+                            };
+
+                            ctt.DeviceConfigurationPools.AddObject(pool);
+
                             // update device configuration
                             var config = ctt.DeviceConfigs.Where(dc => dc.DeviceID == _device.DeviceID).FirstOrDefault();
                             if (config != null)
