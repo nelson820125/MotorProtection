@@ -172,6 +172,7 @@ namespace MotorProtection.UI
             CacheController.Initialize();
 
             ReloadDeviceTree();
+            ReloadMainPanel();
         }
 
         private void tvProtectors_MouseDown(object sender, MouseEventArgs e)
@@ -564,6 +565,25 @@ namespace MotorProtection.UI
             }
         }
 
+        private void tsmiProtectParameterSetting_Click(object sender, EventArgs e)
+        {
+            int deviceId = Convert.ToInt32(tvProtectors.SelectedNode.ToolTipText);
+            DeviceConfig configuration = new DeviceConfig();
+            int address = 0;
+
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                var device = ctt.Devices.Where(d => d.DeviceID == deviceId).FirstOrDefault();
+                address = device.Address.Value;
+                configuration = ctt.DeviceConfigs.Where(dc => dc.DeviceID == device.DeviceID).FirstOrDefault();
+            }
+
+            frmProtectorDetailsSetting protectorDetailSetting = new frmProtectorDetailsSetting(configuration, address.ToString());
+            protectorDetailSetting.ShowDialog();
+            if (protectorDetailSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorDetailSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+                protectorDetailSetting.Dispose();
+        }
+
         #region private
 
         private void ReloadDeviceTree()
@@ -688,7 +708,7 @@ namespace MotorProtection.UI
                             Panel childPanel = new Panel();
 
                             CreateMonitorPanel(childPanel, child);
-                            
+
                             if (child.Status == null || child.Status.Value == ProtectorStatus.Normal)
                             {
                                 childPanel.BackColor = Color.PaleGreen;
@@ -703,10 +723,10 @@ namespace MotorProtection.UI
                             }
 
                             childPanels.Controls.Add(childPanel);
-                            
+
                         }
 
-                        mainPanels.Controls.Add(childPanels);                        
+                        mainPanels.Controls.Add(childPanels);
                     }
                 }
             }
@@ -977,14 +997,14 @@ namespace MotorProtection.UI
             lblTemCValue.Size = new System.Drawing.Size(47, 12);
             lblTemCValue.TabIndex = 31;
             lblTemCValue.Text = device.TemperatureC == null ? "--" : device.TemperatureC.Value.ToString();
-            
+
             lblTemBValue.AutoSize = true;
             lblTemBValue.Location = new System.Drawing.Point(167, 148);
             lblTemBValue.Name = "lblTemBValue";
             lblTemBValue.Size = new System.Drawing.Size(47, 12);
             lblTemBValue.TabIndex = 30;
             lblTemBValue.Text = device.TemperatureB == null ? "--" : device.TemperatureB.Value.ToString();
-            
+
             lblTemAValue.AutoSize = true;
             lblTemAValue.Location = new System.Drawing.Point(61, 148);
             lblTemAValue.Name = "lblTemAValue";
@@ -1004,7 +1024,7 @@ namespace MotorProtection.UI
             lblRM2Key.Size = new System.Drawing.Size(59, 12);
             lblRM2Key.TabIndex = 15;
             lblRM2Key.Text = "继电器#2:";
-             
+
             lblRM1Key.AutoSize = true;
             lblRM1Key.Location = new System.Drawing.Point(6, 175);
             lblRM1Key.Name = "lblRM1Key";
@@ -1023,7 +1043,7 @@ namespace MotorProtection.UI
                 lblRM2Value.Text = "打开";
             else
                 lblRM2Value.Text = "关闭";
-            
+
             lblRM1Value.AutoSize = true;
             lblRM1Value.Location = new System.Drawing.Point(63, 175);
             lblRM1Value.Name = "lblRM1Value";

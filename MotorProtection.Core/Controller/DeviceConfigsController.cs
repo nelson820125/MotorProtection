@@ -326,6 +326,13 @@ namespace MotorProtection.Core.Controller
 
                             isSuccess = true;
                         }
+                        else
+                        {
+                            newConfig.DeviceID = device.DeviceID;
+                            ctt.DeviceConfigs.AddObject(newConfig);
+                            ctt.SaveChanges();
+                            isSuccess = true;
+                        }
                     }
                 }
             }
@@ -388,13 +395,13 @@ namespace MotorProtection.Core.Controller
         {
             Array.Reverse(updateData);
 
-            newConfig.SecondRMMode = BitConverter.ToInt16(updateData.Take(2).ToArray(), 0);
-            newConfig.FirstRMMode = BitConverter.ToInt16(updateData.Skip(2).Take(2).ToArray(), 0);
-            newConfig.StopThreshold = BitConverter.ToInt16(updateData.Skip(4).Take(2).ToArray(), 0);
-            newConfig.AlarmThreshold = BitConverter.ToInt16(updateData.Skip(6).Take(2).ToArray(), 0);
-            newConfig.MIRatio = BitConverter.ToInt16(updateData.Skip(8).Take(2).ToArray(), 0);
-            newConfig.ProtectMode = BitConverter.ToInt16(updateData.Skip(10).Take(2).ToArray(), 0);
-            newConfig.ProtectPower = (decimal)BitConverter.ToInt16(updateData.Skip(12).Take(2).ToArray(), 0) / 100;
+            newConfig.SecondRMMode = BitConverter.ToUInt16(updateData.Take(2).ToArray(), 0);
+            newConfig.FirstRMMode = BitConverter.ToUInt16(updateData.Skip(2).Take(2).ToArray(), 0);
+            newConfig.StopThreshold = BitConverter.ToUInt16(updateData.Skip(4).Take(2).ToArray(), 0);
+            newConfig.AlarmThreshold = BitConverter.ToUInt16(updateData.Skip(6).Take(2).ToArray(), 0);
+            newConfig.MIRatio = BitConverter.ToUInt16(updateData.Skip(8).Take(2).ToArray(), 0);
+            newConfig.ProtectMode = BitConverter.ToUInt16(updateData.Skip(10).Take(2).ToArray(), 0);
+            newConfig.ProtectPower = (decimal)BitConverter.ToUInt16(updateData.Skip(12).Take(2).ToArray(), 0) / 100;
         }
 
         /// <summary>
@@ -554,13 +561,14 @@ namespace MotorProtection.Core.Controller
                         {
                             updateData[j] = Convert.ToByte(commands[i], 16);
                         }
+                        if (newConfig == null) newConfig = new DeviceConfig();
                         ConvertNewConfigurationToDeviceConfig(updateData, newConfig);
                         isSuccess = UpdateDeviceConfig(config.Address, newConfig);
 
                         if (!isSuccess)
                         {
                             LogController.LogError(LoggingLevel.Error).Add("Description", "There is no configuration of Address: " + config.Address).Write();
-                            DeleteDeviceConfigurationFromPool(config.ID);
+                            InvalidResponse(config);
                         }
                     }
                     else
@@ -583,7 +591,7 @@ namespace MotorProtection.Core.Controller
                 if (config.JobRemovable)
                     UpdatePoolAfterSuccess(config.ID);
                 else
-                    UpdatePoolStatus(config.ID, config.Status.Value);
+                    UpdatePoolStatus(config.ID, ConfigurationStatus.SUCCESS);
             }
         }
 

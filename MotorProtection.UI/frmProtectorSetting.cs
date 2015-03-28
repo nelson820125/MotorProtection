@@ -74,26 +74,6 @@ namespace MotorProtection.UI
             }
         }
 
-        private void btnDetailSetting_Click(object sender, EventArgs e)
-        {
-            string addr = "";
-            if (string.IsNullOrEmpty(txtProtectorAddress.Text.Trim()))
-            {
-                if (_device != null && _device.Address != 0)
-                    addr = _device.Address.ToString();
-            }
-            else
-            {
-                addr = txtProtectorAddress.Text.Trim();
-            }
-
-            if (_deviceConfig == null) _deviceConfig = new DeviceConfig();
-            frmProtectorDetailsSetting protectorDetail = new frmProtectorDetailsSetting(_deviceConfig, addr);
-            protectorDetail.ShowDialog();
-            if (protectorDetail.DialogResult == System.Windows.Forms.DialogResult.Cancel || protectorDetail.DialogResult == System.Windows.Forms.DialogResult.OK)
-                protectorDetail.Close();
-        }
-
         #endregion
 
         #region private
@@ -234,28 +214,6 @@ namespace MotorProtection.UI
                             ctt.Devices.AddObject(device);
                         }
 
-                        if (_deviceConfig != null)
-                        {
-                            // sync to silver commands
-                            DeviceConfigurationPool pool = new DeviceConfigurationPool()
-                            {
-                                Address = address,
-                                FunCode = FunctionCodes.READ_REGISTERS,
-                                Commands = ParsingWriteCommands(),
-                                Description = "",
-                                UserID = 1,
-                                CreateTime = DateTime.Now,
-                                Attempt = 0,
-                                Status = ConfigurationStatus.PROCESSING,
-                                JobRemovable = false
-                            };
-
-                            ctt.DeviceConfigurationPools.AddObject(pool);
-
-                            // add device configuration
-                            ctt.DeviceConfigs.AddObject(_deviceConfig);
-                        }
-
                         ctt.SaveChanges();
                         _deviceId = device.DeviceID;
 
@@ -295,43 +253,6 @@ namespace MotorProtection.UI
                         protector.Address = address;
                         protector.ParentID = parentId;
                         protector.UpdateTime = DateTime.Now;
-
-                        if (_deviceConfig != null)
-                        {
-                            // sync to silver commands
-                            DeviceConfigurationPool pool = new DeviceConfigurationPool()
-                            {
-                                Address = address,
-                                FunCode = FunctionCodes.WRITE_MULTI_REGITERS,
-                                Commands = ParsingWriteCommands(),
-                                Description = "",
-                                UserID = 1,
-                                CreateTime = DateTime.Now,
-                                Attempt = 0,
-                                Status = ConfigurationStatus.PROCESSING,
-                                JobRemovable = false
-                            };
-
-                            ctt.DeviceConfigurationPools.AddObject(pool);
-
-                            // update device configuration
-                            var config = ctt.DeviceConfigs.Where(dc => dc.DeviceID == _device.DeviceID).FirstOrDefault();
-                            if (config != null)
-                            {
-                                config.AlarmThreshold = _deviceConfig.AlarmThreshold;
-                                config.StopThreshold = _deviceConfig.StopThreshold;
-                                config.UpdateTime = DateTime.Now;
-                                config.ProtectPower = _deviceConfig.ProtectPower;
-                                config.ProtectMode = _deviceConfig.ProtectMode;
-                                config.MIRatio = _deviceConfig.MIRatio;
-                                config.FirstRMMode = _deviceConfig.FirstRMMode;
-                                config.SecondRMMode = _deviceConfig.SecondRMMode;
-                            }
-                            else
-                            {
-                                ctt.DeviceConfigs.AddObject(_deviceConfig);
-                            }
-                        }
 
                         ctt.SaveChanges();
 

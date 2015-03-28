@@ -63,26 +63,9 @@ namespace MotorProtection.Test
             //{
             //    string str = ex.Message;
             //}
-            
+
 
             //StartPort();
-
-            DeviceConfigurationPool pool = new DeviceConfigurationPool();
-            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
-            {
-                pool.Address = 1;
-                pool.FunCode = FunctionCodes.READ_REGISTERS;
-                pool.Commands = "9C 40 00 08";
-                pool.Description = "";
-                pool.UserID = 1;
-                pool.CreateTime = DateTime.Now;
-                pool.Attempt = 0;
-                pool.Status = ConfigurationStatus.PROCESSING;
-                pool.JobRemovable = false;
-
-                ctt.DeviceConfigurationPools.AddObject(pool);
-                ctt.SaveChanges();
-            }
 
             //LogController.LogEvent(AuditingLevel.High, "Service", "Started").Write();
             //LogController.LogError(LoggingLevel.Error, new Exception("Bad data. There maybe some issues on Slave - Slave ID: ")).Write();
@@ -91,15 +74,101 @@ namespace MotorProtection.Test
             //Console.WriteLine(test.ToString());
             //byte addr = 0x01;
             //byte func = 0x03;
-            //byte[] data = new byte[] { 0x01, 0x03, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xE4, 0x59 };
+            //9C 41 00 07 0E 75 30 00 00 00 64 00 0A 00 14 00 01 00 04
+            //byte[] data = new byte[] { 0x9C, 0x41, 0x00, 0x07, 0x0E, 0x75, 0x30, 0x00, 0x00, 0x00, 0x64, 0x00, 0x0A, 0x00, 0x14, 0x00, 0x01, 0x00, 0x04 };
             //ReadSliverConfig(data);
             //MODBUSRTU modubus = new MODBUSRTU();
-            //byte[] result = modubus.PresetMultiRegisters(addr, data, data.Length);
+            //byte[] result = modubus.PresetMultiRegisters(0x01, data, data.Length);
+
+            string comm = "9C 41 00 07 0E 75 30 00 00 00 64 00 14 00 0A 00 01 00 04";
+            //Int16 addr = 1;
+            //string[] commands = comm.Split(' ');
+            //byte registerAddrHi = Convert.ToByte(commands[0], 16);
+            //byte registerAddrLow = Convert.ToByte(commands[1], 16);
+            //byte[] offsetBytes = new byte[] { Convert.ToByte(commands[2], 16), Convert.ToByte(commands[3], 16) };
+            //Array.Reverse(offsetBytes);
+            //Int16 offset = BitConverter.ToInt16(offsetBytes, 0);
+            //byte[] data = new byte[commands.Length - 5];
+            //for (int i = 5, j = 0; i < commands.Length; i++, j++)
+            //{
+            //    data[j] = Convert.ToByte(commands[i], 16);
+            //}
+            bool isSuccess = true;
+            //byte[] buffer = _protocalCtrl.WriteMultiRegistersRequest(addr, registerAddrHi, registerAddrLow, offset, data);
+            byte[] receivedData = new byte[] { 0x01, 0x10, 0x9c, 0x41, 0x00, 0x07, 0xff, 0x8f };
+            byte[] data = receivedData.Take(6).ToArray();
+            Int16 crc = _protocalCtrl.CalculateCRC(data);
+            byte[] receivedDataCRC = receivedData.Skip(6).Take(2).ToArray();
+            Array.Reverse(receivedDataCRC);
+//Int16 crc1 = BitConverter.ToInt16(receivedDataCRC, 0);
+            if (crc == BitConverter.ToInt16(receivedDataCRC, 0))
+            {
+                string[] commands = comm.Split(' ');
+                byte[] updateData = new byte[commands.Length - 5];
+                for (int i = 5, j = 0; i < commands.Length; i++, j++)
+                {
+                    updateData[j] = Convert.ToByte(commands[i], 16);
+                }
+                DeviceConfig newConfig = new DeviceConfig();
+                ConvertNewConfigurationToDeviceConfig(updateData, newConfig);
+                isSuccess = UpdateDeviceConfig(1, newConfig);
+            }
 
             Console.ReadLine();
 
             //ProtocalController ctrl = new ProtocalController();
             //byte[] result = ctrl.ReadRegistersRequest(1, 0x75, 0x30, 20);
+        }
+
+        private static bool UpdateDeviceConfig(int address, DeviceConfig newConfig)
+        {
+            bool isSuccess = false;
+            if (newConfig != null)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    var device = ctt.Devices.Where(d => d.Address == address).FirstOrDefault();
+                    if (device != null)
+                    {
+                        var deviceConfig = ctt.DeviceConfigs.Where(dc => dc.DeviceID == device.DeviceID).FirstOrDefault();
+                        if (deviceConfig != null)
+                        {
+                            deviceConfig.Status = newConfig.Status;
+                            deviceConfig.ProtectPower = newConfig.ProtectPower;
+                            deviceConfig.ProtectMode = newConfig.ProtectMode;
+                            deviceConfig.MIRatio = newConfig.MIRatio;
+                            deviceConfig.AlarmThreshold = newConfig.AlarmThreshold;
+                            deviceConfig.StopThreshold = newConfig.StopThreshold;
+                            deviceConfig.FirstRMMode = newConfig.FirstRMMode;
+                            deviceConfig.SecondRMMode = newConfig.SecondRMMode;
+                            ctt.SaveChanges();
+
+                            isSuccess = true;
+                        }
+                        else
+                        {
+                            newConfig.DeviceID = device.DeviceID;
+                            ctt.DeviceConfigs.AddObject(newConfig);
+                            ctt.SaveChanges();
+                            isSuccess = true;
+                        }
+                    }
+                }
+            }
+            return isSuccess;
+        }
+
+        private static void ConvertNewConfigurationToDeviceConfig(byte[] updateData, DeviceConfig newConfig)
+        {
+            Array.Reverse(updateData);
+
+            newConfig.SecondRMMode = BitConverter.ToUInt16(updateData.Take(2).ToArray(), 0);
+            newConfig.FirstRMMode = BitConverter.ToUInt16(updateData.Skip(2).Take(2).ToArray(), 0);
+            newConfig.StopThreshold = BitConverter.ToUInt16(updateData.Skip(4).Take(2).ToArray(), 0);
+            newConfig.AlarmThreshold = BitConverter.ToUInt16(updateData.Skip(6).Take(2).ToArray(), 0);
+            newConfig.MIRatio = BitConverter.ToUInt16(updateData.Skip(8).Take(2).ToArray(), 0);
+            newConfig.ProtectMode = BitConverter.ToUInt16(updateData.Skip(10).Take(2).ToArray(), 0);
+            newConfig.ProtectPower = (decimal)BitConverter.ToUInt16(updateData.Skip(12).Take(2).ToArray(), 0) / 100;
         }
 
         private static void ReadSliverConfig(byte[] receivedData)

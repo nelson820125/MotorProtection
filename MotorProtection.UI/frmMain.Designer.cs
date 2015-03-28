@@ -75,6 +75,7 @@
             this.tsmiDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHide = new System.Windows.Forms.ToolStripMenuItem();
             this.timFresh = new System.Windows.Forms.Timer(this.components);
+            this.tsmiProtectParameterSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.pnlNodes.SuspendLayout();
@@ -404,6 +405,7 @@
             this.cmsChild.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiRightEditProtector,
             this.tsmiRightDeactiveProtector,
+            this.tsmiProtectParameterSetting,
             this.toolStripSeparator4,
             this.tsmiClearProtectorAlarm,
             this.tsmiProtectorReset,
@@ -411,7 +413,7 @@
             this.tsmiDisplay,
             this.tsmiHide});
             this.cmsChild.Name = "cmsChild";
-            this.cmsChild.Size = new System.Drawing.Size(191, 160);
+            this.cmsChild.Size = new System.Drawing.Size(191, 212);
             // 
             // tsmiRightEditProtector
             // 
@@ -468,6 +470,13 @@
             // timFresh
             // 
             this.timFresh.Interval = 5000;
+            // 
+            // tsmiProtectParameterSetting
+            // 
+            this.tsmiProtectParameterSetting.Name = "tsmiProtectParameterSetting";
+            this.tsmiProtectParameterSetting.Size = new System.Drawing.Size(190, 24);
+            this.tsmiProtectParameterSetting.Text = "保护参数设置";
+            this.tsmiProtectParameterSetting.Click += new System.EventHandler(this.tsmiProtectParameterSetting_Click);
             // 
             // frmMain
             // 
@@ -551,6 +560,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblNodesTitle;
         private System.Windows.Forms.Button btnFixedOrHide;
+        private System.Windows.Forms.ToolStripMenuItem tsmiProtectParameterSetting;
     }
 }
 

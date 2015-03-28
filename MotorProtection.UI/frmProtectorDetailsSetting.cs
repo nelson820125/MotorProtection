@@ -21,6 +21,10 @@ namespace MotorProtection.UI
         private ServiceController _serviceCtrl = null;
         private string _addressID;
 
+        private int START_ADDRESS = 40001;
+        private int BYTE_NUM = 14;
+        private int REG_NUM = 7;
+
         public frmProtectorDetailsSetting()
         {
             InitializeComponent();
@@ -29,7 +33,7 @@ namespace MotorProtection.UI
         public frmProtectorDetailsSetting(DeviceConfig config, string address)
         {
             InitializeComponent();
-            _config = config;
+            _config = config == null ? new DeviceConfig() : config;
             _addressID = address;
         }
 
@@ -127,7 +131,43 @@ namespace MotorProtection.UI
             else if (rbtnStopOpen1.Checked)
                 _config.SecondRMMode = 4;
 
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            DeviceConfigurationPool pool = new DeviceConfigurationPool();
+            using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+            {
+                // sync to silver commands
+                pool.Address = Convert.ToInt32(_addressID);
+                pool.FunCode = FunctionCodes.WRITE_MULTI_REGITERS;
+                pool.Commands = ParsingWriteCommands();
+                pool.Description = "Write protecto parameters to sliver";
+                pool.UserID = 1;
+                pool.CreateTime = DateTime.Now;
+                pool.Attempt = 0;
+                pool.Status = ConfigurationStatus.PROCESSING;
+                pool.JobRemovable = false;
+
+                ctt.DeviceConfigurationPools.AddObject(pool);
+                ctt.SaveChanges();
+            }
+
+            frmMessage message = new frmMessage("正在将设置写入设备，请稍后...", pool);
+            message.ShowDialog();
+            if (message.DialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                using (MotorProtectorEntities ctt = new MotorProtectorEntities())
+                {
+                    int id = Convert.ToInt32(_addressID);
+                    var configLog = ctt.DeviceConfigsLogs.Where(dcl => dcl.ID == id).FirstOrDefault();
+                    if (configLog != null)
+                        ctt.DeviceConfigsLogs.DeleteObject(configLog);
+                    ctt.SaveChanges();
+                }
+                message.Dispose();
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            }
+            else if (message.DialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
+                MessageBox.Show("写入信息失败，请重试或联系管理员");
+            }
         }
 
         #endregion
@@ -157,7 +197,7 @@ namespace MotorProtection.UI
                     rbtnStopClose.Checked = true;
                 else if (_config.FirstRMMode.Value == 4)
                     rbtnStopOpen.Checked = true;
-                
+
                 if (_config.SecondRMMode == null || _config.SecondRMMode.Value == 4)
                     rbtnStopOpen1.Checked = true;
                 else if (_config.SecondRMMode.Value == 2)
@@ -165,7 +205,7 @@ namespace MotorProtection.UI
                 else if (_config.SecondRMMode.Value == 3)
                     rbtnStopClose1.Checked = true;
                 else if (_config.SecondRMMode.Value == 1)
-                    rbtnAlarmClose1.Checked = true;                   
+                    rbtnAlarmClose1.Checked = true;
             }
         }
 
@@ -352,6 +392,59 @@ namespace MotorProtection.UI
             return command;
         }
 
+        private string ParsingWriteCommands()
+        {
+            string command = "";
+
+            StringBuilder builder = new StringBuilder();
+            builder.Clear();
+
+            byte[] startAddr = BitConverter.GetBytes(START_ADDRESS);
+            Array.Reverse(startAddr);
+
+            byte[] regNum = BitConverter.GetBytes(REG_NUM);
+            Array.Reverse(regNum);
+
+            byte[] byteNum = BitConverter.GetBytes(BYTE_NUM);
+            Array.Reverse(byteNum);
+
+            byte[] power = BitConverter.GetBytes(Convert.ToInt32(_config.ProtectPower.Value * 100));
+            Array.Reverse(power);
+
+            byte[] proMode = BitConverter.GetBytes(_config.ProtectMode.Value);
+            Array.Reverse(proMode);
+
+            byte[] mir = BitConverter.GetBytes(_config.MIRatio.Value);
+            Array.Reverse(mir);
+
+            byte[] alarmThreshold = BitConverter.GetBytes(_config.AlarmThreshold.Value);
+            Array.Reverse(alarmThreshold);
+
+            byte[] stopThreshold = BitConverter.GetBytes(Convert.ToInt32(_config.StopThreshold.Value));
+            Array.Reverse(stopThreshold);
+
+            byte[] mr1Mode = BitConverter.GetBytes(_config.FirstRMMode.Value);
+            Array.Reverse(mr1Mode);
+
+            byte[] mr2Mode = BitConverter.GetBytes(_config.SecondRMMode.Value);
+            Array.Reverse(mr2Mode);
+
+            builder.Append(" " + startAddr[2].ToString("X2") + " " + startAddr[3].ToString("X2"));
+            builder.Append(" " + regNum[2].ToString("X2") + " " + regNum[3].ToString("X2"));
+            builder.Append(" " + byteNum[3].ToString("X2"));
+            builder.Append(" " + power[2].ToString("X2") + " " + power[3].ToString("X2"));
+            builder.Append(" " + proMode[2].ToString("X2") + " " + proMode[3].ToString("X2"));
+            builder.Append(" " + mir[2].ToString("X2") + " " + mir[3].ToString("X2"));
+            builder.Append(" " + alarmThreshold[2].ToString("X2") + " " + alarmThreshold[3].ToString("X2"));
+            builder.Append(" " + stopThreshold[2].ToString("X2") + " " + stopThreshold[3].ToString("X2"));
+            builder.Append(" " + mr1Mode[2].ToString("X2") + " " + mr1Mode[3].ToString("X2"));
+            builder.Append(" " + mr2Mode[2].ToString("X2") + " " + mr2Mode[3].ToString("X2"));
+
+            command = builder.ToString().Trim();
+
+            return command;
+        }
+
         private void InitializeSyncButton()
         {
             if (_serviceCtrl == null)
@@ -363,10 +456,12 @@ namespace MotorProtection.UI
                 if (_serviceCtrl.Status == ServiceControllerStatus.Paused || _serviceCtrl.Status == ServiceControllerStatus.Stopped)
                 {
                     btnReadProtector.Enabled = false;
+                    btnSave.Enabled = false;
                 }
                 else
                 {
                     btnReadProtector.Enabled = true;
+                    btnSave.Enabled = true;
                 }
             }
         }
