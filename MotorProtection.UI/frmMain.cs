@@ -401,7 +401,7 @@ namespace MotorProtection.UI
                 pool.Address = device.Address.Value;
                 pool.FunCode = FunctionCodes.WRITE_SINGLE_REGISTER;
                 pool.Commands = ParsingClearProtectorAlarmCommands();
-                pool.Description = "";
+                pool.Description = "Clear alarm of protector " + device.Name;
                 pool.UserID = 1;
                 pool.CreateTime = DateTime.Now;
                 pool.Attempt = 0;
@@ -419,13 +419,13 @@ namespace MotorProtection.UI
                 CacheController.UpdateAllCacheGroupTimestamp();
                 ReloadDeviceTree();
                 ReloadMainPanel();
-                message.Close();
             }
             else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
             {
                 MessageBox.Show("清除报警失败，请重试或联系管理员");
                 LogController.LogError(LoggingLevel.Error).Add("Description", "Clear protector " + tvProtectors.SelectedNode.Text + " alarm by user id: 1 at " + DateTime.Now.ToString()).Write();
             }
+            message.Dispose();
         }
 
         private void tsmiClearProtectorAlarm_Click(object sender, EventArgs e)
@@ -452,7 +452,7 @@ namespace MotorProtection.UI
                     pool.Address = device.Address.Value;
                     pool.FunCode = FunctionCodes.WRITE_SINGLE_REGISTER;
                     pool.Commands = ParsingProtectorResetCommands();
-                    pool.Description = "";
+                    pool.Description = "Reset protector " + name;
                     pool.UserID = 1;
                     pool.CreateTime = DateTime.Now;
                     pool.Attempt = 0;
@@ -469,14 +469,14 @@ namespace MotorProtection.UI
                 {
                     CacheController.UpdateAllCacheGroupTimestamp();
                     ReloadDeviceTree();
-                    ReloadMainPanel();
-                    message.Close();
+                    ReloadMainPanel();                    
                 }
-                else if (message.DialogResult == System.Windows.Forms.DialogResult.None)
+                else if (message.DialogResult == System.Windows.Forms.DialogResult.Cancel)
                 {
                     MessageBox.Show("复位失败，请重试或联系管理员");
                     LogController.LogError(LoggingLevel.Error).Add("Description", "Reset protector " + name + " by user id: 1 at " + DateTime.Now.ToString()).Write();
                 }
+                message.Dispose();
             }
         }
 
@@ -557,11 +557,15 @@ namespace MotorProtection.UI
             {
                 _isTreeNavigationFixed = false;
                 btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources.release;
+                pnlShortNavigator.Visible = true;
+                pnlNodes.Visible = false;
             }
             else
             {
                 _isTreeNavigationFixed = true;
                 btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources._fixed;
+                pnlShortNavigator.Visible = false;
+                pnlNodes.Visible = true;
             }
         }
 
@@ -582,6 +586,25 @@ namespace MotorProtection.UI
             protectorDetailSetting.ShowDialog();
             if (protectorDetailSetting.DialogResult == System.Windows.Forms.DialogResult.OK || protectorDetailSetting.DialogResult == System.Windows.Forms.DialogResult.Cancel)
                 protectorDetailSetting.Dispose();
+        }
+
+        private void lblShortTreeNavigator_MouseHover(object sender, EventArgs e)
+        {
+            lblShortTreeNavigator.ForeColor = SystemColors.MenuHighlight;
+        }
+
+        private void lblShortTreeNavigator_MouseLeave(object sender, EventArgs e)
+        {
+            lblShortTreeNavigator.ForeColor = SystemColors.ControlText;
+        }
+
+        private void lblShortTreeNavigator_Click(object sender, EventArgs e)
+        {
+            lblShortTreeNavigator.ForeColor = SystemColors.MenuHighlight;
+            pnlShortNavigator.Visible = false;
+            pnlNodes.Visible = true;
+            _isTreeNavigationFixed = true;
+            btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources._fixed;
         }
 
         #region private

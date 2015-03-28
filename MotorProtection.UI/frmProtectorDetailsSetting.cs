@@ -66,7 +66,7 @@ namespace MotorProtection.UI
                     pool.Address = Convert.ToInt32(_addressID);
                     pool.FunCode = FunctionCodes.READ_REGISTERS;
                     pool.Commands = ParsingReadCommands();
-                    pool.Description = "";
+                    pool.Description = "Read protect parameters from sliver";
                     pool.UserID = 1;
                     pool.CreateTime = DateTime.Now;
                     pool.Attempt = 0;
@@ -138,7 +138,7 @@ namespace MotorProtection.UI
                 pool.Address = Convert.ToInt32(_addressID);
                 pool.FunCode = FunctionCodes.WRITE_MULTI_REGITERS;
                 pool.Commands = ParsingWriteCommands();
-                pool.Description = "Write protecto parameters to sliver";
+                pool.Description = "Write protect parameters to sliver";
                 pool.UserID = 1;
                 pool.CreateTime = DateTime.Now;
                 pool.Attempt = 0;

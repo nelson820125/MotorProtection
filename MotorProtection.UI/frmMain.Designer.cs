@@ -58,7 +58,6 @@
             this.pnlShowOrHideNode = new System.Windows.Forms.Panel();
             this.btnFixedOrHide = new System.Windows.Forms.Button();
             this.lblNodesTitle = new System.Windows.Forms.Label();
-            this.sprMain = new System.Windows.Forms.Splitter();
             this.pnlMainShow = new System.Windows.Forms.Panel();
             this.cmsParent = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRightAddProtector = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,6 +67,7 @@
             this.cmsChild = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiRightEditProtector = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRightDeactiveProtector = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiProtectParameterSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiClearProtectorAlarm = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiProtectorReset = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +75,10 @@
             this.tsmiDisplay = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHide = new System.Windows.Forms.ToolStripMenuItem();
             this.timFresh = new System.Windows.Forms.Timer(this.components);
-            this.tsmiProtectParameterSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.pnlShortNavigator = new System.Windows.Forms.Panel();
+            this.lblShortTreeNavigator = new System.Windows.Forms.Label();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.pnlMainContainer = new System.Windows.Forms.Panel();
             this.menuSystem.SuspendLayout();
             this.stsBottom.SuspendLayout();
             this.pnlNodes.SuspendLayout();
@@ -83,6 +86,8 @@
             this.pnlShowOrHideNode.SuspendLayout();
             this.cmsParent.SuspendLayout();
             this.cmsChild.SuspendLayout();
+            this.pnlShortNavigator.SuspendLayout();
+            this.pnlMainContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuSystem
@@ -114,7 +119,7 @@
             // 
             this.tsmiStart.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStart.Image")));
             this.tsmiStart.Name = "tsmiStart";
-            this.tsmiStart.Size = new System.Drawing.Size(142, 24);
+            this.tsmiStart.Size = new System.Drawing.Size(175, 24);
             this.tsmiStart.Text = "启动系统";
             this.tsmiStart.Click += new System.EventHandler(this.tsmiStart_Click);
             // 
@@ -323,7 +328,7 @@
             // 
             this.btnFixedOrHide.AutoSize = true;
             this.btnFixedOrHide.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources.release;
+            this.btnFixedOrHide.BackgroundImage = global::MotorProtection.UI.Properties.Resources._fixed;
             this.btnFixedOrHide.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnFixedOrHide.FlatAppearance.BorderSize = 0;
             this.btnFixedOrHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -344,25 +349,16 @@
             this.lblNodesTitle.TabIndex = 0;
             this.lblNodesTitle.Text = "树型导航栏";
             // 
-            // sprMain
-            // 
-            this.sprMain.Location = new System.Drawing.Point(265, 28);
-            this.sprMain.Margin = new System.Windows.Forms.Padding(4);
-            this.sprMain.Name = "sprMain";
-            this.sprMain.Size = new System.Drawing.Size(4, 747);
-            this.sprMain.TabIndex = 3;
-            this.sprMain.TabStop = false;
-            // 
             // pnlMainShow
             // 
             this.pnlMainShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlMainShow.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMainShow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pnlMainShow.Location = new System.Drawing.Point(269, 28);
+            this.pnlMainShow.Location = new System.Drawing.Point(0, 0);
             this.pnlMainShow.Margin = new System.Windows.Forms.Padding(4);
             this.pnlMainShow.Name = "pnlMainShow";
-            this.pnlMainShow.Size = new System.Drawing.Size(1558, 747);
-            this.pnlMainShow.TabIndex = 4;
+            this.pnlMainShow.Size = new System.Drawing.Size(1520, 747);
+            this.pnlMainShow.TabIndex = 5;
             // 
             // cmsParent
             // 
@@ -413,7 +409,7 @@
             this.tsmiDisplay,
             this.tsmiHide});
             this.cmsChild.Name = "cmsChild";
-            this.cmsChild.Size = new System.Drawing.Size(191, 212);
+            this.cmsChild.Size = new System.Drawing.Size(191, 184);
             // 
             // tsmiRightEditProtector
             // 
@@ -428,6 +424,13 @@
             this.tsmiRightDeactiveProtector.Size = new System.Drawing.Size(190, 24);
             this.tsmiRightDeactiveProtector.Text = "禁用";
             this.tsmiRightDeactiveProtector.Click += new System.EventHandler(this.tsmiRightDeactiveProtector_Click);
+            // 
+            // tsmiProtectParameterSetting
+            // 
+            this.tsmiProtectParameterSetting.Name = "tsmiProtectParameterSetting";
+            this.tsmiProtectParameterSetting.Size = new System.Drawing.Size(190, 24);
+            this.tsmiProtectParameterSetting.Text = "保护参数设置";
+            this.tsmiProtectParameterSetting.Click += new System.EventHandler(this.tsmiProtectParameterSetting_Click);
             // 
             // toolStripSeparator4
             // 
@@ -471,20 +474,53 @@
             // 
             this.timFresh.Interval = 5000;
             // 
-            // tsmiProtectParameterSetting
+            // pnlShortNavigator
             // 
-            this.tsmiProtectParameterSetting.Name = "tsmiProtectParameterSetting";
-            this.tsmiProtectParameterSetting.Size = new System.Drawing.Size(190, 24);
-            this.tsmiProtectParameterSetting.Text = "保护参数设置";
-            this.tsmiProtectParameterSetting.Click += new System.EventHandler(this.tsmiProtectParameterSetting_Click);
+            this.pnlShortNavigator.Controls.Add(this.lblShortTreeNavigator);
+            this.pnlShortNavigator.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlShortNavigator.Location = new System.Drawing.Point(265, 28);
+            this.pnlShortNavigator.Name = "pnlShortNavigator";
+            this.pnlShortNavigator.Size = new System.Drawing.Size(39, 747);
+            this.pnlShortNavigator.TabIndex = 3;
+            this.pnlShortNavigator.Visible = false;
+            // 
+            // lblShortTreeNavigator
+            // 
+            this.lblShortTreeNavigator.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblShortTreeNavigator.Location = new System.Drawing.Point(9, 8);
+            this.lblShortTreeNavigator.Name = "lblShortTreeNavigator";
+            this.lblShortTreeNavigator.Size = new System.Drawing.Size(22, 93);
+            this.lblShortTreeNavigator.TabIndex = 0;
+            this.lblShortTreeNavigator.Text = "树型导航栏";
+            this.lblShortTreeNavigator.Click += new System.EventHandler(this.lblShortTreeNavigator_Click);
+            this.lblShortTreeNavigator.MouseLeave += new System.EventHandler(this.lblShortTreeNavigator_MouseLeave);
+            this.lblShortTreeNavigator.MouseHover += new System.EventHandler(this.lblShortTreeNavigator_MouseHover);
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(304, 28);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 747);
+            this.splitter1.TabIndex = 4;
+            this.splitter1.TabStop = false;
+            // 
+            // pnlMainContainer
+            // 
+            this.pnlMainContainer.Controls.Add(this.pnlMainShow);
+            this.pnlMainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMainContainer.Location = new System.Drawing.Point(307, 28);
+            this.pnlMainContainer.Name = "pnlMainContainer";
+            this.pnlMainContainer.Size = new System.Drawing.Size(1520, 747);
+            this.pnlMainContainer.TabIndex = 5;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1827, 800);
-            this.Controls.Add(this.pnlMainShow);
-            this.Controls.Add(this.sprMain);
+            this.Controls.Add(this.pnlMainContainer);
+            this.Controls.Add(this.splitter1);
+            this.Controls.Add(this.pnlShortNavigator);
             this.Controls.Add(this.pnlNodes);
             this.Controls.Add(this.stsBottom);
             this.Controls.Add(this.menuSystem);
@@ -508,6 +544,8 @@
             this.pnlShowOrHideNode.PerformLayout();
             this.cmsParent.ResumeLayout(false);
             this.cmsChild.ResumeLayout(false);
+            this.pnlShortNavigator.ResumeLayout(false);
+            this.pnlMainContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -532,7 +570,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tsmiAlarmSetting;
         private System.Windows.Forms.Panel pnlNodes;
-        private System.Windows.Forms.Splitter sprMain;
         private System.Windows.Forms.Panel pnlMainShow;
         private System.Windows.Forms.ToolStripStatusLabel tsslSystemStatus;
         private System.Windows.Forms.TreeView tvProtectors;
@@ -561,6 +598,10 @@
         private System.Windows.Forms.Label lblNodesTitle;
         private System.Windows.Forms.Button btnFixedOrHide;
         private System.Windows.Forms.ToolStripMenuItem tsmiProtectParameterSetting;
+        private System.Windows.Forms.Panel pnlShortNavigator;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Panel pnlMainContainer;
+        private System.Windows.Forms.Label lblShortTreeNavigator;
     }
 }
 
